@@ -1,0 +1,327 @@
+Red5 Changelog
+==============
+
+This file contains informations about the changes between the different
+versions of Red5.
+
+Red5 0.6.2  (2007-06-17)
+------------------------
+Bugfixes:
+- "pause" no longer breaks live streams (Jira APPSERVER-136)
+- configured subscopes don't get released when a client disconnects
+- AMF requests could not be decoded when run in the context root
+  (Jira APPSERVER-146)
+- fixed bug for Remoting requests without parameters (Jira APPSERVER-147)
+- fixed issue with stop/start of war in Tomcat (Jira APPSERVER-155)
+- fixed handshake reply for Flash Player 9 Update 3
+- IMetaData supports fractional framerates (Jira APPSERVER-157)
+- correctly reject empty stream names (Jira APPSERVER-156)
+- fixed problem with loading some JAR files from the applications
+  classpath (Jira APPSERVER-141)
+- fixed decoding of Remoting requests with multiple parameters
+  (Jira APPSERVER-151)
+
+
+Red5 0.6.1  (2007-05-23)
+------------------------
+New Features:
+- Switched to use mina 1.1, more config options in red5.properties
+- Newly recorded files start with an "onMetaData" tag containing the
+  duration and the codecs used
+- Added a JMX subsystem with RMI and HTTP connectors
+- Simplified MBean unregistration and added a registration check prior to 
+  the unregister attempt (Jira APPSERVER-118)
+- "IServerStream" now also supports "pause" and "seek"
+- Enabled RMI + SSL for JMX
+- Added JMX authentication
+- Added Shutdown class for cleanly shutting down a Red5 instance
+- Added support for AMF3 in remoting server
+- "receiveAudio" and "receiveVideo" work for VOD streams (Jira SN-22)
+
+Bugfixes:
+- "NetStream.Record.Failed" is sent for IO errors that occurred during
+  recording (Jira APPSERVER-64)
+- fixed possible deadlock if methods are invoked by a connecting client
+  on a client that is currently disconnecting (Jira APPSERVER-108)
+- fixed NPE when connecting without application given (Jira APPSERVER-116)
+- fixed various problems with deserialization of AMF3 objects that implement
+  IExternalizable (Jira CODECS-2)
+- fixed warning about deprecated Jetty configuration (Jira APPSERVER-115)
+- fixed possible deadlock involving PersistableAttributeStore and Scope
+  (Jira APPSERVER-122)
+- display better message if RMI connection to "rmiregistry" could not
+  be established (Jira APPSERVER-125)
+- Python scripts can import classes available only in the classpath of a
+  webapp (Jira APPSERVER-92)
+- fixed Ruby application issue by updating to Spring 2.0.5 and JRuby 0.9.8
+  (Jira APPSERVER-93)
+- fixed async calling of remoting methods (Jira APPSERVER-131)
+- accessing root of RTMPT server no longer results in 404 but redirects to
+  HTTP port (Jira APPSERVER-130)
+- disconnect clients that don't send a valid handshake (Jira APPSERVER-128)
+- reduced max. idle time to prevent too many open sockets when using RTMPT
+  with HTTP/1.0 (Jira APPSERVER-87)
+- fixed potential NPEs in PlaylistSubscriberStream (Jira SN-40)
+- fixed various problems with deserializing AMF0 references in remoting
+- fixed frozen video if audio is disabled in live streams (Jira SN-22)
+
+
+Red5 0.6    (2007-04-23)
+------------------------
+New features:
+- Recording/playback of files to/from subscopes implemented
+  (Jira APPSERVER-103)
+
+Bugfixes:
+- ghost connection detection code rewritten to better detect dead clients
+  (Jira APPSERVER-38, SN-37)
+- deserialization of objects defined in webapp classpath fixed
+  (Jira APPSERVER-80, APPSERVER-100)
+- fixed AMF3 deserializer for references from attributes to parent classes
+  (Jira APPSERVER-101)
+- Jython example adjusted for new bandwidth API (Jira APPSERVER-92)
+- workaround added to deal with broken MP3 files (Jira APPSERVER-62)
+- "start" and "length" are properly evaluated when playing back VOD streams
+- fixed seeking not working for MP3 or audio-only FLV files
+- don't log contents of wrong objects (Jira APPSERVER-109)
+- fixed potential NPEs in PlaylistSubscriberStream
+- a client buffer of 0 on live streams no longer breaks playback (Jira CS-3)
+- fixed shutdown error in Tomcat with WAR version by updating to SLF4J 1.3.1
+  (Jira APPSERVER-107)
+- "NetStream.Play.InsufficientBW" is sent if client is too slow receiving
+  video streams (Jira APPSERVER-51)
+- improved frame dropping code for slow connections
+
+
+Red5 0.6rc3 (2007-04-11)
+------------------------
+New features:
+- Keyframe informations are cached so files don't need to be reparsed
+  before playback
+- Connections from Flash Media Encoder and On2 Flix Live supported
+- Access to shared objects can be limited (Jira APPSERVER-25)
+- Connections can provide a list of remote addresses. This is usefull
+  for proxied RTMPT connections.
+
+Bugfixes:
+- bandwidth control code has been rewritten to fix stability issues and
+  memory leaking in high concurrency connection count situations
+- serialization of Maps with non-number keys fixed (Jira APPSERVER-60)
+- multiple IO processor threads are used by default
+- memory leak when closing RTMPT connections fixed (Jira APPSERVER-61)
+- merged WAR build script with primary script, also moved WAR specific
+  startup servlet into trunk
+- deserializing of remoting results fixed (Jira APPSERVER-63)
+- fixed "error in object encoding" when rejecting AMF3 clients
+  (Jira APPSERVER-73)
+- concurrency problems when closing a connection fixed (Jira APPSERVER-59)
+- unnecessary NetStream.Play.* events are no longer sent when playback
+  stopped (Jira APPSERVER-70)
+- SimplePlaylistController setRepeat and setRandom fixed (Jira SN-27)
+- NPE in SimpleBWControlService fixed (Jira APPSERVER-75)
+- reference bugs in AMF3 encoder fixed (Jira APPSERVER-81)
+- "NetStream.Play.Failed" is sent correctly now (Jira APPSERVER-52)
+- concurrency issue fixed in SimpleBWControlService (Jira SN-32)
+- fixed problem when decoding MP3 files with signed values in the
+  ID3v2 tag size (Jira APPSERVER-86)
+- "NetStream.Seek.Failed" is sent when trying to seek in live streams
+  (Jira APPSERVER-84)
+- "NetStream.Failed" is sent for exceptions during streaming methods
+  (Jira APPSERVER-85)
+- random server freezing resolved (Jira APPSERVER-41)
+- send correct timestamps if seeking beyond end of file (Jira APPSERVER-54)
+- fixed NoSuchElementException when iterating connections during disconnect
+  (Jira APPSERVER-94)
+- reference bugs im AMF3 decoder fixed (Jira APPSERVER-95)
+- "NetStream.Play.Complete" is sent (APPSERVER-50)
+- "NetStream.Play.Switch" is sent (APPSERVER-82)
+- streams are always played to the end (SN-8)
+- seeking in stopped streams fixed (APPSERVER-89)
+- fixed deadlock in shared objects under high load (APPSERVER-98)
+
+
+Red5 0.6rc2 (2007-02-12)
+------------------------
+New features:
+- Stream classes can be configured through red5-common.xml (Trac #223)
+- RTMP network library supports client mode (Trac #94)
+- source of VOD streams can be customized through IStreamFilenameGenerator
+  (Trac #120)
+- API: IStreamFilenameGenerator differs between playback and recording
+- results of method calls can be deferred until they are available to free
+  io threads
+- transient fields will not be serialized any longer (Jira APPSERVER-27)
+- Red5 compiles with Java6 now
+- support for AMF3 incl. IExternalizable objects added (Jira APPSERVER-31)
+- access to streams can be limited (Jira APPSERVER-25)
+- (non-persistent) shared objects can be acquired by serverside code to
+  prevent them from being released when the last client disconnects
+  (Jira APPSERVER-48)
+
+Bugfixes:
+- serialize RecordSet objects (Trac #201)
+- "NetConnection.Connect.Rejected" is sent for non-existing scopes to
+  match result code of FCS/FMS
+- RTMPT through Jetty working again (Trac #213)
+- size of last frame is correctly written to .flv files
+- errors during "connect" are reported back to client through RTMPT
+- fixed NPE in FlowControlService thread (Trac #175)
+- deserializing of mixed arrays now works in all cases (Trac #109, #195)
+- "NetStream.Record.Start" and "NetStream.Record.Stop" are sent (Trac #127)
+- "NetStream.Publish.BadName" is sent if two clients try to publish/record
+  a stream with the same name
+- streams stopped if bandwidth limit was set too high (Trac #165)
+- fixed potential concurrency issue in FlowControlService (Trac #224)
+- stream notification callbacks are invoked on reused connetions (Trac #133)
+- the playlist is flushed by default (Jira APPSERVER-6)
+- fixed ClassCastException in "pendingVideoMessages" (Jira APPSERVER-14)
+- calling "pause" with null argument works again (Jira APPSERVER-12)
+- "NetStream.Publish.BadName" is only sent if another client is already
+  publishing a stream
+- playing a stream while being recorded now works (Jira SN-4, SN-13)
+- "IPendingServiceCall.isSuccess()" returns true when a result has been
+  received (Jira APPSERVER-35)
+- the "http.host" setting from "red5.properties" is evaluated
+  (Jira APPSERVER-36)
+- "IBroadcastStream" knows about the filename it is being recorded to
+  (Jira APPSERVER-30)
+- BufferOverflowException for empty RTMP packets fixed (Jira APPSERVER-37)
+- flv files are no longer locked after playback (Jira APPSERVER-17)
+- SharedObjects support "getAttributes" (Jira APPSERVER-45)
+- mp3 files containing images can be played back (Jira APPSERVER-47)
+- fixed parsing of long strings (Jira APPSERVER-44)
+- fixed pausing and seeking audio-only flv files (Jira SN-17)
+- number of streams is no longer limited (Jira SN-14)
+- "NetStream.Play.Failed" is returned if a VOD stream can not be played
+  due to IO errors (Jira APPSERVER-52)
+- "NetStream.InvalidArg" is returned for invalid arguments
+  (Jira APPSERVER-55)
+- "NetConnection.Connect.InvalidApp" is returned for non-existing application
+  scopes on the server
+- "NetStream.Record.NoAccess" is returned if file could not be created
+  or written to (Jira APPSERVER-53)
+- error when setting SO attributes fixed (Jira APPSERVER-57)
+
+
+Red5 0.6rc1 (2006-10-30)
+------------------------
+New features:
+- Created WAR (Web Application Archive) version of Red5
+  (Separate repository java/war)
+- Enabled Tomcat or Jetty as J2EE container implementations
+- FLV cache implementations (2 are included) (Trac #99)
+- Scripting support (javascript, ruby, python, groovy, and bsh)
+  based on Spring 2 and JSR223
+
+Bugfixes:
+- last frames aren't lost when reading .flv files (Trac #90)
+- FileConsumer acted on all consumer pipe events (Trac #92)
+- improved timestamps of live streams to be more in sync with FMS (Trac #93)
+- FileConsumer modified position of incoming messages (Trac #91)
+- Events should support reference counting (Trac #103)
+- ServerStream playback jerky (Trac #77)
+- "NetStream.send" events are properly recorded
+- reusing streams works (Trac #123)
+- fixed NPE if no bandwidth settings are available (Trac #129)
+- "close" can be called on RTMPT connections multiple times (Trac #166)
+- fixed synchronizing problem with clients publishing repeatedly (Trac #124)
+- RTMPT connections can be closed from the serverside (Trac #179)
+
+
+Red5 0.5    (2006-07-25)
+------------------------
+New features:
+- frame dropping for live streams depending on available bandwidth
+- added "receiveAudio", "receiveVideo" and "send" for streams
+- destination of recorded streams can be customized (Trac #73)
+- VOD stream flow control adapts bandwidth based on buffer time (Trac #63)
+- up-/downstream bandwidth can be specified
+
+Bugfixes:
+- only the same instances are serialized as references (Trac #58)
+- re-added JSP support in manifest file of red5.jar (Trac #59)
+- "tagPosition" is updated in FLVReader when seeking (Trac #55)
+- automatic subscopes of the host scope are disabled so only connections
+  to existing applications are possible
+- running "ant" after setup keeps wrapper configuration (Trac #76)
+- mp3 files with unsupported sample rates are detected (Trac #66)
+- timestamps of recorded .flv files were wrong sometimes (Trac #78)
+- stream types could be reused leading to a ClassCastException (Trac #84)
+- "ns.pause" working if no flag given (Trac #67)
+- a keyframe is sent for paused streams when seeking
+
+
+Red5 0.5rc1 (2006-07-11)
+------------------------
+New features:
+- refactored streaming code
+- refactored scope services
+- refactored rtmp message de-/encoding
+- enabled subscopes
+- bandwidth control for on-demand streams
+- experimental support for serverside streams
+- added dynamic "onMetaData" for mp3 streams
+- added persistence for scopes and shared objects
+- added support for simple "directory-only" applications
+- added remoting client support (sync / async)
+- added deserializer for RecordSet remoting results
+- arbitrary objects can be registered as service handlers
+- IClientRegistry can be customized for each scope
+- WEB-INF directories are added to the classpath (Trac #27)
+- clients can be rejected with a custom error message
+- basic "onMetaData" is generated dynamically for .flv files without any
+  meta data (Trac #23)
+
+Bugfixes:
+- mp3 files that have their protection bit set
+- mp3 files encoded MPEG 2, Layer III (Trac #15)
+- mp3 files with incomplete last frame
+- shared objects bugfixes (Trac #11, #22, #25)
+- application handlers were not called on disconnect
+- IConnection.close() now closes connection (Trac #19)
+- connecting to non-existent applications returns correct error now
+- Jetty correctly runs on all virtual hosts (Trac #26)
+- Map objects are serialized correctly
+- methods could be invoked with converted parameters before invoking them
+  with the original parameters
+- support invoking methods with "null" as parameter (Trac #29)
+- directories for recorded files are created if they don't exist (Trac #20)
+- "pause(java.lang.Object, int)" was reversed for streams (Trac #16)
+- serialization of arbitrary objects uses reflect api to access fields,
+  fixes various problems with inner classes and internal objects like
+  IConnection / IClient
+- invalid stream ids are handled in "deleteStream" (Trac #21)
+- stream name prefixes and names without extensions supported (Trac #28)
+
+
+Red5 0.4.1  (2006-05-01)
+------------------------
+- mp3 audio streams
+- "seek" and "pause" for on-demand streams (Trac #4)
+- "Address already in use" fixed after restart (Trac #5)
+- bugfixes for shared objects (Trac #6)
+- bugfixes for videoconference sample (Trac #7)
+- connection strings without hostname supported (Trac #8)
+- Flash7 version of the videoconference sample added
+
+
+Red5 0.4    (2006-04-20)
+------------------------
+- public server-side api
+- amf remoting
+- rtmpt
+- metadata api
+- basic samples and documentation
+
+
+Red5 0.3    (2006-02-21)
+------------------------
+- live streams
+- shared objects
+
+
+Red5 0.2    (2005-10-21)
+------------------------
+- first public release
+- video streams
+- echo service

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<vid:videos xmlns:vid="http://www.example.org/metadades">
+<vid:topic-videoconference>DIVENDRES-03-02-2012</vid:topic-videoconference>
+<vid:description-videoconference>DIVENDRES-03-02-2012</vid:description-videoconference>
+<vid:date-videoconference>07/02/2012</vid:date-videoconference>
+<vid:start-videoconference>13:15:11</vid:start-videoconference>
+<vid:end-videoconference>13:15:24</vid:end-videoconference>
+<vid:video>
+<vid:name>student.flv</vid:name>
+<vid:autor>
+<vid:full-name>Student Student</vid:full-name>
+<vid:e-mail>student@student.com</vid:e-mail>
+</vid:autor>
+</vid:video>
+</vid:videos>

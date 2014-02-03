@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<vid:videos xmlns:vid="http://www.example.org/metadades">
+<vid:topic-videoconference>fff</vid:topic-videoconference>
+<vid:description-videoconference>fff</vid:description-videoconference>
+<vid:date-videoconference>21/05/2012</vid:date-videoconference>
+<vid:start-videoconference>08:56:39</vid:start-videoconference>
+<vid:end-videoconference>08:56:47</vid:end-videoconference>
+<vid:video>
+<vid:name>speakapps.flv</vid:name>
+<vid:autor>
+<vid:full-name>Admin SpeakApps</vid:full-name>
+<vid:e-mail>speakapps@uoc.edu</vid:e-mail>
+</vid:autor>
+</vid:video>
+</vid:videos>

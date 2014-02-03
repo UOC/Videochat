@@ -1,0 +1,77 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+
+<META http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>Videoconference player</title>
+<style type="text/css">
+<!--
+body {
+	background-color: #FFFFFF;
+}
+-->
+</style></head>
+
+<body>
+hola
+<script type="text/javascript" src="swfobject.js"></script>
+
+<div align="center" id='flash_player'>
+  <p class="Estilo1">&nbsp;</p>
+  <p>Necesitas flash para poder visualizar el player de audio</p>
+</div>
+<div align="center"></div>
+<script type='text/javascript'>
+
+ // get the current URL
+ var url = window.location.toString();
+ //get the parameters
+ url.match(/\?(.+)$/);
+ var params = RegExp.$1;
+ // split up the query string and store in an
+ // associative array
+ var params = params.split("&");
+ //alert("Params:"+params);
+ var queryStringList = {}; 
+ 
+
+ var tmp1 = params[0].split("=");
+ queryStringList[tmp1[0]] = unescape(tmp1[1]);
+ 
+ //alert(queryStringList[tmp1[0]]);
+	
+ var tmp2 = params[1].split("=");
+ queryStringList[tmp2[0]] = unescape(tmp2[1]);
+ 
+ //alert(queryStringList[tmp2[0]]);
+ 
+ // Provisional Plan B Juliol 2011 - Se añade var tmp3 para alojar id_meeting
+ 
+ var tmp3 = params[2].split("=");
+ queryStringList[tmp3[0]] = unescape(tmp3[1]);
+ 
+ //alert(queryStringList[tmp3[0]]);
+	
+ 
+ // print all querystring in key value pairs
+
+var so_video2= new SWFObject('player.swf', 'mi_pelicula_video2', '850', '620', '9', '#F7F7F7');	
+so_video2.addParam('wmode');
+so_video2.addVariable('width','800');
+so_video2.addVariable('height','700');
+
+//for(var i in queryStringList){
+//valor_entrada[x]=queryStringList[i];
+//	x++;
+
+//}
+ // Provisional Plan B Juliol 2011 - Se añade id_meeting a la lista de parametros
+so_video2.addVariable("id_meeting",queryStringList[tmp3[0]]);
+so_video2.addVariable("rtmp",queryStringList[tmp2[0]]);
+so_video2.addVariable("scope",queryStringList[tmp1[0]]);
+
+so_video2.write('flash_player');
+
+</script>
+</body>
+</html>

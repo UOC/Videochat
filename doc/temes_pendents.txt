@@ -1,0 +1,18 @@
+--------------
+Temes pendents
+--------------
+1) Apurar sincronització flash del botó rec. 
+El missatge de 'fí de grabació' amb tots els ussuaris de la videoconferència.
+
+2)Iniciar grabació i connectar càmera sincronitzats per denegar el click mitjançant flash.
+
+3) Posar botó en la part del recorder, per tancar l'acces a la room.
+
+3) Posar botó en la part del recorder, per desactivar el micro.
+
+4) El contador de temps dels videos, en la part del player no funciona quant tenim un sol video.
+
+5) El topic si el canvies directament a la url, a la pantalla tambe es canvia, però en les metadades segueix guardant el que havia
+originalment a la url.
+
+6) S'ha de poguer posar una descripció de la videoconferencia que s'esta gravant, en la pard del recorder. Màx 255 caracters.

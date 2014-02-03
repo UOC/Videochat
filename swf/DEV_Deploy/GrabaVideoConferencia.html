@@ -1,0 +1,37 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="es" lang="es">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<title>GrabaVideoConferencia</title>
+<script language="javascript">AC_FL_RunContent = 0;</script>
+
+</head>
+<body bgcolor="#999999">
+<!--URL utilizadas en la película-->
+<!--Texto utilizado en la película-->
+<!--
+   REC
+   STOP
+   REC
+   STOP
+-->
+
+
+
+<script type="text/javascript" src="swfobject.js"></script>
+
+<div align="center" id='flash_player'>
+  <p class="Estilo1">&nbsp;</p>
+  <p>Necesitas flash para poder visualizar el player de audio</p>
+</div>
+<div align="center"></div>
+
+<script type='text/javascript'>
+var so_video2= new SWFObject('GrabaVideoConferencia.swf?scope=1&fullName=dani&email=dcarrascogi@uoc.edu&rtmpCon=rtmp://213.73.32.142/fitcDemo&topic=english', 'GrabaVideoConferencia', '800', '700', '7', '#336699');	
+so_video2.addParam('wmode','transparent');
+so_video2.addVariable('width','800');
+so_video2.addVariable('height','700');
+so_video2.write('flash_player');
+</script>
+
+</body>
+</html>
