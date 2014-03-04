@@ -1,0 +1,104 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
+   "http://www.w3.org/TR/html4/strict.dtd">
+
+<html lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<title>Flash RTMP Player - Webcam Recording</title>
+
+    <script language="javascript">AC_FL_RunContent = 0;</script>
+    <script src="AC_RunActiveContent.js" language="javascript"></script>	
+    <!-- Framework CSS -->
+	<link rel="stylesheet" href="css/screen.css" type="text/css" media="screen, projection">
+	<link rel="stylesheet" href="css/wowza.css" type="text/css" />
+</head>
+<body>
+    <div class="container">
+		<!-- HEADER -->
+        <div class="span-18">
+            <h1>Webcam Recording</h1><h2>Flash RTMP Player</h2>
+        </div>
+        <div class="span-6 last">
+            <img src="img/wowza-logo_1024.png" class="logo" style="height:72px;width:205px" />
+        </div>
+        <hr class="heading">
+		<!-- END HEADER -->
+		<!-- EXAMPLE PLAYER: WIDTH of this player should be 630px, height will vary depending on the example-->
+        <div class="span-16">
+            <script language="javascript">
+                if (AC_FL_RunContent == 0) {
+                    alert("This page requires AC_RunActiveContent.js.");
+                } else {
+                    AC_FL_RunContent(
+                                     'codebase', 'http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=9,0,0,0',
+                                     'width', '630',
+                                     'height', '410',
+                                     'src', 'webcam',
+                                     'quality', 'high',
+                                     'pluginspage', 'http://www.macromedia.com/go/getflashplayer',
+                                     'align', 'middle',
+                                     'play', 'true',
+                                     'loop', 'true',
+                                     'scale', 'showall',
+                                     'wmode', 'window',
+                                     'devicefont', 'false',
+                                     'id', 'webcam',
+                                     'bgcolor', '#ffffff',
+                                     'name', 'webcam',
+                                     'menu', 'true',
+                                     'allowFullScreen', 'true',
+                                     'allowScriptAccess','sameDomain',
+                                     'movie', 'webcam',
+                                     'salign', ''
+                                     ); //end AC code
+                }
+                </script>
+            <noscript>
+                <object classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=9,0,0,0" width="630" height="410" id="webcam" align="middle">
+                    <param name="allowScriptAccess" value="sameDomain" />
+                    <param name="allowFullScreen" value="true" />
+                    <param name="movie" value="webcam.swf" /><param name="quality" value="high" /><param name="bgcolor" value="#ffffff" />	<embed src="webcam.swf" quality="high" bgcolor="#ffffff" width="630" height="410" name="webcam" align="middle" allowScriptAccess="sameDomain" allowFullScreen="true" type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/go/getflashplayer" />
+                </object>
+            </noscript>
+		</div>
+		<!-- SIDEBAR -->
+        <div class="span-7 prepend-1 last">
+        	<h3>Description</h3>
+			<p>This example requires a single computer running Adobe Flash in a web browser and a web camera. It illustrates Wowza Streaming Engine's advanced video recording capabilities using the Adobe Flash player.</p> 
+           <p><strong>Note:</strong> Webcam Recording cannot be configured using Wowza Streaming Engine Manager, you must perform configuration using the xml files in the Wowza Streaming Engine <strong>/conf</strong> directory.</p>
+        	<h3>Installation</h3>
+            <p>In the /examples/WebcamRecording  directory:<br>
+            <ul>
+                <li>LINUX<br>
+                    Run <strong>./installall.sh</strong>
+                <li>WINDOWS 7 / WINDOWS 8<br>
+                    Right-click <strong>installall.bat</strong> and then select <strong>Run as administrator</strong>
+                <li>WINDOWS   SERVER<br>
+                    Double-click the <strong>installall.bat</strong> file                 
+                <li>MAC OS X<br>
+                    Double-click the <strong>installall.command</strong> file
+                </ul>
+			<h3>Instructions</h3>
+            <ol>
+                <li>Review the following tutorial:<br><a href="http://www.wowza.com/forums/content.php?43">How to set up live video recording</a>                
+                <li>Click the <strong>Connect</strong> button.
+                <li>When the video appears, click the <strong>Record</strong> button.
+                <li>After some video has been recorded, click the <strong>Stop</strong> button.
+                <li>To playback the video, click the <strong>Play</strong> button.
+                <li>To record more video, click the <strong>Record</strong> button again. If you want to append the new video to the previous recording, select the <strong>Append</strong> box.
+            </ol>
+        </div>
+		<!-- FOOTER -->
+        <div class="span-24">
+            <hr class="heading">
+            <div class="span-1">
+            	<img src="img/icon-company.png" width="32" height="32" />
+            </div>
+            <div class="span-23 last copyright">
+                &nbsp;&#169;&nbsp;2014 Wowza Media Systems, LLC. All rights reserved.
+            </div>
+        </div>
+		<!-- END FOOTER -->
+	</div>
+</body>
+</html>

@@ -1,0 +1,104 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
+   "http://www.w3.org/TR/html4/strict.dtd">
+
+<html lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<title>Flash RTMP Player - Video Chat</title>
+
+    <script language="javascript">AC_FL_RunContent = 0;</script>
+    <script src="AC_RunActiveContent.js" language="javascript"></script>	
+    <!-- Framework CSS -->
+	<link rel="stylesheet" href="css/screen.css" type="text/css" media="screen, projection">
+	<link rel="stylesheet" href="css/wowza.css" type="text/css" />
+</head>
+<body>
+    <div class="container">
+		<!-- HEADER -->
+        <div class="span-18">
+            <h1>Video Chat</h1><h2>Flash RTMP Player</h2>
+        </div>
+        <div class="span-6 last">
+            <img src="img/wowza-logo_1024.png" class="logo" style="height:72px;width:205px" />
+        </div>
+        <hr class="heading">
+		<!-- END HEADER -->
+		<!-- EXAMPLE PLAYER: WIDTH of this player should be 636, height will vary depending on the example-->
+        <div class="span-16">
+			<script language="javascript">
+                if (AC_FL_RunContent == 0) {
+                    alert("This page requires AC_RunActiveContent.js.");
+                } else {
+                    AC_FL_RunContent(
+                                     'codebase', 'http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=9,0,0,0',
+                                     'width', '636',
+                                     'height', '360',
+                                     'src', 'videochat',
+                                     'quality', 'high',
+                                     'pluginspage', 'http://www.macromedia.com/go/getflashplayer',
+                                     'align', 'middle',
+                                     'play', 'true',
+                                     'loop', 'true',
+                                     'scale', 'showall',
+                                     'wmode', 'window',
+                                     'devicefont', 'false',
+                                     'id', 'videochat',
+                                     'bgcolor', '#ffffff',
+                                     'name', 'videochat',
+                                     'menu', 'true',
+                                     'allowFullScreen', 'true',
+                                     'allowScriptAccess','sameDomain',
+                                     'movie', 'videochat',
+                                     'salign', ''
+                                     ); //end AC code
+                }
+                </script>
+            <noscript>
+                <object classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=9,0,0,0" width="636" height="360" id="videochat" align="middle">
+                    <param name="allowScriptAccess" value="sameDomain" />
+                    <param name="allowFullScreen" value="true" />
+                    <param name="movie" value="videochat.swf" /><param name="quality" value="high" /><param name="bgcolor" value="#ffffff" />	<embed src="videochat.swf" quality="high" bgcolor="#ffffff" width="636" height="360" name="videochat" align="middle" allowScriptAccess="sameDomain" allowFullScreen="true" type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/go/getflashplayer" />
+                </object>
+            </noscript>
+		</div>
+		<!-- SIDEBAR -->
+        <div class="span-7 prepend-1 last">
+        	<h3>Description</h3>
+			<p>This example illustrates Wowza Streaming Engine video chat capabilities using the Adobe Flash player.</p> 
+            <h3>Installation</h3>
+            <p>In the /examples/VideoChat  directory:<br>
+            <ul>
+                <li>LINUX<br>
+                    Run <strong>./installall.sh</strong>
+                <li>WINDOWS 7 / WINDOWS 8<br>
+                    Right-click <strong>installall.bat</strong> and then select <strong>Run as administrator</strong>
+                <li>WINDOWS   SERVER<br>
+                    Double-click the <strong>installall.bat</strong> file                 
+                <li>MAC OS X<br>
+                    Double-click the <strong>installall.command</strong> file
+                </ul>
+			<h3>Instructions</h3>
+            <ol>
+                <li>Review the following tutorial:<br><a href="http://www.wowza.com/forums/content.php?42">How to set-up live video chat</a>.
+                <li>Mute the audio on your computer to prevent feedback.
+                <li>Click the <strong>Connect</strong> button.
+                <li>When the video appears on the left, click the <strong>Publish</strong> button. This video is the video sender.
+                <li>To receive the video, click the <strong>Play</strong> button on the right.
+            
+			        <a href="http://www.wowza.com/forums/content.php?42"></a>
+            </ol>
+        </div>
+		<!-- FOOTER -->
+        <div class="span-24">
+            <hr class="heading">
+            <div class="span-1">
+            	<img src="img/icon-company.png" width="32" height="32" />
+            </div>
+            <div class="span-23 last copyright">
+                &nbsp;&#169;&nbsp;2014 Wowza Media Systems, LLC. All rights reserved.
+            </div>
+        </div>
+		<!-- END FOOTER -->
+	</div>
+</body>
+</html>
