@@ -148,6 +148,14 @@
                     </div>
                 </div>
             </div>
+
+
+
+            <div id="debug_display">
+                <h4>Debug Data</h4>
+                <span class="time"></span> (<span class="duration"></span>) : <span class="time"></span> (<span class="duration"></span>) : <span class="time"></span> (<span class="duration"></span>) :
+                <span class="time"></span> (<span class="duration"></span>) : <span class="time"></span> (<span class="duration"></span>) : <span class="time"></span> (<span class="duration"></span>)
+            </div>
         </div>  
 
 
@@ -164,18 +172,20 @@
         <script>
 
             var streams = {
-                "1": "rtmp://184.73.205.58:1935/vod/mp4:webcamrecording1.mp4",
-                "2": "rtmp://184.73.205.58:1935/vod/mp4:webcamrecording2.mp4",
+                "1": "rtmp://184.73.205.58:1935/vod/mp4:webcamrecording2.mp4",
+                "2": "rtmp://184.73.205.58:1935/vod/mp4:webcamrecording1.mp4",
                 "3": "rtmp://184.73.205.58:1935/vod/mp4:webcamrecording3.mp4",
                 "4": "rtmp://184.73.205.58:1935/vod/mp4:webcamrecording4.mp4",
                 "5": "rtmp://184.73.205.58:1935/vod/mp4:webcamrecording5.mp4",
                 "6": "rtmp://184.73.205.58:1935/vod/mp4:webcamrecording6.mp4",
             }
             var participants = new Array();
+            var playing = false;
 
             $(document).on("ready", function(){
                 var vids = $("div[id^=vid]");
                 vids.each(function(v){
+
                     participants[v] = jwplayer(vids[v]).setup({
                                         file: streams[v+1],
                                         image: "",
@@ -185,17 +195,35 @@
                                         icons: 'false',
                                         flashplayer: "./js/jwplayer/jwplayer.flash.swf",
                                         events:{
-                                            onPlay: function() { // Seems to cause sync issues, possibly due to the buffering differences
-                                                // vid2.play();vid3.play();vid4.play();vid5.play();vid6.play();
+                                            onReady: function(e){
+                                                // Fires when player is ready, can disable Play button until this is fired for all videos i.e.
+                                            },
+                                            onBuffer: function(t){
+                                                // Buffer not exposed in RMTP playback
+                                            },
+                                            onPlay: function() {
+                                            },
+                                            onTime: function(t) {
+                                                if ($($("#debug_display .duration")[v]).html() == ""){$($("#debug_display .duration")[v]).html(t.duration)}
+                                                $($("#debug_display .time")[v]).html(t.position);
                                             }
                                         }
                                     });                   
                 });
 
                 $("#play-pause").on("click", function(){
-                    $(participants).each(function(p){
-                        participants[p].play();
-                    });
+                    if (playing){
+                        $(participants).each(function(p){
+                            participants[p].pause();
+                        });
+                        playing = false;
+                    } else {
+                        $(participants).each(function(p){
+                            // if (p == 0){setTimeout()}
+                            participants[p].play();
+                        });
+                        playing = true;
+                    }
                 });
 
             });
