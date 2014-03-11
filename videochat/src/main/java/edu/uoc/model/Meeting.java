@@ -7,11 +7,15 @@
 package edu.uoc.model;
 
 import java.sql.Timestamp;
+import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import static javax.persistence.GenerationType.IDENTITY;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 /**
@@ -62,6 +66,10 @@ public class Meeting implements java.io.Serializable {
     
     @Column(name="MEETING_END_RECORD")
     private Timestamp end_record;
+    
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "pk.meeting")
+    private List<UserMeeting> userMeeting;
+
 
     public Meeting() {
     }

@@ -24,9 +24,9 @@ import javax.persistence.Table;
 @Table(name="USER_COURSE")
 @AssociationOverrides({
 		@AssociationOverride(name = "pk.user", 
-			joinColumns = @JoinColumn(name = "STOCK_ID")),
+			joinColumns = @JoinColumn(name = "USER_ID")),
 		@AssociationOverride(name = "pk.course", 
-			joinColumns = @JoinColumn(name = "CATEGORY_ID")) })
+			joinColumns = @JoinColumn(name = "COURSE_ID")) })
 public class UserCourse implements java.io.Serializable {
     
     

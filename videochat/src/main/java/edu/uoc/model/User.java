@@ -65,6 +65,9 @@ public class User implements java.io.Serializable{
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "pk.user")
     private List<UserCourse> course;
     
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "pk.user")
+    private List<UserMeeting> meeting;
+    
     
     public User() {
     }
