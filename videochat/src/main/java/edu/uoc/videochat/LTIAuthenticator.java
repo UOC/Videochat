@@ -6,6 +6,7 @@
 package edu.uoc.videochat;
 
 import edu.uoc.lti.LTIEnvironment;
+import edu.uoc.model.User;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
@@ -80,6 +81,7 @@ public class LTIAuthenticator extends HttpServlet {
                 //5. Get the locale
                 String locale = LTIEnvironment.getLocale();
 
+                boolean redirectToPlayer = LTIEnvironment.getCustomParameter("player", request)!=null;
 				//6. If you need get custom parameters you can do, is not needed to add custom_ prefix to property
                 //String custom_param 	= LTIEnvironment.getCustomParameter("property", request);
 				//In this demo show the values received insted of that you have to
@@ -96,6 +98,9 @@ public class LTIAuthenticator extends HttpServlet {
                 out.println("<p>" + full_name + " is <b>" + (is_instructor ? "Instructor" : is_course_autz ? "Student" : "Other or guest") + "</b></p>");
 
                 out.println("<p><b>Local:</b> " + locale + "</p>");
+                
+                
+                
 
 				//Steps to integrate with your applicationa
                 //6. Check if username exists in system
@@ -131,4 +136,18 @@ public class LTIAuthenticator extends HttpServlet {
         return "Short description";
     }// </editor-fold>
 
+    
+    public User getUser(LTIEnvironment LTIEnvironment){
+        
+       User user= new User();
+       
+       
+       user.setSurname(LTIEnvironment.getFullName());
+               
+               
+        return user;          
+        
+        
+        
+    }
 }
