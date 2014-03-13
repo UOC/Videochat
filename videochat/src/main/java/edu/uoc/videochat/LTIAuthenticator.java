@@ -96,6 +96,8 @@ public class LTIAuthenticator extends HttpServlet {
                 out.println("<p><b>Resource label:</b> " + resource_label + "</p>");
 
                 out.println("<p>" + full_name + " is <b>" + (is_instructor ? "Instructor" : is_course_autz ? "Student" : "Other or guest") + "</b></p>");
+                
+                out.println("<p><b>redirectToPlayer:</b> " + redirectToPlayer + "</p>");
 
                 out.println("<p><b>Local:</b> " + locale + "</p>");
                 
