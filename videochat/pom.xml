@@ -10,19 +10,53 @@
     <name>videochat</name>
 
     <repositories>
-        <repository>
-            <id>te.artifactory.uoc.es</id>
-            <name>Repositori Central de Tecnologia Educativa de la UOC</name>
-            <url>http://te.artifactory.uoc.es/artifactory/repo</url>
-        </repository>
+         <repository>
+                  <id>campusproject uoc release</id>
+                  <layout>default</layout>
+                <url>http://cv.uoc.edu/~campusproject/m2-repo/releases</url>
+                <snapshots>    
+             <enabled>false</enabled>
+          </snapshots>
+          </repository>
+          <repository>
+                  <id>campusproject uoc snapshots</id>
+                  <layout>default</layout>
+                <url>http://cv.uoc.edu/~campusproject/m2-repo/snapshots</url>
+                <snapshots>    
+              <enabled>true</enabled>
+            <updatePolicy>always</updatePolicy>
+         </snapshots>
+         <releases>
+                  <enabled>false</enabled>
+               </releases>
+          </repository>
     </repositories>
+
     <properties>
         <endorsed.dir>${project.build.directory}/endorsed</endorsed.dir>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
     <dependencies>
-        
+        <dependency>
+        <groupId>net.oauth.core</groupId>
+        <artifactId>oauth</artifactId>
+        <version>20100601</version>
+        <type>jar</type>
+        <scope>compile</scope>
+    </dependency>
+    <dependency>
+        <groupId>org.campusproject</groupId>
+        <artifactId>JavaUtils</artifactId>
+        <version>1.1.2</version>
+    </dependency>
+    <dependency>
+        <groupId>net.oauth.core</groupId>
+        <artifactId>oauth-provider</artifactId>
+        <version>20100527</version>
+        <type>jar</type>
+        <scope>compile</scope>
+    </dependency>
         <dependency>
             <groupId>commons-dbcp</groupId>
             <artifactId>commons-dbcp</artifactId>
@@ -85,6 +119,11 @@
             <groupId>org.glassfish</groupId>
             <artifactId>javax.faces</artifactId>
             <version>2.2.2</version>
+        </dependency>
+        <dependency>
+            <groupId>JavaUtils</groupId>
+            <artifactId>JavaUtils</artifactId>
+            <version>1.1.2</version>
         </dependency>
         <dependency>
             <groupId>javax</groupId>
