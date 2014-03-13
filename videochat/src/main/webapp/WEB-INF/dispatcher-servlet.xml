@@ -19,6 +19,17 @@
     for the index controller we are using ParameterizableViewController, so we must
     define an explicit mapping for it.
     -->
+    
+    <mvc:annotation-driven />
+    
+    <context:component-scan base-package="edu.uoc.BB"/>
+    <context:component-scan base-package="edu.uoc.bo"/>
+    <context:component-scan base-package="edu.uoc.bo.impl"/>
+    <context:component-scan base-package="edu.uoc.model"/>
+    <context:component-scan base-package="edu.uoc.dao"/>
+    <context:component-scan base-package="edu.uoc.dao.impl"/>
+    
+    
     <bean id="urlMapping" class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
         <property name="mappings">
             <props>
@@ -41,6 +52,40 @@
           class="org.springframework.web.servlet.mvc.ParameterizableViewController"
           p:viewName="index" />
     
-          
-
+        <bean id="myDataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+        <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
+        <property name="url" value="jdbc:mysql://localhost:8080"/>
+        <property name="username" value="root"/>
+        <property name="password" value=""/>
+        <property name="validationQuery" value="SELECT 1"/>
+    </bean>
+    <bean id="mySessionFactory" class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean">
+        <property name="dataSource" ref="myDataSource"/>
+        <property name="annotatedClasses">
+            <list>
+                <value>edu.uoc.model.Course</value>
+                <value>edu.uoc.model.User</value>
+                <value>edu.uoc.model.Meeting</value>
+                <value>edu.uoc.model.UserCourse</value>
+                <value>edu.uoc.model.UserMeeting</value>
+                <value>edu.uoc.model.UserCourseId</value>
+                <value>edu.uoc.model.UserMeetingId</value>
+            </list>
+        </property>
+        <property name="hibernateProperties">
+            <value>
+                hibernate.dialect=org.hibernate.dialect.MySQLDialect
+            </value>
+        </property>
+    </bean>
+   
+    <!-- Hibernate Transaction Manager -->
+    <bean id="transactionManager" class="org.springframework.orm.hibernate3.HibernateTransactionManager">
+        <property name="sessionFactory" ref="mySessionFactory"/>
+    </bean>
+   
+    <!-- Activates annotation based transaction management -->
+    <tx:annotation-driven transaction-manager="transactionManager"/>
 </beans>
+
+

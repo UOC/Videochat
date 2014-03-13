@@ -11,7 +11,7 @@ import javax.persistence.ManyToOne;
  *
  * @author Diego
  */
-public class UserMeetingId {
+public class UserMeetingId implements java.io.Serializable{
 
     @ManyToOne
     private User user;

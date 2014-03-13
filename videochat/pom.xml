@@ -22,6 +22,12 @@
     </properties>
 
     <dependencies>
+        
+        <dependency>
+            <groupId>commons-dbcp</groupId>
+            <artifactId>commons-dbcp</artifactId>
+            <version>1.2.2</version>
+        </dependency>
         <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-core</artifactId>
@@ -65,15 +71,15 @@
             <version>3.2.3.RELEASE</version>
         </dependency>
         <dependency>
-	<groupId>javax.servlet</groupId>
-	<artifactId>jstl</artifactId>
-	<version>1.2</version>
-</dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>jstl</artifactId>
+            <version>1.2</version>
+        </dependency>
             
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-webmvc</artifactId>
-                <version>3.2.3.RELEASE</version>
+            <version>3.2.3.RELEASE</version>
         </dependency>
         <dependency>
             <groupId>org.glassfish</groupId>
