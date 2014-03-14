@@ -52,7 +52,8 @@ public class LTIAuthenticator extends HttpServlet {
 
         request.setCharacterEncoding("UTF-8");
         //1. Check if LTI call is valid
-        LTIEnvironment LTIEnvironment = new LTIEnvironment();
+        LTIEnvironment LTIEnvironment;
+        LTIEnvironment = new LTIEnvironment();
         if (LTIEnvironment.is_lti_request(request)) {
 
             LTIEnvironment.parseRequest(request);
