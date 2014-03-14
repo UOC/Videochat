@@ -8,11 +8,15 @@ package edu.uoc.bo.impl;
 
 import edu.uoc.bo.UserBo;
 import edu.uoc.lti.LTIEnvironment;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.ModelAndView;
 
 /**
  *
@@ -20,6 +24,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
  */
 
 @Controller
+@Scope("session")
 @RequestMapping("/")
 public class UserBoImpl implements UserBo{
 
@@ -29,14 +34,17 @@ public class UserBoImpl implements UserBo{
     
     @RequestMapping(method = RequestMethod.GET)
     @Override
-    public String getUserName(Model model){
+    public ModelAndView getUserName(HttpServletRequest request,
+		HttpServletResponse response){
       
         LTIEnvironment lti = new LTIEnvironment();
+   
         
-        
-        model.addAttribute("user", lti.getUserName());
-        return "player";
-        
+        ModelAndView model = new ModelAndView("player");
+		model.addObject("user", lti.getUserName());
+ 
+		return model;
+            
         
         
     }

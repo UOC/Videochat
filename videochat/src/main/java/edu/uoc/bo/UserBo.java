@@ -6,7 +6,10 @@
 
 package edu.uoc.bo;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import org.springframework.ui.Model;
+import org.springframework.web.servlet.ModelAndView;
 
 /**
  *
@@ -18,7 +21,8 @@ public interface UserBo {
     
     
     
-    public String getUserName(Model model);
+    public ModelAndView getUserName(HttpServletRequest request,
+		HttpServletResponse response);
         
         
         

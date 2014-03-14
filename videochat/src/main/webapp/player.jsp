@@ -56,7 +56,7 @@
                         <div class="row">
                             <div class="col-md-4 participant" id="user-1">
                                 <div class="participant_content">
-                                    <div id="nom">Nom</div>
+                                    <div id="nom"><c:out value="${user}"/></div>
                                     
                                     <div id="vid1">
                                         <img src="css/images/participant.png" alt="participant 1">

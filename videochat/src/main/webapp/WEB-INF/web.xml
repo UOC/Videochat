@@ -34,8 +34,8 @@
             30
         </session-timeout>
     </session-config>
-    <welcome-file-list>
+ <!--   <welcome-file-list>
         <welcome-file>faces/player.jsp</welcome-file>
         <welcome-file>redirect.jsp</welcome-file>
-    </welcome-file-list>
+    </welcome-file-list>-->
 </web-app>
