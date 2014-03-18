@@ -30,27 +30,32 @@
     <context:component-scan base-package="edu.uoc.dao.impl"/>
     
     
-    <bean id="urlMapping" class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
+  <!--  <bean id="urlMapping" class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
         <property name="mappings">
             <props>
                 <prop key="index.htm">indexController</prop>
             </props>
         </property>
-    </bean>
+    </bean>-->
 
     <bean id="viewResolver"
-          class="org.springframework.web.servlet.view.InternalResourceViewResolver"
-          p:prefix="/WEB-INF/jsp/"
-          p:suffix=".jsp" />
+		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="prefix">
+			<value>/WEB-INF/pages/</value>
+		</property>
+		<property name="suffix">
+			<value>.jsp</value>
+		</property>
+	</bean>
 
          
             
     <!--
     The index controller.
     -->
-    <bean name="indexController"
+    <!--<bean name="indexController"
           class="org.springframework.web.servlet.mvc.ParameterizableViewController"
-          p:viewName="index" />
+          p:viewName="index" />-->
     
         <bean id="myDataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
         <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
@@ -64,8 +69,9 @@
         <property name="annotatedClasses">
             <list>
                 <value>edu.uoc.model.Course</value>
+                <value>edu.uoc.model.Room</value>
                 <value>edu.uoc.model.User</value>
-                <value>edu.uoc.model.Meeting</value>
+                <value>edu.uoc.model.MeetingRoom</value>
                 <value>edu.uoc.model.UserCourse</value>
                 <value>edu.uoc.model.UserMeeting</value>
                 <value>edu.uoc.model.UserCourseId</value>

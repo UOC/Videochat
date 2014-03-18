@@ -12,8 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
@@ -25,7 +24,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 @Scope("session")
-@RequestMapping("/")
+@RequestMapping("/videochat/player")
 public class UserBoImpl implements UserBo{
 
     
@@ -34,17 +33,20 @@ public class UserBoImpl implements UserBo{
     
     @RequestMapping(method = RequestMethod.GET)
     @Override
-    public ModelAndView getUserName(HttpServletRequest request,
-		HttpServletResponse response){
-      
+    public ModelAndView handleRequestInternal(HttpServletRequest request,
+		HttpServletResponse response)  {
         LTIEnvironment lti = new LTIEnvironment();
    
         
-        ModelAndView model = new ModelAndView("player");
-		model.addObject("user", lti.getUserName());
+        
+		ModelAndView model = new ModelAndView("player");
+		model.addObject("user", "Diego");
  
 		return model;
-            
+         
+		
+ 
+		    
         
         
     }

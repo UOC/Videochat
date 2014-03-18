@@ -16,12 +16,12 @@ public class UserMeetingId implements java.io.Serializable{
     @ManyToOne
     private User user;
     @ManyToOne
-    private Meeting meeting;
+    private MeetingRoom meeting;
 
     public UserMeetingId() {
     }
 
-    public UserMeetingId(User user, Meeting meeting) {
+    public UserMeetingId(User user, MeetingRoom meeting) {
         this.user = user;
         this.meeting = meeting;
     }
@@ -34,7 +34,7 @@ public class UserMeetingId implements java.io.Serializable{
         this.user = user;
     }
 
-    public Meeting getMeeting() {
+    public MeetingRoom getMeeting() {
         return meeting;
     }
 
@@ -64,7 +64,7 @@ public class UserMeetingId implements java.io.Serializable{
         return true;
     }
 
-    public void setMeeting(Meeting meeting) {
+    public void setMeeting(MeetingRoom meeting) {
         this.meeting = meeting;
     }
 

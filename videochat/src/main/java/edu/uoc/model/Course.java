@@ -49,18 +49,33 @@ public class Course implements java.io.Serializable{
    
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "pk.course")
     private List<UserCourse> userCourse;
+    
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "id_course")
+    private List<Room> room;
 
 
     public Course() {
     }
 
-    public Course(int id, String coursekey, String title, String lang, Timestamp created) {
+    public Course(int id, String coursekey, String title, String lang, Timestamp created, List<UserCourse> userCourse, List<Room> room) {
         this.id = id;
         this.coursekey = coursekey;
         this.title = title;
         this.lang = lang;
         this.created = created;
+        this.userCourse = userCourse;
+        this.room = room;
     }
+
+    public List<Room> getRoom() {
+        return room;
+    }
+
+    public void setRoom(List<Room> room) {
+        this.room = room;
+    }
+
+    
 
     public int getId() {
         return id;

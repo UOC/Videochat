@@ -15,6 +15,8 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import static javax.persistence.GenerationType.IDENTITY;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -26,56 +28,63 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name="VC_MEETING")
-public class Meeting implements java.io.Serializable {
+public class MeetingRoom implements java.io.Serializable {
     
     
     @Id
     @GeneratedValue(strategy=IDENTITY)
-    @Column(name="MEETING_ID",length=11)
+    @Column(name="MEETING_ROOM_ID",length=11)
     private int id;
     
-    @Column(name="MEETING_ID_COURSE",length=11)
+    @ManyToOne(targetEntity = Room.class)
+    @JoinColumn(name = "ROOM_ID")
+    private int id_room;
+    
+    @Column(name="MEETING_ROOM_ID_COURSE",length=11)
     private int id_course;
     
-    @Column(name="MEETING_TOPIC",length=255)
+    @Column(name="MEETING_ROOM_TOPIC",length=255)
     private String topic;
     
-    @Column(name="MEETING_DESCRIPTION",length=255)
+    @Column(name="MEETING_ROOM_DESCRIPTION",length=255)
     private String description;
     
-    @Column(name="MEETING_PATH",length=255)
+    @Column(name="MEETING_ROOM_PATH",length=255)
     private String path;
     
-    @Column(name="MEETING_NUMBER_PARTICIPANTS",length=2)
+    @Column(name="MEETING_ROOM_NUMBER_PARTICIPANTS",length=2)
     private int number_participants;
     
-    @Column(name="MEETING_FINISHED")
+    @Column(name="MEETING_ROOM_FINISHED")
     private byte finished;
     
-    @Column(name="MEETING_START_MEETING")
+    @Column(name="MEETING_ROOM_START_MEETING")
     private Timestamp start_meeting;
     
-    @Column(name="MEETING_END_MEETING")
+    @Column(name="MEETING_ROOM_END_MEETING")
     private Timestamp end_meeting;
     
-    @Column(name="MEETING_RECORDED")
+    @Column(name="MEETING_ROOM_RECORDED")
     private byte recorded;
     
-    @Column(name="MEETING_START_RECORD")
+    @Column(name="MEETING_ROOM_START_RECORD")
     private Timestamp start_record;
     
-    @Column(name="MEETING_END_RECORD")
+    @Column(name="MEETING_ROOM_END_RECORD")
     private Timestamp end_record;
     
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "pk.meeting")
     private List<UserMeeting> userMeeting;
 
+    
+    
 
-    public Meeting() {
+    public MeetingRoom() {
     }
 
-    public Meeting(int id, int id_course, String topic, String description, String path, int number_participants, byte finished, Timestamp start_meeting, Timestamp end_meeting, byte recorded, Timestamp start_record, Timestamp end_record) {
+    public MeetingRoom(int id, int id_room, int id_course, String topic, String description, String path, int number_participants, byte finished, Timestamp start_meeting, Timestamp end_meeting, byte recorded, Timestamp start_record, Timestamp end_record, List<UserMeeting> userMeeting) {
         this.id = id;
+        this.id_room = id_room;
         this.id_course = id_course;
         this.topic = topic;
         this.description = description;
@@ -87,8 +96,26 @@ public class Meeting implements java.io.Serializable {
         this.recorded = recorded;
         this.start_record = start_record;
         this.end_record = end_record;
+        this.userMeeting = userMeeting;
     }
 
+    public int getId_room() {
+        return id_room;
+    }
+
+    public void setId_room(int id_room) {
+        this.id_room = id_room;
+    }
+
+    public List<UserMeeting> getUserMeeting() {
+        return userMeeting;
+    }
+
+    public void setUserMeeting(List<UserMeeting> userMeeting) {
+        this.userMeeting = userMeeting;
+    }
+
+    
     public int getId() {
         return id;
     }

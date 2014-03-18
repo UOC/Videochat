@@ -17,7 +17,6 @@ import static javax.persistence.GenerationType.IDENTITY;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import org.hibernate.annotations.Generated;
 
 /**
  *
@@ -72,7 +71,7 @@ public class User implements java.io.Serializable{
     public User() {
     }
 
-    public User(int id, String username, String password, String firstname, String surname, String fullname, String email, String image, byte blocked, Timestamp created) {
+    public User(int id, String username, String password, String firstname, String surname, String fullname, String email, String image, byte blocked, Timestamp created, List<UserCourse> course, List<UserMeeting> meeting) {
         this.id = id;
         this.username = username;
         this.password = password;
@@ -83,7 +82,13 @@ public class User implements java.io.Serializable{
         this.image = image;
         this.blocked = blocked;
         this.created = created;
+        this.course = course;
+        this.meeting = meeting;
     }
+
+    
+
+    
 
     public int getId() {
         return id;
