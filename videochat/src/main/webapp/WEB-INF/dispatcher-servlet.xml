@@ -23,8 +23,7 @@
     <mvc:annotation-driven />
     
     <context:component-scan base-package="edu.uoc.BB"/>
-    <context:component-scan base-package="edu.uoc.bo"/>
-    <context:component-scan base-package="edu.uoc.bo.impl"/>
+    <context:component-scan base-package="edu.uoc.common.controller"/>
     <context:component-scan base-package="edu.uoc.model"/>
     <context:component-scan base-package="edu.uoc.dao"/>
     <context:component-scan base-package="edu.uoc.dao.impl"/>

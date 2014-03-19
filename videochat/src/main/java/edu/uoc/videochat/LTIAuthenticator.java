@@ -126,7 +126,7 @@ public class LTIAuthenticator extends HttpServlet {
             }
         } else {
             out.println("Error LTI authentication is not a valid LTI request");
-        }
+        }   
     }
 
     /**
