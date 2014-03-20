@@ -1,8 +1,6 @@
 package edu.uoc.common.controller;
 
-import edu.uoc.lti.LTIApplication;
 import edu.uoc.lti.LTIEnvironment;
-import edu.uoc.videochat.LTIAuthenticator;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.springframework.stereotype.Controller;
