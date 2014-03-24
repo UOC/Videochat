@@ -59,8 +59,8 @@
         <bean id="myDataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
         <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
         <property name="url" value="jdbc:mysql://localhost:3306/videochat"/>
-        <property name="username" value="root"/>
-        <property name="password" value=""/>
+        <property name="username" value="mahara_speakapps"/>
+        <property name="password" value="speakApps2011*"/>
         <property name="validationQuery" value="SELECT 1"/>
     </bean>
     <bean id="mySessionFactory" class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean">
