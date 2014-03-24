@@ -1,30 +1,47 @@
 package edu.uoc.common.controller;
 
+import edu.uoc.dao.UserDao;
 import edu.uoc.lti.LTIEnvironment;
+import edu.uoc.model.User;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.context.ContextLoader;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
-@RequestMapping("/player")
+
 public class UserController {
-@RequestMapping(method = RequestMethod.GET)
     
-
-
+    
+    @Autowired
+    private UserDao userDao;
+    
+@RequestMapping("/player")    
+//@RequestMapping(method = RequestMethod.GET)
 public ModelAndView handleRequestInternal(HttpServletRequest request,
 		HttpServletResponse response)  {
+    
+//LTIAuthenticator lti = new LTIAuthenticator();
         
-   
-        //LTIAuthenticator lti = new LTIAuthenticator();
-        LTIEnvironment lti = new LTIEnvironment();
         
+    ApplicationContext context = ContextLoader.getCurrentWebApplicationContext();
+                User user = context.getBean(User.class);
 		ModelAndView model = new ModelAndView("player");
-		model.addObject("user", lti.getFullName());
+                
+                user.setPassword("");
+                user.setUsername(user.getFullname());
+                user.setSurname(user.getFullname());
+                user.setBlocked((byte)0);
+                
+		model.addObject("user", user.getFullname());
+                userDao.save(user);
  
+                
 		return model;
          
 		

@@ -14,6 +14,8 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.springframework.context.ApplicationContext;
+import org.springframework.web.context.ContextLoader;
 
 /**
  *
@@ -68,17 +70,24 @@ public class LTIAuthenticator extends HttpServlet {
                 String full_name = LTIEnvironment.getFullName();
                 String email = LTIEnvironment.getEmail();
                 String user_image = LTIEnvironment.getUser_image();
+                
 
                 //3. Get the role
                 boolean is_instructor = LTIEnvironment.isInstructor();
                 boolean is_course_autz = LTIEnvironment.isCourseAuthorized();
 
+                ApplicationContext context = ContextLoader.getCurrentWebApplicationContext();
+                User user = context.getBean(User.class);
+                
+                
+                
                 //4. Get course data
                 String course_key = LTIEnvironment.getCourseKey();
                 String course_label = LTIEnvironment.getCourseName();
                 String resource_key = LTIEnvironment.getResourceKey();
                 String resource_label = LTIEnvironment.getResourceTitle();
 
+                //LTIEnvironment.getParameter(lis_person_name_given);
                 //5. Get the locale
                 String locale = LTIEnvironment.getLocale();
 
@@ -102,7 +111,11 @@ public class LTIAuthenticator extends HttpServlet {
 
                 out.println("<p><b>Local:</b> " + locale + "</p>");
                 
-                
+                user.setFirstname(full_name);
+                user.setFullname(full_name);
+                user.setEmail(email);
+                user.setImage(user_image);
+          
                 
 
 				//Steps to integrate with your applicationa

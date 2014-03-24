@@ -17,11 +17,16 @@ import static javax.persistence.GenerationType.IDENTITY;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import org.springframework.stereotype.Component;
 
 /**
  *
  * @author Diego
  */
+
+
+
+@Component
 @Entity
 @Table(name="VC_USER")
 public class User implements java.io.Serializable{
