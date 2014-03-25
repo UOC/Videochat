@@ -3,6 +3,9 @@ package edu.uoc.common.controller;
 import edu.uoc.dao.UserDao;
 import edu.uoc.lti.LTIEnvironment;
 import edu.uoc.model.User;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,6 +52,16 @@ public ModelAndView handleRequestInternal(HttpServletRequest request,
 		    
         
         
+    }
+
+@RequestMapping("/getUsers")    
+    public ModelAndView getAllUsers(){
+        List<User> listUsers = userDao.findAll();
+        
+        ModelAndView model = new ModelAndView("getUsers");
+        
+        model.addObject("myDataSource", listUsers);
+        return model;
     }
     
 }

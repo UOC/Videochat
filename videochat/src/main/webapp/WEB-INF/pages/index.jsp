@@ -8,6 +8,10 @@
         <title>JSP Page</title>
     </head>
     <body>
-        <h1>Hello World!</h1>
+        <h1><a href="searchMeeting.jsp">Search Meeting</a></h1>
+        <br>
+        <h1><a href="getUsers.jsp">Search Users</a></h1>
+        <br>
+        <h1><a href="player.jsp">Player</a></h1>
     </body>
 </html>

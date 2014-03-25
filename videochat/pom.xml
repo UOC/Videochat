@@ -10,26 +10,26 @@
     <name>videochat</name>
 
     <repositories>
-         <repository>
-                  <id>campusproject uoc release</id>
-                  <layout>default</layout>
-                <url>http://cv.uoc.edu/~campusproject/m2-repo/releases</url>
-                <snapshots>    
-             <enabled>false</enabled>
-          </snapshots>
-          </repository>
-          <repository>
-                  <id>campusproject uoc snapshots</id>
-                  <layout>default</layout>
-                <url>http://cv.uoc.edu/~campusproject/m2-repo/snapshots</url>
-                <snapshots>    
-              <enabled>true</enabled>
-            <updatePolicy>always</updatePolicy>
-         </snapshots>
-         <releases>
-                  <enabled>false</enabled>
-               </releases>
-          </repository>
+        <repository>
+            <id>campusproject uoc release</id>
+            <layout>default</layout>
+            <url>http://cv.uoc.edu/~campusproject/m2-repo/releases</url>
+            <snapshots>    
+                <enabled>false</enabled>
+            </snapshots>
+        </repository>
+        <repository>
+            <id>campusproject uoc snapshots</id>
+            <layout>default</layout>
+            <url>http://cv.uoc.edu/~campusproject/m2-repo/snapshots</url>
+            <snapshots>    
+                <enabled>true</enabled>
+                <updatePolicy>always</updatePolicy>
+            </snapshots>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
+        </repository>
     </repositories>
 
     <properties>
@@ -38,25 +38,32 @@
     </properties>
 
     <dependencies>
+        
         <dependency>
-        <groupId>net.oauth.core</groupId>
-        <artifactId>oauth</artifactId>
-        <version>20100601</version>
-        <type>jar</type>
-        <scope>compile</scope>
-    </dependency>
-    <dependency>
-        <groupId>org.campusproject</groupId>
-        <artifactId>JavaUtils</artifactId>
-        <version>1.1.2</version>
-    </dependency>
-    <dependency>
-        <groupId>net.oauth.core</groupId>
-        <artifactId>oauth-provider</artifactId>
-        <version>20100527</version>
-        <type>jar</type>
-        <scope>compile</scope>
-    </dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>5.1.6</version>
+        </dependency>
+  
+        <dependency>
+            <groupId>net.oauth.core</groupId>
+            <artifactId>oauth</artifactId>
+            <version>20100601</version>
+            <type>jar</type>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.campusproject</groupId>
+            <artifactId>JavaUtils</artifactId>
+            <version>1.1.2</version>
+        </dependency>
+        <dependency>
+            <groupId>net.oauth.core</groupId>
+            <artifactId>oauth-provider</artifactId>
+            <version>20100527</version>
+            <type>jar</type>
+            <scope>compile</scope>
+        </dependency>
         <dependency>
             <groupId>javax.servlet</groupId>
             <artifactId>servlet-api</artifactId>
