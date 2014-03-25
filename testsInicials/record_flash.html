@@ -10,6 +10,7 @@
         <!-- Optional theme -->
         <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap-theme.min.css">
         <link rel="stylesheet" href="css/general.css">
+        <script type="text/javascript" src="FlashRTMPPlayer/AC_RunActiveContent.js" ></script>
 	</head>	
     <body>
     	<!-- modal que apareix al carregar la pàgina-->
@@ -134,16 +135,19 @@
                             </div>
                         </div>
                         <div class="row">
-<div class="span-16">
-			<script language="javascript">
-                if (AC_FL_RunContent == 0) {
+                            <div class="col-md-4 participant" id="user-1">
+                                <div class="participant_content">
+                                    <div >Nom</div>
+                                    <!--script>
+            
+                /*if (AC_FL_RunContent == 0) {
                     alert("This page requires AC_RunActiveContent.js.");
                 } else {
                     AC_FL_RunContent(
                                      'codebase', 'http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=9,0,0,0',
-                                     'width', '636',
-                                     'height', '360',
-                                     'src', 'videochat',
+                                     'width', '160',
+                                     'height', '110',
+                                     'src', 'FlashRTMPPlayer/recorder',
                                      'quality', 'high',
                                      'pluginspage', 'http://www.macromedia.com/go/getflashplayer',
                                      'align', 'middle',
@@ -152,25 +156,46 @@
                                      'scale', 'showall',
                                      'wmode', 'window',
                                      'devicefont', 'false',
-                                     'id', 'videochat',
+                                     'id', 'recorder',
                                      'bgcolor', '#ffffff',
-                                     'name', 'videochat',
+                                     'name', 'recorder',
                                      'menu', 'true',
                                      'allowFullScreen', 'true',
                                      'allowScriptAccess','sameDomain',
-                                     'movie', 'videochat',
+                                     'movie', 'FlashRTMPPlayer/recorder',
+                                     'rmtpServer', 'rtmp://184.73.205.58/videochat',
+                                     'debug', '0',
+                                     'publishName', 'uoc.edu-resourcekey-id_room-username',
                                      'salign', ''
                                      ); //end AC code
                 }
-                </script><embed width="636" height="360" src="FlashRTMPPlayer/videochat.swf" quality="high" pluginspage="http://www.macromedia.com/go/getflashplayer" align="middle" play="true" loop="true" scale="showall" wmode="window" devicefont="false" bgcolor="#ffffff" name="videochat" menu="true" allowfullscreen="true" allowscriptaccess="sameDomain" salign="" type="application/x-shockwave-flash"> 
+                */
+        </script-->
+                <embed width="215" height="138" src="FlashRTMPPlayer/recorder.swf?debug=0&publishName=uoc.edu-resourcekey-id_room-username&rmtpServer=rtmp://184.73.205.58/videochat" quality="high" pluginspage="http://www.macromedia.com/go/getflashplayer" align="middle" play="true" loop="true" scale="showall" wmode="window" devicefont="false" bgcolor="#ffffff" name="recorder" menu="true" allowfullscreen="true" allowscriptaccess="sameDomain" salign="" type="application/x-shockwave-flash"> 
             <noscript>
-                &lt;object classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=9,0,0,0" width="636" height="360" id="videochat" align="middle"&gt;
+                &lt;object classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=9,0,0,0" width="636" height="360" id="recorder" align="middle"&gt;
                     &lt;param name="allowScriptAccess" value="sameDomain" /&gt;
                     &lt;param name="allowFullScreen" value="true" /&gt;
-                    &lt;param name="movie" value="videochat.swf" /&gt;&lt;param name="quality" value="high" /&gt;&lt;param name="bgcolor" value="#ffffff" /&gt;	&lt;embed src="videochat.swf" quality="high" bgcolor="#ffffff" width="636" height="360" name="videochat" align="middle" allowScriptAccess="sameDomain" allowFullScreen="true" type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/go/getflashplayer" /&gt;
+                    &lt;param name="debug" value="0" /&gt;
+                    &lt;param name="rmtpServer" value="rtmp://184.73.205.58/videochat" /&gt;
+                    &lt;param name="publishName" value="uoc.edu-resourcekey-id_room-username" /&gt;
+                    &lt;param name="movie" value="FlashRTMPPlayer/recorder.swf" /&gt;&lt;param name="quality" value="high" /&gt;&lt;param name="bgcolor" value="#ffffff" /&gt;  &lt;embed src="FlashRTMPPlayer/recorder.swf" quality="high" bgcolor="#ffffff" width="160" height="110" name="recorder" align="middle" allowScriptAccess="sameDomain" allowFullScreen="true" type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/go/getflashplayer" /&gt;
                 &lt;/object&gt;
             </noscript>
-		</div>
+                                </div>
+                            </div>
+                            <div class="col-md-4 participant" id="user-2">
+                                <div class="participant_content">
+                                    <div id="nom">Nom</div>
+                                    <img src="css/images/participant.png" alt="participant 4">
+                                </div>
+                            </div>
+                            <div class="col-md-4 participant" id="user-3">
+                                <div class="participant_content">
+                                    <div id="nom">Nom</div>
+                                    <img src="css/images/participant.png" alt="participant 4">
+                                </div>
+                            </div>
                         </div>
                         <div class="row">
                             <div class="col-md-4 participant" id="user-4">
@@ -218,6 +243,7 @@
 			$( document ).ready(function() {
 				$('#camera').modal('show');
 				$('.participant > div > div').css("visibility", "hidden");
+               
 				
 			});
 		</script>
