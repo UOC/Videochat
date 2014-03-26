@@ -50,25 +50,28 @@ header #close{
 .participant{
 	border-left:1px solid #ccc;
 	border-bottom:1px solid #ccc;
-	padding-top:20px;
+	/*padding-top:20px;*/ 
 	padding-bottom:30px;
+	margin-bottom:20px;
+	border:1px solid #ccc;
 }
 
 .participant .participant_content{
 	margin:0 auto; 
 	text-align:left; 
 	display:block;
-	width:160px;}
+	width:215px;
+}
 
 .participant:first-child{
 	border-left:none;
 }
 	
 	
-.participant img{
+/*.participant img{
 	margin-bottom:20px;
 	border:1px solid #ccc;
-}
+}*/
 
 .header_chat{
 	text-transform:uppercase;

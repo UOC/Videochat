@@ -21,12 +21,12 @@ import javax.persistence.Table;
  */
 
 @Entity
-@Table(name="USER_COURSE")
+@Table(name="user_course")
 @AssociationOverrides({
 		@AssociationOverride(name = "pk.user", 
-			joinColumns = @JoinColumn(name = "USER_ID")),
+			joinColumns = @JoinColumn(name = "user_id")),
 		@AssociationOverride(name = "pk.course", 
-			joinColumns = @JoinColumn(name = "MEETING_ID")) })
+			joinColumns = @JoinColumn(name = "meeting_id")) })
 
 public class UserMeeting implements java.io.Serializable{
     
@@ -35,7 +35,7 @@ public class UserMeeting implements java.io.Serializable{
     @EmbeddedId
     private UserMeetingId pk;
     
-    @Column(name="USER_MEETING_CREATED")
+    @Column(name="user_meeting_created")
     Timestamp created;
 
     public UserMeeting() {

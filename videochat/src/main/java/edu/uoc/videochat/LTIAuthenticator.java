@@ -5,6 +5,7 @@
  */
 package edu.uoc.videochat;
 
+import edu.uoc.util.Constants;
 import edu.uoc.lti.LTIEnvironment;
 import edu.uoc.model.User;
 import java.io.IOException;
@@ -68,6 +69,8 @@ public class LTIAuthenticator extends HttpServlet {
                  username = username.substring((LTIEnvironment.getResourcekey()+":").length());
                  }*/
                 String full_name = LTIEnvironment.getFullName();
+                String first_name = LTIEnvironment.getParameter(Constants.FIRST_NAME_LTI_PARAMETER);
+                String last_name = LTIEnvironment.getParameter(Constants.LAST_NAME_LTI_PARAMETER);
                 String email = LTIEnvironment.getEmail();
                 String user_image = LTIEnvironment.getUser_image();
                 
@@ -78,8 +81,11 @@ public class LTIAuthenticator extends HttpServlet {
 
                 ApplicationContext context = ContextLoader.getCurrentWebApplicationContext();
                 User user = context.getBean(User.class);
-                
-                
+                user.setFirstname(first_name);
+                user.setSurname(last_name);
+                user.setFullname(full_name);
+                user.setEmail(email);
+                user.setImage(user_image);
                 
                 //4. Get course data
                 String course_key = LTIEnvironment.getCourseKey();
@@ -91,34 +97,32 @@ public class LTIAuthenticator extends HttpServlet {
                 //5. Get the locale
                 String locale = LTIEnvironment.getLocale();
 
-                boolean redirectToPlayer = LTIEnvironment.getCustomParameter("player", request)!=null;
+                boolean redirectToPlayer = LTIEnvironment.getCustomParameter(Constants.PLAYER_CUSTOM_LTI_PARAMETER, request)!=null;
+		boolean is_debug = LTIEnvironment.getCustomParameter(Constants.DEBUG_CUSTOM_LTI_PARAMETER, request)!=null;
+                if (is_debug) {
 				//6. If you need get custom parameters you can do, is not needed to add custom_ prefix to property
-                //String custom_param 	= LTIEnvironment.getCustomParameter("property", request);
-				//In this demo show the values received insted of that you have to
-                //continue with next steps to integrate with your application
-                out.println("<p><b>Username:</b> " + username + "</p>");
-                out.println("<p><b>Full name:</b> " + full_name + "</p>");
-                out.println("<p><b>Email:</b> " + email + "</p>");
-                out.println("<p><b>User image:</b> " + user_image + "</p>");
-                out.println("<p><b>Course key:</b> " + course_key + "</p>");
-                out.println("<p><b>Course label:</b> " + course_label + "</p>");
-                out.println("<p><b>Resource key:</b> " + resource_key + "</p>");
-                out.println("<p><b>Resource label:</b> " + resource_label + "</p>");
+                    //String custom_param 	= LTIEnvironment.getCustomParameter("property", request);
+                                    //In this demo show the values received insted of that you have to
+                    //continue with next steps to integrate with your application
+                    out.println("<p><b>Username:</b> " + username + "</p>");
+                    out.println("<p><b>Full name:</b> " + full_name + "</p>");
+                    out.println("<p><b>Email:</b> " + email + "</p>");
+                    out.println("<p><b>User image:</b> " + user_image + "</p>");
+                    out.println("<p><b>Course key:</b> " + course_key + "</p>");
+                    out.println("<p><b>Course label:</b> " + course_label + "</p>");
+                    out.println("<p><b>Resource key:</b> " + resource_key + "</p>");
+                    out.println("<p><b>Resource label:</b> " + resource_label + "</p>");
 
-                out.println("<p>" + full_name + " is <b>" + (is_instructor ? "Instructor" : is_course_autz ? "Student" : "Other or guest") + "</b></p>");
-                
-                out.println("<p><b>redirectToPlayer:</b> " + redirectToPlayer + "</p>");
+                    out.println("<p>" + full_name + " is <b>" + (is_instructor ? "Instructor" : is_course_autz ? "Student" : "Other or guest") + "</b></p>");
 
-                out.println("<p><b>Local:</b> " + locale + "</p>");
-                
-                user.setFirstname(full_name);
-                user.setFullname(full_name);
-                user.setEmail(email);
-                user.setImage(user_image);
-          
-                
+                    out.println("<p><b>redirectToPlayer:</b> " + redirectToPlayer + "</p>");
 
-				//Steps to integrate with your applicationa
+                    out.println("<p><b>Local:</b> " + locale + "</p>");
+                } else {
+                    String redirectTo = redirectToPlayer?"player":"videochat";
+                    request.getRequestDispatcher("/"+redirectTo+".htm").forward(request, response);
+                }
+                //Steps to integrate with your applicationa
                 //6. Check if username exists in system
                 //6.1 If doesn't exist you have to create user using Tool Api
                 //TODO create_user
