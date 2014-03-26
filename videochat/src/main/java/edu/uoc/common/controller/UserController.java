@@ -44,23 +44,17 @@ public ModelAndView handleRequestInternal(HttpServletRequest request,
 		model.addObject("user", user.getFullname());
                 userDao.save(user);
  
-                
-		return model;
-         
-		
- 
-		    
-        
-        
+		return model;        
     }
 
 @RequestMapping("/getUsers")    
-    public ModelAndView getAllUsers(){
+    public ModelAndView getAllUsers(HttpServletRequest request,
+		HttpServletResponse response){
         List<User> listUsers = userDao.findAll();
         
         ModelAndView model = new ModelAndView("getUsers");
-        
-        model.addObject("myDataSource", listUsers);
+        request.setAttribute("list",listUsers);
+        model.addObject("userList", listUsers);
         return model;
     }
     
