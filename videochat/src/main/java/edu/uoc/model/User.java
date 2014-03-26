@@ -28,42 +28,42 @@ import org.springframework.stereotype.Component;
 
 @Component
 @Entity
-@Table(name="VC_USER")
+@Table(name="vc_user")
 public class User implements java.io.Serializable{
     
     
     @Id
     @GeneratedValue(strategy=IDENTITY)
-    @Column(name="USER_ID",unique=true,length=11) 
+    @Column(name="user_id",unique=true,length=11) 
     private int id;
     
-    @Column(name="USER_USERNAME",length=70)
+    @Column(name="user_username",length=70)
     private String username;
     
     
-    @Column(name="USER_PASSWORD",length=255)
+    @Column(name="user_password",length=255)
     private String password;
     
-    @Column(name="USER_FIRSTNAME",length=50)
+    @Column(name="user_firstname",length=50)
     private String firstname;
     
-    @Column(name="USER_SURNAME",length=75)
+    @Column(name="user_surname",length=75)
     private String surname;
     
     
-    @Column(name="USER_FULLNAME",length=150)
+    @Column(name="user_fullname",length=150)
     private String fullname;
     
-    @Column(name="USER_EMAIL",length=50)
+    @Column(name="user_email",length=50)
     private String email;
     
-    @Column(name="USER_IMAGE",length=150)
+    @Column(name="user_image",length=150)
     private String image;
     
-    @Column(name="USER_BLOCKED")
+    @Column(name="user_blocked")
     private byte blocked;
     
-    @Column(name="USER_TIMESTAMP")
+    @Column(name="user_timestamp")
     private Timestamp created;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "pk.user")

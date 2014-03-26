@@ -42,7 +42,7 @@ public class UserDaoImpl extends CustomHibernateDaoSupport implements UserDao{
         @Override
 	public User findByUserCode(int userId){
 		List list = getHibernateTemplate().find(
-                     "from VC_USER where USER_ID=?",userId
+                     "from vc_user where user_id=?",userId
                 );
 		return (User)list.get(0);
 	}

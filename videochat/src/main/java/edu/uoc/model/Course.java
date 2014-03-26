@@ -24,7 +24,7 @@ import javax.persistence.Table;
  */
 
 @Entity
-@Table(name="VC_COURSE")
+@Table(name="vc_course")
 public class Course implements java.io.Serializable{
     
     

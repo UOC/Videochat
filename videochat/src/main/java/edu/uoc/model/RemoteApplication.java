@@ -21,32 +21,32 @@ import javax.persistence.Table;
 
 
 @Entity
-@Table(name = "VC_REMOTE_APPLICATION")
+@Table(name = "vc_remote_application")
 public class RemoteApplication {
     
     
     @Id
     @GeneratedValue(strategy=IDENTITY)
-    @Column(name="VC_REMOTE_ID",unique=true,length=11) 
+    @Column(name="vc_remote_id",unique=true,length=11) 
     private int id;
  
     
-    @Column(name="VC_REMOTE_TOOL_URL",length=11)
+    @Column(name="vc_remote_tool_url",length=11)
     private String toolURL;
     
-    @Column(name="VC_REMOTE_NAME",length=11)
+    @Column(name="vc_remote_name",length=11)
     private String name;
     
-    @Column(name="VC_REMOTE_DESCRIPTION",length=11)
+    @Column(name="vc_remote_description",length=11)
     private String description;
     
-    @Column(name="VC_REMOTE_LAUNCHIN_POP_UP",length=11)
+    @Column(name="vc_remote_launchin_pop_up",length=11)
     private int launchinPopup;
     
-    @Column(name="VC_REMOTE_DEBUG_MODE",length=11)
+    @Column(name="vc_remote_debug_mode",length=11)
     private int debugMode;
     
-    @Column(name="VC_REMOTE_REGISTERED",length=11)
+    @Column(name="vc_remote_registered",length=11)
     private Timestamp registered;
 
     public RemoteApplication() {
