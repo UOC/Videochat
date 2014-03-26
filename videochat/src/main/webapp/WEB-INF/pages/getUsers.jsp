@@ -7,7 +7,7 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
    "http://www.w3.org/TR/html4/loose.dtd">
-
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <html>
     <head>
         <script>
@@ -75,20 +75,17 @@ function search() {
     <th class="borderW modif col5" scope="col">email</th>
   </tr>
     </thead>
-    
- <jsp:useBean id="myDataSource" scope="request" class="edu.uoc.model.User" />
- 
- <c:forEach var="item" items="${myDataSource.fullname}">
+     
+ <c:forEach var="userTem" items="${userList}">
 <tr>
-<td>${item.getUsername()}</td>
-<td>${item.getPassword()}</td>
-<td>${item.getFirstname}</td>
-<td>${item.getSurname()}</td>
-<td>${item.getFullname()}</td>
-<td>${item.getEmail()}</td>
+<td>${userTem.getUsername()}</td>
+<td>${userTem.getPassword()}</td>
+<td>${userTem.getFirstname()}</td>
+<td>${userTem.getSurname()}</td>
+<td>${userTem.getFullname()}</td>
+<td>${userTem.getEmail()}</td>
 </tr>
 </c:forEach>
-
 </table>
 
     </div>    
