@@ -192,8 +192,8 @@
                     participants[v] = jwplayer(vids[v]).setup({
                                         file: streams[v+1],
                                         image: "",
-                                        width: 160,
-                                        height: 110,
+                                        width: 215,
+                                        height: 138,
                                         controls: 'false',
                                         icons: 'false',
                                         flashplayer: "./js/jwplayer/jwplayer.flash.swf",
