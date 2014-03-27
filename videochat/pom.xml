@@ -11,11 +11,11 @@
 
     <repositories>
         
-        <repository>
+        <!--repository>
             <id>te.artifactory.uoc.es</id>
             <name>Repositori Central de Tecnologia Educativa de la UOC</name>
             <url>http://te.artifactory.uoc.es/artifactory/repo</url>
-        </repository>
+        </repository-->
         <repository>
             <id>campusproject uoc release</id>
             <layout>default</layout>

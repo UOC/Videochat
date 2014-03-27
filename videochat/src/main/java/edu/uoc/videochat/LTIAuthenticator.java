@@ -101,6 +101,7 @@ public class LTIAuthenticator extends HttpServlet {
                 UserCourseDao userCourseDao = context.getBean(UserCourseDao.class);
                 UserCourse usercurse = context.getBean(UserCourse.class);
 
+                user.setUsername(username);
                 user.setFirstname(first_name);
                 user.setSurname(last_name);
                 user.setFullname(full_name);
