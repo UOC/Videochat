@@ -182,7 +182,7 @@ public class LTIAuthenticator extends HttpServlet {
 
                     if (courseKey.compareToIgnoreCase(courseCheck) == 0) {
                         courseDao.update(course);
-                        userCourseDao.update(usercurse);
+                       
                     } else {
                         courseDao.save(course);
                         userCourseDao.save(usercurse);
