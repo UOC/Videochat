@@ -29,7 +29,6 @@ import org.springframework.stereotype.Component;
 @Component
 @Entity
 @Table(name="vc_user")
-
 public class User implements java.io.Serializable{
     
     

@@ -13,7 +13,6 @@ import org.springframework.web.context.ContextLoader;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
-
 public class UserController {
     
     
@@ -38,7 +37,7 @@ public ModelAndView handleRequestInternal(HttpServletRequest request,
                 user.setBlocked((byte)0);
                 
 		model.addObject("user", user.getFullname());
-                userDao.save(user);
+               
  
 		return model;        
     }
@@ -60,7 +59,6 @@ public ModelAndView showVideochat(HttpServletRequest request,
                 user.setBlocked((byte)0);
                 
 		model.addObject("user", user.getFullname());
-                userDao.save(user);
                 
 		return model;
         

@@ -26,7 +26,7 @@ public class CourseDaoImpl extends CustomHibernateDaoSupport implements CourseDa
 
     @Override
     public void update(Course course) {
-        getHibernateTemplate().update(course);
+        getHibernateTemplate().merge(course);
     }
 
     @Override
@@ -37,8 +37,25 @@ public class CourseDaoImpl extends CustomHibernateDaoSupport implements CourseDa
     @Override
     public Course findByCourseCode(int courseId) {
         List list = getHibernateTemplate().find(
-                "from vc_course where course_id=?", courseId);
-        return (Course) list.get(0);
+                "from Course where course_id=?", courseId);
+        if(list.size()>0){
+            return (Course) list.get(0);
+        }else{
+            return new Course();
+        }
+        
     }
+    
+    public Course findByCourseKey(String courskey){
+         List list = getHibernateTemplate().find(
+                "from Course where course_coursekey=?", courskey);
+        if(list.size()>0){
+            return (Course) list.get(0);
+        }else{
+            return new Course();
+        }
+    }
+        
+    
 
 }

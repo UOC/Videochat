@@ -25,7 +25,7 @@ public class MeetingRoomDaoImpl extends CustomHibernateDaoSupport implements Mee
 
     @Override
     public void update(MeetingRoom meetingRoom) {
-        getHibernateTemplate().update(meetingRoom);
+        getHibernateTemplate().merge(meetingRoom);
     }
 
     @Override
