@@ -20,6 +20,7 @@ public interface MeetingRoomDao {
     void update(MeetingRoom meetingRoom);
     
     void delete(MeetingRoom meetingRoom);
-    
-    public List<MeetingRoom> getMeetingRoomsByCourseKey(String courseKey);
+   
+    List<MeetingRoom> getMeetingRoomsByCourseKey(String courseKey);
 }
+
