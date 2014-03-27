@@ -6,6 +6,7 @@
 package edu.uoc.dao;
 
 import edu.uoc.model.User;
+import java.util.List;
 
 import java.util.List;
 
@@ -31,4 +32,6 @@ public interface UserDao {
     // Operación de prueba para obtener todos los usuarios
     List<User> findAll();
 
+    // Operación de prueba para obtener todos los usuarios
+    List<User> findAll();
 }
