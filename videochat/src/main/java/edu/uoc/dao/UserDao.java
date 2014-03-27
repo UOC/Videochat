@@ -32,6 +32,4 @@ public interface UserDao {
     // Operación de prueba para obtener todos los usuarios
     List<User> findAll();
 
-    // Operación de prueba para obtener todos los usuarios
-    List<User> findAll();
 }
