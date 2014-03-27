@@ -43,9 +43,9 @@ public class MeetingRoomDaoImpl extends CustomHibernateDaoSupport implements Mee
         WHERE m.room_id = r.room_id
         AND r.course_key =  '586' */
         
-        String query = "SELECT m.meeting_room_description, m.meeting_room_number_participants, m.meeting_room_start_meeting, m.meeting_room_end_meeting"
-                + "FROM vc_meeting m, vc_room r"
-                + "WHERE m.room_id = r.room_id AND r.course_key = ?";
+        String query = "SELECT m.description, m.number_participants, m.start_meeting, m.end_meeting"
+                + " FROM MeetingRoom m, Room r"
+                + " WHERE m.id_room = r.id AND r.key = ?";
         
         List list = getHibernateTemplate().find(query, courseKey);
         return list;

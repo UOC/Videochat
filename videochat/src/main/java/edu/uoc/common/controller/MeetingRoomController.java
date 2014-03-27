@@ -30,7 +30,7 @@ public class MeetingRoomController {
     
     @RequestMapping("/searchMeeting")
     public ModelAndView getMeetingRooms(String courseKey){
-        List<MeetingRoom> listMR = meetingDao.getMeetingRoomsByCourseKey(courseKey);
+        List<MeetingRoom> listMR = meetingDao.getMeetingRoomsByCourseKey("586");
         ModelAndView model = new ModelAndView("searchMeeting");
         model.addObject("listMR", listMR);
         return model;

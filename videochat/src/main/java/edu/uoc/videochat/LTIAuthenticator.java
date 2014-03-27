@@ -129,29 +129,7 @@ public class LTIAuthenticator extends HttpServlet {
                 //Steps to integrate with your applicationa
                 boolean redirectToPlayer = LTIEnvironment.getCustomParameter(Constants.PLAYER_CUSTOM_LTI_PARAMETER, request) != null;
                 boolean is_debug = LTIEnvironment.getCustomParameter(Constants.DEBUG_CUSTOM_LTI_PARAMETER, request) != null;
-                if (is_debug) {
-                    //6. If you need get custom parameters you can do, is not needed to add custom_ prefix to property
-                    //String custom_param 	= LTIEnvironment.getCustomParameter("property", request);
-                    //In this demo show the values received insted of that you have to
-                    //continue with next steps to integrate with your application
-                    out.println("<p><b>Username:</b> " + username + "</p>");
-                    out.println("<p><b>Full name:</b> " + full_name + "</p>");
-                    out.println("<p><b>Email:</b> " + email + "</p>");
-                    out.println("<p><b>User image:</b> " + user_image + "</p>");
-                    out.println("<p><b>Course key:</b> " + course_key + "</p>");
-                    out.println("<p><b>Course label:</b> " + course_label + "</p>");
-                    out.println("<p><b>Resource key:</b> " + resource_key + "</p>");
-                    out.println("<p><b>Resource label:</b> " + resource_label + "</p>");
-
-                    out.println("<p>" + full_name + " is <b>" + (is_instructor ? "Instructor" : is_course_autz ? "Student" : "Other or guest") + "</b></p>");
-
-                    out.println("<p><b>redirectToPlayer:</b> " + redirectToPlayer + "</p>");
-
-                    out.println("<p><b>Local:</b> " + locale + "</p>");
-                } else {
-                    String redirectTo = redirectToPlayer ? "player" : "videochat";
-                    request.getRequestDispatcher("/" + redirectTo + ".htm").forward(request, response);
-                }
+                
                 // System.out.println("ID:" + userDao.findByUserCode(1));
                 String usercheck = null;
 
@@ -182,7 +160,7 @@ public class LTIAuthenticator extends HttpServlet {
 
                     if (courseKey.compareToIgnoreCase(courseCheck) == 0) {
                         courseDao.update(course);
-                        userCourseDao.update(usercurse);
+                        // userCourseDao.update(usercurse);
                     } else {
                         courseDao.save(course);
                         userCourseDao.save(usercurse);
@@ -204,6 +182,29 @@ public class LTIAuthenticator extends HttpServlet {
                 //7.2 If exists you can update the values of course (if you want)
                 //TODO update_course
                 //8. Register user in course 
+                if (is_debug) {
+                    //6. If you need get custom parameters you can do, is not needed to add custom_ prefix to property
+                    //String custom_param 	= LTIEnvironment.getCustomParameter("property", request);
+                    //In this demo show the values received insted of that you have to
+                    //continue with next steps to integrate with your application
+                    out.println("<p><b>Username:</b> " + username + "</p>");
+                    out.println("<p><b>Full name:</b> " + full_name + "</p>");
+                    out.println("<p><b>Email:</b> " + email + "</p>");
+                    out.println("<p><b>User image:</b> " + user_image + "</p>");
+                    out.println("<p><b>Course key:</b> " + course_key + "</p>");
+                    out.println("<p><b>Course label:</b> " + course_label + "</p>");
+                    out.println("<p><b>Resource key:</b> " + resource_key + "</p>");
+                    out.println("<p><b>Resource label:</b> " + resource_label + "</p>");
+
+                    out.println("<p>" + full_name + " is <b>" + (is_instructor ? "Instructor" : is_course_autz ? "Student" : "Other or guest") + "</b></p>");
+
+                    out.println("<p><b>redirectToPlayer:</b> " + redirectToPlayer + "</p>");
+
+                    out.println("<p><b>Local:</b> " + locale + "</p>");
+                } else {
+                    String redirectTo = redirectToPlayer ? "player" : "videochat";
+                    request.getRequestDispatcher("/" + redirectTo + ".htm").forward(request, response);
+                }
             } else {
 
                 Exception lastException = LTIEnvironment.getLastException();

@@ -75,17 +75,15 @@ function search() {
     <th class="borderW modif col5" scope="col">View</th>
   </tr>
     </thead>
-    
- <jsp:useBean id="myDataSource" scope="request" class="edu.uoc.model.MeetingRoom" />
- 
- <c:forEach var="item" items="${myDataSource.topic}">
+     
+ <c:forEach var="item" items="${listMR}">
 <tr>
 <td>${item.getTopic()}</td>
 <td>${item.getNumber_participants()}</td>
 <td>${item.getStart_record()}</td>
 <td>${item.getEnd_record()}</td>
-<td>${item.getEnd_record()}-${item.getStart_record()}</td>
-<td>${item.getId_room()}</td>
+<td></td>
+<td></td>
 </tr>
 </c:forEach>
 
