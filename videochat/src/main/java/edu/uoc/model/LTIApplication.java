@@ -17,57 +17,60 @@ import javax.persistence.Table;
  * @author Diego
  */
 @Entity
-@Table(name = "VC_LTIAPPLICATION")
+
+@Table(name = "vc_ltiapplication")
+
 public class LTIApplication {
 
     @Id
     @GeneratedValue(strategy = IDENTITY)
-    @Column(name = "LTI_APPLICATION_ID", length = 11)
+    @Column(name = "lti_application_id", length = 11)
     private int id;
     
-    @Column(name="LTI_APPLICATION_TOOL_URL",length=150)
+    @Column(name="lti_application_tool_url",length=150)
     private String toolURL;
     
-    @Column(name="LTI_APPLICATION_NAME",length=150)
+    @Column(name="lti_application_name",length=150)
     private String name;    
     
-    @Column(name="LTI_APPLICATION_DESCRIPTION",length=150)
+    @Column(name="lti_application_description",length=150)
     private String description;
     
-    @Column(name="LTI_APPLICATION_RESOURCE_KEY",length=150)
+    @Column(name="lti_application_resource_key",length=150)
     private String resourceKey;
     
-    @Column(name="LTI_APPLICATION_PREFER_HEIGHT",length=50)
+    @Column(name="lti_application_prefer_height",length=50)
     private String preferHeight;
     
-    @Column(name="LTI_APPLICATION_SEND_NAME",length=1)
+    @Column(name="lti_application_send_name",length=1)
     private int sendName;
     
-    @Column(name="LTI_APPLICATION_SEND_EMAIL_DDR",length=1)
+    @Column(name="lti_application_send_email_ddr",length=1)
     private int sendEmailddr;
     
-    @Column(name="LTI_APPLICATION_ACCEPT_GRADES",length=1)
+    @Column(name="lti_application_accept_grades",length=1)
     private int acceptGrades;
     
-    @Column(name="LTI_APPLICATION_ALLOW_ROSTER",length=1)
+    @Column(name="lti_application_allow_roster",length=1)
     private int allowRoster;
     
-    @Column(name="LTI_APPLICATION_ALLOW_SETTING",length=1)
+    @Column(name="lti_application_allow_setting",length=1)
     private int allowSetting;
     
-    @Column(name="LTI_APPLICATION_CUSTOM_PARAMETERS",length=150)
+    @Column(name="lti_application_custom_parameters",length=150)
     private String customParameters;
     
-    @Column(name="LTI_APPLICATION_ALLOW_INSTRUCTOR_CUSTOM",length=1)
+    @Column(name="lti_application_allow_instructor_custom",length=1)
     private int allowInstructorCustom;
     
-    @Column(name="LTI_APPLICATION_ORGANIZATION_ID",length=150)
+    @Column(name="lti_application_organization_id",length=150)
     private String organizationId;
     
-    @Column(name="LTI_APPLICATION_ORGANIZATION_URL",length=1)
+    @Column(name="lti_application_organization_url",length=1)
     private String organizationURL;
     
-    @Column(name="LTI_APPLICATION_LAUNCHING_POP_UP",length=1)
+    @Column(name="lti_application_launching_pop_up",length=1)
+
     private int launchingPopup;
 
     public LTIApplication(int id, String toolURL, String name, String description, String resourceKey, String preferHeight, int sendName, int sendEmailddr, int acceptGrades, int allowRoster, int allowSetting, String customParameters, int allowInstructorCustom, String organizationId, String organizationURL, int launchingPopup) {

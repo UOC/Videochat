@@ -22,28 +22,31 @@ import javax.persistence.Table;
  * @author Diego
  */
 @Entity
-@Table(name = "VC_ROOM")
+
+@Table(name = "vc_room")
+
 public class Room implements java.io.Serializable {
 
     @Id
     @GeneratedValue(strategy = IDENTITY)
-    @Column(name = "ROOM_ID", unique = true, length = 11)
+    @Column(name = "room_id", unique = true, length = 11)
     private int id;
 
     @ManyToOne(targetEntity = Course.class)
-    @JoinColumn(name = "COURSE_ID")
+    @JoinColumn(name = "course_id")
     private int id_course;
 
-    @Column(name = "COURSE_KEY", length = 150)
+    @Column(name = "course_key", length = 150)
     private String key;
 
-    @Column(name = "COURSE_LABEL", length = 250)
+    @Column(name = "course_label", length = 250)
     private String label;
 
-    @Column(name = "COURSE_IS_BLOCKED")
+    @Column(name = "course_is_blocked")
     private boolean is_blocked;
 
-    @Column(name = "COURSE_REASON_BLOCKED", length = 250)
+    @Column(name = "course_reason_blocked", length = 250)
+
     private String reason_blocked;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "id_room")

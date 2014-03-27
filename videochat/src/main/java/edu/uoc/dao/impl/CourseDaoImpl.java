@@ -37,8 +37,7 @@ public class CourseDaoImpl extends CustomHibernateDaoSupport implements CourseDa
     @Override
     public Course findByCourseCode(int courseId) {
         List list = getHibernateTemplate().find(
-                "from VC_COURSE where COURSE_ID=?", courseId
-        );
+                "from vc_course where course_id=?", courseId);
         return (Course) list.get(0);
     }
 

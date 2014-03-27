@@ -21,12 +21,15 @@ import javax.persistence.Table;
 
     
 @Entity
-@Table(name="USER_COURSE")
+
+
+@Table(name="user_course")
 @AssociationOverrides({
 		@AssociationOverride(name = "pk.user", 
-			joinColumns = @JoinColumn(name = "USER_ID")),
+			joinColumns = @JoinColumn(name = "user_id")),
 		@AssociationOverride(name = "pk.course", 
-			joinColumns = @JoinColumn(name = "COURSE_ID")) })
+			joinColumns = @JoinColumn(name = "course_id")) })
+
 public class UserCourse implements java.io.Serializable {
     
     
@@ -34,12 +37,17 @@ public class UserCourse implements java.io.Serializable {
     @EmbeddedId
     private UserCourseId pk;
     
-    @Column(name="USER_COURSE_ROLE")
+    @Column(name="user_course_role")
+
     private String role;
     
     
     
-    @Column(name="USER_COURSE_IS_INSTRUCTOR")
+
+    
+
+    @Column(name="user_course_is_instructor")
+
     private boolean is_instructor;
 
     public UserCourse() {

@@ -27,15 +27,24 @@
     <context:component-scan base-package="edu.uoc.model"/>
     <context:component-scan base-package="edu.uoc.dao"/>
     <context:component-scan base-package="edu.uoc.dao.impl"/>
+    <context:component-scan base-package="edu.uoc.videochat"/>
     
     
+
     <!--  <bean id="urlMapping" class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
+
+    
+
         <property name="mappings">
             <props>
                 <prop key="index.htm">indexController</prop>
             </props>
         </property>
-    </bean>-->
+
+   
+
+    </bean> -->
+
 
     <bean id="viewResolver"
           class="org.springframework.web.servlet.view.InternalResourceViewResolver">
@@ -53,6 +62,7 @@
     <!--
     The index controller.
     -->
+
     <!--<bean name="indexController"
     class="org.springframework.web.servlet.mvc.ParameterizableViewController"
     p:viewName="index" />-->
@@ -61,7 +71,8 @@
         <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
         <property name="url" value="jdbc:mysql://localhost:3306/videochat"/>
         <property name="username" value="root"/>
-        <property name="password" value=""/>
+
+    
         <property name="validationQuery" value="SELECT 1"/>
     </bean>
     <bean id="mySessionFactory" class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean">
@@ -88,10 +99,12 @@
     <!-- Hibernate Transaction Manager -->
     <!-- <bean id="transactionManager" class="org.springframework.orm.hibernate3.HibernateTransactionManager">
          <property name="sessionFactory" ref="mySessionFactory"/>
-     </bean>
-    -->
+
+     </bean> -->
+    
     <!-- Activates annotation based transaction management -->
-    <!--<tx:annotation-driven transaction-manager="transactionManager"/>-->
+  <!--  <tx:annotation-driven transaction-manager="transactionManager"/> -->
+
 </beans>
 
 

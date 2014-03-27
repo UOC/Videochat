@@ -27,50 +27,52 @@ import javax.persistence.Table;
 
 
 @Entity
-@Table(name="VC_MEETING")
+@Table(name="vc_meeting")
+
 public class MeetingRoom implements java.io.Serializable {
     
     
     @Id
     @GeneratedValue(strategy=IDENTITY)
-    @Column(name="MEETING_ROOM_ID",length=11)
+    @Column(name="meeting_room_id",length=11)
     private int id;
     
     @ManyToOne(targetEntity = Room.class)
-    @JoinColumn(name = "ROOM_ID")
+    @JoinColumn(name = "room_id")
     private int id_room;
     
-    @Column(name="MEETING_ROOM_ID_COURSE",length=11)
+    @Column(name="meeting_room_id_course",length=11)
     private int id_course;
     
-    @Column(name="MEETING_ROOM_TOPIC",length=255)
+    @Column(name="meeting_room_topic",length=255)
     private String topic;
     
-    @Column(name="MEETING_ROOM_DESCRIPTION",length=255)
+    @Column(name="meeting_room_description",length=255)
     private String description;
     
-    @Column(name="MEETING_ROOM_PATH",length=255)
+    @Column(name="meeting_room_path",length=255)
     private String path;
     
-    @Column(name="MEETING_ROOM_NUMBER_PARTICIPANTS",length=2)
+    @Column(name="meeting_room_number_participants",length=2)
     private int number_participants;
     
-    @Column(name="MEETING_ROOM_FINISHED")
+    @Column(name="meeting_room_finished")
     private byte finished;
     
-    @Column(name="MEETING_ROOM_START_MEETING")
+    @Column(name="meeting_room_start_meeting")
     private Timestamp start_meeting;
     
-    @Column(name="MEETING_ROOM_END_MEETING")
+    @Column(name="meeting_room_end_meeting")
     private Timestamp end_meeting;
     
-    @Column(name="MEETING_ROOM_RECORDED")
+    @Column(name="meeting_room_recorded")
     private byte recorded;
     
-    @Column(name="MEETING_ROOM_START_RECORD")
+    @Column(name="meeting_room_start_record")
     private Timestamp start_record;
     
-    @Column(name="MEETING_ROOM_END_RECORD")
+    @Column(name="meeting_room_end_record")
+
     private Timestamp end_record;
     
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "pk.meeting")
