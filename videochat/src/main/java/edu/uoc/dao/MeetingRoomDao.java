@@ -7,6 +7,7 @@
 package edu.uoc.dao;
 
 import edu.uoc.model.MeetingRoom;
+import java.util.List;
 
 /**
  *
@@ -19,4 +20,6 @@ public interface MeetingRoomDao {
     void update(MeetingRoom meetingRoom);
     
     void delete(MeetingRoom meetingRoom);
+    
+    public List<MeetingRoom> getMeetingRoomsByCourseKey(String courseKey);
 }

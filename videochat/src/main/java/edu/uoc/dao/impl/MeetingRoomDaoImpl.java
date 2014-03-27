@@ -9,6 +9,7 @@ package edu.uoc.dao.impl;
 import edu.uoc.dao.MeetingRoomDao;
 import edu.uoc.model.MeetingRoom;
 import edu.uoc.util.CustomHibernateDaoSupport;
+import java.util.List;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -33,4 +34,20 @@ public class MeetingRoomDaoImpl extends CustomHibernateDaoSupport implements Mee
        getHibernateTemplate().delete(meetingRoom);
     }
     
+    @Override
+    public List<MeetingRoom> getMeetingRoomsByCourseKey(String courseKey){
+        
+        /* SQL QUERY:
+        SELECT m.meeting_room_description, m.meeting_room_number_participants, m.meeting_room_start_meeting, m.meeting_room_end_meeting
+        FROM vc_meeting m, vc_room r
+        WHERE m.room_id = r.room_id
+        AND r.course_key =  '586' */
+        
+        String query = "SELECT m.meeting_room_description, m.meeting_room_number_participants, m.meeting_room_start_meeting, m.meeting_room_end_meeting"
+                + "FROM vc_meeting m, vc_room r"
+                + "WHERE m.room_id = r.room_id AND r.course_key = ?";
+        
+        List list = getHibernateTemplate().find(query, courseKey);
+        return list;
+    }
 }
