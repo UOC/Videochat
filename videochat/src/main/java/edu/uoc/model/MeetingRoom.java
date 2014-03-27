@@ -28,6 +28,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name="vc_meeting")
+
 public class MeetingRoom implements java.io.Serializable {
     
     
@@ -71,6 +72,7 @@ public class MeetingRoom implements java.io.Serializable {
     private Timestamp start_record;
     
     @Column(name="meeting_room_end_record")
+
     private Timestamp end_record;
     
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "pk.meeting")

@@ -22,7 +22,9 @@ import javax.persistence.Table;
  * @author Diego
  */
 @Entity
+
 @Table(name = "vc_room")
+
 public class Room implements java.io.Serializable {
 
     @Id
@@ -44,6 +46,7 @@ public class Room implements java.io.Serializable {
     private boolean is_blocked;
 
     @Column(name = "course_reason_blocked", length = 250)
+
     private String reason_blocked;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "id_room")

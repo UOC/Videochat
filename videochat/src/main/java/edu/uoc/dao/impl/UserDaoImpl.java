@@ -11,6 +11,7 @@ import edu.uoc.model.User;
 import edu.uoc.util.CustomHibernateDaoSupport;
 import java.util.List;
 import org.hibernate.Session;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -18,6 +19,7 @@ import org.springframework.stereotype.Repository;
  * @author Diego
  */
 @Repository("UserDao")
+
 public class UserDaoImpl extends CustomHibernateDaoSupport implements UserDao{
   
     
@@ -31,7 +33,7 @@ public class UserDaoImpl extends CustomHibernateDaoSupport implements UserDao{
  
         @Override
 	public void update(User user){
-		getHibernateTemplate().update(user);
+		getHibernateTemplate().merge(user);
 	}
  
         @Override
@@ -41,10 +43,11 @@ public class UserDaoImpl extends CustomHibernateDaoSupport implements UserDao{
  
         @Override
 	public User findByUserCode(int userId){
-		List list = getHibernateTemplate().find(
-                     "from vc_user where user_id=?",userId
-                );
-		return (User)list.get(0);
+		List list = getHibernateTemplate().find("from User where user_id=?",userId);
+		 if(list.size()>0){
+            return (User)list.get(0);
+        }
+		return new User();
 	}
  
         // Operación de prueba para obtener todos los usaurios
@@ -56,5 +59,15 @@ public class UserDaoImpl extends CustomHibernateDaoSupport implements UserDao{
 
                 return list;
             }
+
+    @Override
+    public User findByUserName(String username)  {
+        List list = getHibernateTemplate().find("from User where user_username=?",username);
+        if(list.size()>0){
+            return (User)list.get(0);
+        }
+		return new User();
+	}
+
 
 }

@@ -21,4 +21,6 @@ public interface CourseDao {
 
     Course findByCourseCode(int courseId);
 
+    public Course findByCourseKey(String courskey);
+
 }

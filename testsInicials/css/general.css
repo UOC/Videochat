@@ -50,28 +50,44 @@ header #close{
 .participant{
 	border-left:1px solid #ccc;
 	border-bottom:1px solid #ccc;
+<<<<<<< .merge_file_a05940
+	padding-top:20px;
+	padding-bottom:30px;
+=======
 	/*padding-top:20px;*/ 
 	padding-bottom:30px;
 	margin-bottom:20px;
 	border:1px solid #ccc;
+>>>>>>> .merge_file_a04804
 }
 
 .participant .participant_content{
 	margin:0 auto; 
 	text-align:left; 
 	display:block;
+<<<<<<< .merge_file_a05940
+	width:160px;}
+=======
 	width:215px;
 }
+>>>>>>> .merge_file_a04804
 
 .participant:first-child{
 	border-left:none;
 }
 	
 	
+<<<<<<< .merge_file_a05940
+.participant img{
+	margin-bottom:20px;
+	border:1px solid #ccc;
+}
+=======
 /*.participant img{
 	margin-bottom:20px;
 	border:1px solid #ccc;
 }*/
+>>>>>>> .merge_file_a04804
 
 .header_chat{
 	text-transform:uppercase;

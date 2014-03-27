@@ -8,6 +8,9 @@ package edu.uoc.dao;
 import edu.uoc.model.User;
 import java.util.List;
 
+import java.util.List;
+
+
 /**
  *
  * @author Diego
@@ -21,7 +24,12 @@ public interface UserDao {
     void delete(User user);
 
     User findByUserCode(int userId);
+    
+    User findByUserName(String username);
+
+
 
     // Operación de prueba para obtener todos los usuarios
     List<User> findAll();
+
 }

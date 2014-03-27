@@ -64,6 +64,7 @@ public class User implements java.io.Serializable{
     private byte blocked;
     
     @Column(name="user_timestamp")
+
     private Timestamp created;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "pk.user")

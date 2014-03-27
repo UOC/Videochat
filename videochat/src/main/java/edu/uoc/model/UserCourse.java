@@ -13,6 +13,7 @@ import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.Table;
+import org.springframework.stereotype.Component;
 
 /**
  *
@@ -21,25 +22,32 @@ import javax.persistence.Table;
 
     
 @Entity
-@Table(name="user_course")
+@Component
+@Table(name="vc_usercourse")
 @AssociationOverrides({
 		@AssociationOverride(name = "pk.user", 
 			joinColumns = @JoinColumn(name = "user_id")),
 		@AssociationOverride(name = "pk.course", 
 			joinColumns = @JoinColumn(name = "course_id")) })
+
 public class UserCourse implements java.io.Serializable {
     
     
     
     @EmbeddedId
-    private UserCourseId pk;
+    private UserCourseId pk = new UserCourseId();
     
-    @Column(name="user_course_role")
+    @Column(name="usercourse_role")
+
     private String role;
     
     
     
-    @Column(name="user_course_is_instructor")
+
+    
+
+    @Column(name="usercourse_is_instructor")
+
     private boolean is_instructor;
 
     public UserCourse() {

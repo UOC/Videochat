@@ -17,7 +17,9 @@ import javax.persistence.Table;
  * @author Diego
  */
 @Entity
+
 @Table(name = "vc_ltiapplication")
+
 public class LTIApplication {
 
     @Id
@@ -68,6 +70,7 @@ public class LTIApplication {
     private String organizationURL;
     
     @Column(name="lti_application_launching_pop_up",length=1)
+
     private int launchingPopup;
 
     public LTIApplication(int id, String toolURL, String name, String description, String resourceKey, String preferHeight, int sendName, int sendEmailddr, int acceptGrades, int allowRoster, int allowSetting, String customParameters, int allowInstructorCustom, String organizationId, String organizationURL, int launchingPopup) {

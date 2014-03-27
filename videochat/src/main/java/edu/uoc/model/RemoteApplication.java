@@ -21,7 +21,9 @@ import javax.persistence.Table;
 
 
 @Entity
+
 @Table(name = "vc_remote_application")
+
 public class RemoteApplication {
     
     

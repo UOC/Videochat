@@ -17,12 +17,13 @@ import static javax.persistence.GenerationType.IDENTITY;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import org.springframework.stereotype.Component;
 
 /**
  *
  * @author Diego
  */
-
+@Component
 @Entity
 @Table(name="vc_course")
 public class Course implements java.io.Serializable{
@@ -30,19 +31,19 @@ public class Course implements java.io.Serializable{
     
     @Id
     @GeneratedValue(strategy=IDENTITY)
-    @Column(name="COURSE_ID",length=11)
+    @Column(name="course_id",length=11)
     private int id;
     
-    @Column(name="COURSE_COURSEKEY",length=255)
+    @Column(name="course_coursekey",length=255)
     private String coursekey;
     
-    @Column(name="COURSE_TITLE",length=255)
+    @Column(name="course_title",length=255)
     private String title;
     
-    @Column(name="COURSE_LANG",length=10)
+    @Column(name="course_lang",length=10)
     private String lang;
     
-    @Column(name="COURSE_CREATED")
+    @Column(name="course_created")
     private Timestamp created;
     
     
