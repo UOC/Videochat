@@ -14,6 +14,7 @@ import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.Table;
+import org.springframework.stereotype.Component;
 
 /**
  *
@@ -22,6 +23,7 @@ import javax.persistence.Table;
 
 @Entity
 
+@Component
 @Table(name="vc_usermeeting")
 @AssociationOverrides({
 		@AssociationOverride(name = "pk.user", 
