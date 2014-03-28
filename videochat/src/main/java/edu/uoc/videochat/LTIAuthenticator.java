@@ -10,6 +10,7 @@ import edu.uoc.dao.MeetingRoomDao;
 import edu.uoc.dao.RoomDao;
 import edu.uoc.dao.UserCourseDao;
 import edu.uoc.dao.UserDao;
+import edu.uoc.dao.UserMeetingDao;
 import edu.uoc.dao.impl.UserDaoImpl;
 import edu.uoc.util.Constants;
 
@@ -20,6 +21,8 @@ import edu.uoc.model.Room;
 import edu.uoc.model.User;
 import edu.uoc.model.UserCourse;
 import edu.uoc.model.UserCourseId;
+import edu.uoc.model.UserMeeting;
+import edu.uoc.model.UserMeetingId;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Timestamp;
@@ -109,6 +112,8 @@ public class LTIAuthenticator extends HttpServlet {
                 MeetingRoomDao meetingroomDao = context.getBean(MeetingRoomDao.class);
                 Room room = context.getBean(Room.class);
                 MeetingRoom meeting = context.getBean(MeetingRoom.class);
+                UserMeetingDao userMeetingDao = context.getBean(UserMeetingDao.class);
+                UserMeeting userMeeting = context.getBean(UserMeeting.class);
 
                 user.setUsername(username);
                 user.setFirstname(first_name);
@@ -166,61 +171,70 @@ public class LTIAuthenticator extends HttpServlet {
 
                 userCourseDao.save(usercourse);
 
-                Course courseRoom = courseDao.findByCourseKey(courseKey);
+                if (!redirectToPlayer) {
 
-                room = roomDao.findByRoomKey(resource_key);
-                if (room == null) {
-                    room = new Room();
-                }
-                room.setId_course(courseRoom);
-                room.setLabel(resource_label);
-                boolean can_access_to_meeting = true;
-                boolean is_new_meeting = true;
+                    Course courseRoom = courseDao.findByCourseKey(courseKey);
 
-                if (room.getId() > 0) {
-                    if (!room.isIs_blocked()) {
+                    room = roomDao.findByRoomKey(resource_key);
+                    if (room == null) {
+                        room = new Room();
+                    }
+                    room.setId_course(courseRoom);
+                    room.setLabel(resource_label);
+                    boolean can_access_to_meeting = true;
+                    boolean is_new_meeting = true;
+                    
+                    if (room.getId() > 0) {
+                        if (!room.isIs_blocked()) {
 
-                        //Find the room and the meeting room associate to this room
-                        MeetingRoom mr = meetingroomDao.findbyPath(room.getKey() + room.getId());
-                        //If we find it, set +1 to participants and update
-                        if (mr.getId() != 0) {
-                            meeting.setNumber_participants(mr.getNumber_participants() + 1);
-                            meeting.setId(mr.getId());
-                            //If the number of participants == 6 then the room is blocked
-                            if (mr.getNumber_participants() == Constants.MAX_PARTICIPANTS) {
-                                room.setIs_blocked(true);
-                                room.setReason_blocked(Constants.REASON_BLOCK_MAX_PARTICIPANTS);
-                                can_access_to_meeting = false;
+                            //Find the room and the meeting room associate to this room
+                            MeetingRoom mr = meetingroomDao.findbyPath(room.getKey() + room.getId());
+                            //If we find it, set +1 to participants and update
+                            if (mr.getId() != 0) {
+                                meeting = mr;
+                                UserMeeting aux = userMeetingDao.findUserMeetingByPK(new UserMeetingId(user, meeting));
+                                if(aux.getPk() == null){
+                                    meeting.setNumber_participants(mr.getNumber_participants() + 1);
+                                }                               
+                                //If the number of participants == 6 then the room is blocked
+                                if (mr.getNumber_participants() == Constants.MAX_PARTICIPANTS) {
+                                    room.setIs_blocked(true);
+                                    room.setReason_blocked(Constants.REASON_BLOCK_MAX_PARTICIPANTS);
+                                    can_access_to_meeting = false;
+                                }
+                                roomDao.save(room);
+                                is_new_meeting = false;
+                                //if there is no meeting to this rooom, create a new meeting room
                             }
-                            roomDao.save(room);
-                            is_new_meeting = false;
-                            //if there is no meeting to this rooom, create a new meeting room
+                        } else {
+                            can_access_to_meeting = false;
                         }
+
                     } else {
-                        can_access_to_meeting = false;
+                        //if there is no room, create a new room and meeting room
+                        room.setIs_blocked(false);
+                        room.setKey(resource_key);
+                        room.setReason_blocked(null);
+                        roomDao.save(room);
                     }
 
-                } else {
-                    //if there is no room, create a new room and meeting room
-                    room.setIs_blocked(false);
-                    room.setKey(resource_key);
-                    room.setReason_blocked(null);
-                    roomDao.save(room);
-                }
-
-                if (can_access_to_meeting) {
-                    if (is_new_meeting) {
-                        meeting.setId_room(room);
-                        meeting.setNumber_participants(1);
-                        meeting.setPath(room.getKey() + room.getId());
-                        meeting.setRecorded((byte) 0);
-                        meeting.setDescription(room.getKey());
-                        meeting.setStart_meeting(new Timestamp(date.getTime()));
-                        meeting.setStart_record(null);
-                        meeting.setEnd_record(null);
-                        meeting.setEnd_meeting(null);
+                    if (can_access_to_meeting) {
+                        if (is_new_meeting) {
+                            meeting.setId_room(room);
+                            meeting.setNumber_participants(1);
+                            meeting.setPath(room.getKey() + room.getId());
+                            meeting.setRecorded((byte) 0);
+                            meeting.setDescription(room.getKey());
+                            meeting.setStart_meeting(new Timestamp(date.getTime()));
+                            meeting.setStart_record(null);
+                            meeting.setEnd_record(null);
+                            meeting.setEnd_meeting(null);
+                        }
+                        meetingroomDao.save(meeting);
+                        UserMeetingId umId = new UserMeetingId(user, meeting);
+                        userMeeting.setPk(umId);
+                        userMeetingDao.save(userMeeting);
                     }
-                    meetingroomDao.save(meeting);
                 }
                 //Steps to integrate with your applicationa
                 //6. Check if username exists in system
