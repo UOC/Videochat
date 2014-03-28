@@ -18,7 +18,7 @@ public interface MeetingRoomDao {
 
     void save(MeetingRoom meetingRoom);
 
-    void update(MeetingRoom meetingRoom);
+    //void update(MeetingRoom meetingRoom);
 
     void delete(MeetingRoom meetingRoom);
 

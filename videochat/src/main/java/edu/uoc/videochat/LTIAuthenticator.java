@@ -19,6 +19,7 @@ import edu.uoc.model.MeetingRoom;
 import edu.uoc.model.Room;
 import edu.uoc.model.User;
 import edu.uoc.model.UserCourse;
+import edu.uoc.model.UserCourseId;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Timestamp;
@@ -103,7 +104,7 @@ public class LTIAuthenticator extends HttpServlet {
                 Course course = context.getBean(Course.class);
                 CourseDao courseDao = context.getBean(CourseDao.class);
                 UserCourseDao userCourseDao = context.getBean(UserCourseDao.class);
-                UserCourse usercurse = context.getBean(UserCourse.class);
+                UserCourse usercourse = context.getBean(UserCourse.class);
                 RoomDao roomDao = context.getBean(RoomDao.class);
                 MeetingRoomDao meetingroomDao = context.getBean(MeetingRoomDao.class);
                 Room room = context.getBean(Room.class);
@@ -130,120 +131,96 @@ public class LTIAuthenticator extends HttpServlet {
                 course.setTitle(course_label);
                 course.setLang(locale);
                 java.util.Date date = new java.util.Date();
-                course.setCreated(new Timestamp(date.getTime()));
 
-                usercurse.setIs_instructor(true);
-                usercurse.setRole("admin");
+                usercourse.setIs_instructor(is_instructor);
+                //TODO change it
+                usercourse.setRole("admin");
 
                 //Steps to integrate with your applicationa
                 boolean redirectToPlayer = LTIEnvironment.getCustomParameter(Constants.PLAYER_CUSTOM_LTI_PARAMETER, request) != null;
                 boolean is_debug = LTIEnvironment.getCustomParameter(Constants.DEBUG_CUSTOM_LTI_PARAMETER, request) != null;
 
                 // System.out.println("ID:" + userDao.findByUserCode(1));
-                String usercheck = null;
+                User usercheck = userDao.findByUserName(user.getUsername());
 
-                usercheck = userDao.findByUserName(user.getUsername()).getUsername();
-
-                if (usercheck != null) {
-
-                    String name = user.getUsername();
-
-                    if (name.compareToIgnoreCase(usercheck) == 0) {
-
-                        userDao.update(user);
-
-                    } else {
-
-                        userDao.save(user);
-
-                    }
-
-                } else {
-                    userDao.save(user);
+                if (usercheck != null && usercheck.getId() > 0) {
+                    user.setId(usercheck.getId());
                 }
+                userDao.save(user);
 
-                String courseCheck = courseDao.findByCourseKey(course_key).getCoursekey();
+                Course courseCheck = courseDao.findByCourseKey(course_key);
                 String courseKey = course.getCoursekey();
 
-                if (courseCheck != null) {
+                if (courseCheck != null && courseCheck.getId() > 0) {
 
-                    if (courseKey.compareToIgnoreCase(courseCheck) == 0) {
-                        courseDao.update(course);
-                        // userCourseDao.update(usercurse);
-                    } else {
-                        courseDao.save(course);
-                        userCourseDao.save(usercurse);
-                    }
+                    course.setId(courseCheck.getId());
+
                 } else {
-                    courseDao.save(course);
-                    userCourseDao.save(usercurse);
+                    course.setCreated(new Timestamp(date.getTime()));
                 }
+                courseDao.save(course);
+
+                UserCourse userCourseCheck = userCourseDao.findByCourseCode(course.getId(), user.getId());
+                UserCourseId userCourseId = new UserCourseId(user, course);
+                usercourse.setPk(userCourseId);
+
+                userCourseDao.save(usercourse);
 
                 Course courseRoom = courseDao.findByCourseKey(courseKey);
 
+                room = roomDao.findByRoomKey(resource_key);
+                if (room == null) {
+                    room = new Room();
+                }
                 room.setId_course(courseRoom);
-                //!!!!!!!!!!!!!!!!!
-                room.setIs_blocked(false);
-                room.setKey(resource_key);
                 room.setLabel(resource_label);
-                room.setReason_blocked("");
+                boolean can_access_to_meeting = true;
+                boolean is_new_meeting = true;
 
-                meeting.setId_room(room);
+                if (room.getId() > 0) {
+                    if (!room.isIs_blocked()) {
 
-                //!!!!!!!!!!!!!!!!!!!!!!!!!!!
-                meeting.setNumber_participants(1);
-                meeting.setPath(room.getKey() + room.getId());
-                meeting.setRecorded((byte) 0);
-                meeting.setDescription(room.getKey());
-                meeting.setStart_meeting(new Timestamp(date.getTime()));
-                meeting.setStart_record(null);
-                meeting.setEnd_record(null);
-                meeting.setEnd_meeting(null);
-
-                String roomKey = room.getKey();
-                Room rom = roomDao.findByRoomKey(room.getKey());
-                String roomCheck = rom.getKey();
-
-                if (!rom.isIs_blocked()) {
-
-                    if (roomCheck != null) {
-
-                        if (roomKey.compareToIgnoreCase(roomCheck) == 0) {
-
-                            //Find the room and the meeting room associate to this room
-                            MeetingRoom mr = meetingroomDao.findbyPath(rom.getKey() + rom.getId());
-                            //If we find it, set +1 to participants and update
-                            if (mr.getId() != 0) {
-                                mr.setNumber_participants(mr.getNumber_participants() + 1);
-                                meetingroomDao.update(mr);
-                                //If the number of participants == 6 then the room is blocked
-                                if (mr.getNumber_participants() == Constants.MAX_PARTICIPANTS) {
-                                    rom.setIs_blocked(true);
-                                    roomDao.update(rom);
-
-                                }
-
-                                //if there is no meeting to this rooom, create a new meeting room
-                            } else {
-                                meeting.setId_room(rom);
-                                meeting.setPath(rom.getKey()+rom.getId());
-                                meetingroomDao.save(meeting);
+                        //Find the room and the meeting room associate to this room
+                        MeetingRoom mr = meetingroomDao.findbyPath(room.getKey() + room.getId());
+                        //If we find it, set +1 to participants and update
+                        if (mr.getId() != 0) {
+                            meeting.setNumber_participants(mr.getNumber_participants() + 1);
+                            meeting.setId(mr.getId());
+                            //If the number of participants == 6 then the room is blocked
+                            if (mr.getNumber_participants() == Constants.MAX_PARTICIPANTS) {
+                                room.setIs_blocked(true);
+                                room.setReason_blocked(Constants.REASON_BLOCK_MAX_PARTICIPANTS);
+                                can_access_to_meeting = false;
                             }
-
-                            //if we dont find the room, create a new room and meeting room with this id
-                        } else {
                             roomDao.save(room);
-                            meetingroomDao.save(meeting);
-
+                            is_new_meeting = false;
+                            //if there is no meeting to this rooom, create a new meeting room
                         }
-
-                        //if there is no room, create a new room and meeting room
                     } else {
-
-                        roomDao.save(room);
-                        meetingroomDao.save(meeting);
+                        can_access_to_meeting = false;
                     }
 
+                } else {
+                    //if there is no room, create a new room and meeting room
+                    room.setIs_blocked(false);
+                    room.setKey(resource_key);
+                    room.setReason_blocked(null);
+                    roomDao.save(room);
+                }
+
+                if (can_access_to_meeting) {
+                    if (is_new_meeting) {
+                        meeting.setId_room(room);
+                        meeting.setNumber_participants(1);
+                        meeting.setPath(room.getKey() + room.getId());
+                        meeting.setRecorded((byte) 0);
+                        meeting.setDescription(room.getKey());
+                        meeting.setStart_meeting(new Timestamp(date.getTime()));
+                        meeting.setStart_record(null);
+                        meeting.setEnd_record(null);
+                        meeting.setEnd_meeting(null);
+                    }
+                    meetingroomDao.save(meeting);
                 }
                 //Steps to integrate with your applicationa
                 //6. Check if username exists in system

@@ -15,7 +15,7 @@ public interface CourseDao {
 
     void save(Course course);
 
-    void update(Course course);
+    //void update(Course course);
 
     void delete(Course course);
 

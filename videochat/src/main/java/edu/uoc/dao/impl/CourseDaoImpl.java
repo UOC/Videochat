@@ -21,13 +21,13 @@ public class CourseDaoImpl extends CustomHibernateDaoSupport implements CourseDa
     
     @Override
     public void save(Course course) {
-        getHibernateTemplate().save(course);
+        getHibernateTemplate().saveOrUpdate(course);
     }
 
-    @Override
+    /*@Override
     public void update(Course course) {
         getHibernateTemplate().merge(course);
-    }
+    }*/
 
     @Override
     public void delete(Course course) {

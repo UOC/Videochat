@@ -32,7 +32,7 @@ public class Course implements java.io.Serializable{
     @Id
     @GeneratedValue(strategy=IDENTITY)
     @Column(name="course_id",length=11)
-    private Integer id;
+    private int id;
     
     @Column(name="course_coursekey",length=255)
     private String coursekey;
@@ -78,7 +78,7 @@ public class Course implements java.io.Serializable{
 
     
 
-    public Integer getId() {
+    public int getId() {
         return id;
     }
 

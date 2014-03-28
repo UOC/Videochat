@@ -16,7 +16,7 @@ public interface UserCourseDao {
     
     void save(UserCourse usercourse);
 
-    void update(UserCourse usercourse);
+    //void update(UserCourse usercourse);
 
     void delete(UserCourse usercourse);
 

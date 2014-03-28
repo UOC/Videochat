@@ -22,14 +22,14 @@ public class UserCourseDaoImpl extends CustomHibernateDaoSupport implements User
 
     @Override
     public void save(UserCourse usercourse) {
-        getHibernateTemplate().save(usercourse);
+        getHibernateTemplate().saveOrUpdate(usercourse);
     }
 
-    @Override
+   /* @Override
     public void update(UserCourse usercourse) {
         getHibernateTemplate().merge(usercourse);
                
-    }
+    }*/
 
     @Override
     public void delete(UserCourse usercourse) {
@@ -38,7 +38,7 @@ public class UserCourseDaoImpl extends CustomHibernateDaoSupport implements User
 
     @Override
     public UserCourse findByCourseCode(int courseId, int userId) {
-       List list = getHibernateTemplate().find("from UserCourse where user_id=?,course_id=? ",userId,courseId);
+       List list = getHibernateTemplate().find("from UserCourse where user_id=? and course_id=? ",userId,courseId);
        
        if(list.size()>0){
 		return (UserCourse)list.get(0);

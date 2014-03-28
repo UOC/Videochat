@@ -22,13 +22,13 @@ public class MeetingRoomDaoImpl extends CustomHibernateDaoSupport implements Mee
 
     @Override
     public void save(MeetingRoom meetingRoom) {
-        getHibernateTemplate().save(meetingRoom);
+        getHibernateTemplate().saveOrUpdate(meetingRoom);
     }
 
-    @Override
+    /*@Override
     public void update(MeetingRoom meetingRoom) {
         getHibernateTemplate().merge(meetingRoom);
-    }
+    }*/
 
     @Override
     public void delete(MeetingRoom meetingRoom) {
