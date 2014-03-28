@@ -6,6 +6,8 @@
 package edu.uoc.videochat;
 
 import edu.uoc.dao.CourseDao;
+import edu.uoc.dao.MeetingRoomDao;
+import edu.uoc.dao.RoomDao;
 import edu.uoc.dao.UserCourseDao;
 import edu.uoc.dao.UserDao;
 import edu.uoc.dao.impl.UserDaoImpl;
@@ -13,6 +15,8 @@ import edu.uoc.util.Constants;
 
 import edu.uoc.lti.LTIEnvironment;
 import edu.uoc.model.Course;
+import edu.uoc.model.MeetingRoom;
+import edu.uoc.model.Room;
 import edu.uoc.model.User;
 import edu.uoc.model.UserCourse;
 import java.io.IOException;
@@ -100,6 +104,10 @@ public class LTIAuthenticator extends HttpServlet {
                 CourseDao courseDao = context.getBean(CourseDao.class);
                 UserCourseDao userCourseDao = context.getBean(UserCourseDao.class);
                 UserCourse usercurse = context.getBean(UserCourse.class);
+                RoomDao roomDao = context.getBean(RoomDao.class);
+                MeetingRoomDao meetingroomDao = context.getBean(MeetingRoomDao.class);
+                Room room = context.getBean(Room.class);
+                MeetingRoom meeting = context.getBean(MeetingRoom.class);
 
                 user.setUsername(username);
                 user.setFirstname(first_name);
@@ -130,7 +138,7 @@ public class LTIAuthenticator extends HttpServlet {
                 //Steps to integrate with your applicationa
                 boolean redirectToPlayer = LTIEnvironment.getCustomParameter(Constants.PLAYER_CUSTOM_LTI_PARAMETER, request) != null;
                 boolean is_debug = LTIEnvironment.getCustomParameter(Constants.DEBUG_CUSTOM_LTI_PARAMETER, request) != null;
-                
+
                 // System.out.println("ID:" + userDao.findByUserCode(1));
                 String usercheck = null;
 
@@ -171,6 +179,72 @@ public class LTIAuthenticator extends HttpServlet {
                     userCourseDao.save(usercurse);
                 }
 
+                Course courseRoom = courseDao.findByCourseKey(courseKey);
+
+                room.setId_course(courseRoom);
+                //!!!!!!!!!!!!!!!!!
+                room.setIs_blocked(false);
+                room.setKey(resource_key);
+                room.setLabel(resource_label);
+                room.setReason_blocked("");
+
+                meeting.setId_room(room);
+
+                //!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                meeting.setNumber_participants(1);
+                meeting.setPath(room.getKey() + room.getId());
+                meeting.setRecorded((byte) 0);
+                meeting.setDescription(room.getKey());
+                meeting.setStart_meeting(new Timestamp(date.getTime()));
+                meeting.setStart_record(null);
+                meeting.setEnd_record(null);
+                meeting.setEnd_meeting(null);
+
+                String roomKey = room.getKey();
+                Room rom = roomDao.findByRoomKey(room.getKey());
+                String roomCheck = rom.getKey();
+
+                if (!rom.isIs_blocked()) {
+
+                    if (roomCheck != null) {
+
+                        if (roomKey.compareToIgnoreCase(roomCheck) == 0) {
+
+                            //Find the room and the meeting room associate to this room
+                            MeetingRoom mr = meetingroomDao.findbyPath(rom.getKey() + rom.getId());
+                            //If we find it, set +1 to participants and update
+                            if (mr.getId() != 0) {
+                                mr.setNumber_participants(mr.getNumber_participants() + 1);
+                                meetingroomDao.update(mr);
+                                //If the number of participants == 6 then the room is blocked
+                                if (mr.getNumber_participants() == Constants.MAX_PARTICIPANTS) {
+                                    rom.setIs_blocked(true);
+                                    roomDao.update(rom);
+
+                                }
+
+                                //if there is no meeting to this rooom, create a new meeting room
+                            } else {
+                                meeting.setId_room(rom);
+                                meeting.setPath(rom.getKey()+rom.getId());
+                                meetingroomDao.save(meeting);
+                            }
+
+                            //if we dont find the room, create a new room and meeting room with this id
+                        } else {
+                            roomDao.save(room);
+                            meetingroomDao.save(meeting);
+
+                        }
+
+                        //if there is no room, create a new room and meeting room
+                    } else {
+
+                        roomDao.save(room);
+                        meetingroomDao.save(meeting);
+                    }
+
+                }
                 //Steps to integrate with your applicationa
                 //6. Check if username exists in system
                 //6.1 If doesn't exist you have to create user using Tool Api

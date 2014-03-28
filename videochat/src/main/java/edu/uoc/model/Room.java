@@ -16,13 +16,14 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import org.springframework.stereotype.Component;
 
 /**
  *
  * @author Diego
  */
 @Entity
-
+@Component
 @Table(name = "vc_room")
 
 public class Room implements java.io.Serializable {
@@ -34,19 +35,18 @@ public class Room implements java.io.Serializable {
 
     @ManyToOne(targetEntity = Course.class)
     @JoinColumn(name = "course_id")
-    private int id_course;
+    private Course id_course;
 
-    @Column(name = "course_key", length = 150)
+    @Column(name = "room_key", length = 150)
     private String key;
 
-    @Column(name = "course_label", length = 250)
+    @Column(name = "room_label", length = 250)
     private String label;
 
-    @Column(name = "course_is_blocked")
+    @Column(name = "room_is_blocked")
     private boolean is_blocked;
 
-    @Column(name = "course_reason_blocked", length = 250)
-
+    @Column(name = "room_reason_blocked", length = 250)
     private String reason_blocked;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "id_room")
@@ -63,7 +63,7 @@ public class Room implements java.io.Serializable {
     public Room() {
     }
 
-    public Room(int id, int id_course, String key, String label, boolean is_blocked, String reason_blocked, List<MeetingRoom> meetingRoom) {
+    public Room(int id, Course id_course, String key, String label, boolean is_blocked, String reason_blocked, List<MeetingRoom> meetingRoom) {
         this.id = id;
         this.id_course = id_course;
         this.key = key;
@@ -81,11 +81,12 @@ public class Room implements java.io.Serializable {
         this.id = id;
     }
 
-    public int getId_course() {
+    public Course getId_course() {
         return id_course;
     }
 
-    public void setId_course(int id_course) {
+    public void setId_course(Course id_course) {
+       
         this.id_course = id_course;
     }
 

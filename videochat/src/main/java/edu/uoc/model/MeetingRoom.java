@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package edu.uoc.model;
 
 import java.sql.Timestamp;
@@ -19,76 +18,63 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import org.springframework.stereotype.Component;
 
 /**
  *
  * @author Diego
  */
-
-
+@Component
 @Entity
-@Table(name="vc_meeting")
+@Table(name = "vc_meeting")
 
 public class MeetingRoom implements java.io.Serializable {
-    
-    
+
     @Id
-    @GeneratedValue(strategy=IDENTITY)
-    @Column(name="meeting_room_id",length=11)
+    @GeneratedValue(strategy = IDENTITY)
+    @Column(name = "meeting_room_id", length = 11)
     private int id;
-    
+
     @ManyToOne(targetEntity = Room.class)
     @JoinColumn(name = "room_id")
-    private int id_room;
-    
-    @Column(name="meeting_room_id_course",length=11)
-    private int id_course;
-    
-    @Column(name="meeting_room_topic",length=255)
-    private String topic;
-    
-    @Column(name="meeting_room_description",length=255)
-    private String description;
-    
-    @Column(name="meeting_room_path",length=255)
-    private String path;
-    
-    @Column(name="meeting_room_number_participants",length=2)
-    private int number_participants;
-    
-    @Column(name="meeting_room_finished")
-    private byte finished;
-    
-    @Column(name="meeting_room_start_meeting")
-    private Timestamp start_meeting;
-    
-    @Column(name="meeting_room_end_meeting")
-    private Timestamp end_meeting;
-    
-    @Column(name="meeting_room_recorded")
-    private byte recorded;
-    
-    @Column(name="meeting_room_start_record")
-    private Timestamp start_record;
-    
-    @Column(name="meeting_room_end_record")
+    private Room id_room;
 
+    @Column(name = "meeting_room_description", length = 255)
+    private String description;
+
+    @Column(name = "meeting_room_path", length = 255)
+    private String path;
+
+    @Column(name = "meeting_room_number_participants", length = 2)
+    private int number_participants;
+
+    @Column(name = "meeting_room_finished")
+    private byte finished;
+
+    @Column(name = "meeting_room_start_meeting")
+    private Timestamp start_meeting;
+
+    @Column(name = "meeting_room_end_meeting")
+    private Timestamp end_meeting;
+
+    @Column(name = "meeting_room_recorded")
+    private byte recorded;
+
+    @Column(name = "meeting_room_start_record")
+    private Timestamp start_record;
+
+    @Column(name = "meeting_room_end_record")
     private Timestamp end_record;
-    
+
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "pk.meeting")
     private List<UserMeeting> userMeeting;
-
-    
-    
 
     public MeetingRoom() {
     }
 
-    public MeetingRoom(int id, int id_room, int id_course, String topic, String description, String path, int number_participants, byte finished, Timestamp start_meeting, Timestamp end_meeting, byte recorded, Timestamp start_record, Timestamp end_record, List<UserMeeting> userMeeting) {
+    public MeetingRoom(int id, Room id_room, int id_course, String topic, String description, String path, int number_participants, byte finished, Timestamp start_meeting, Timestamp end_meeting, byte recorded, Timestamp start_record, Timestamp end_record, List<UserMeeting> userMeeting) {
         this.id = id;
         this.id_room = id_room;
-        this.id_course = id_course;
-        this.topic = topic;
         this.description = description;
         this.path = path;
         this.number_participants = number_participants;
@@ -101,11 +87,11 @@ public class MeetingRoom implements java.io.Serializable {
         this.userMeeting = userMeeting;
     }
 
-    public int getId_room() {
+    public Room getId_room() {
         return id_room;
     }
 
-    public void setId_room(int id_room) {
+    public void setId_room(Room id_room) {
         this.id_room = id_room;
     }
 
@@ -117,29 +103,12 @@ public class MeetingRoom implements java.io.Serializable {
         this.userMeeting = userMeeting;
     }
 
-    
     public int getId() {
         return id;
     }
 
     public void setId(int id) {
         this.id = id;
-    }
-
-    public int getId_course() {
-        return id_course;
-    }
-
-    public void setId_course(int id_course) {
-        this.id_course = id_course;
-    }
-
-    public String getTopic() {
-        return topic;
-    }
-
-    public void setTopic(String topic) {
-        this.topic = topic;
     }
 
     public String getDescription() {
@@ -213,16 +182,5 @@ public class MeetingRoom implements java.io.Serializable {
     public void setEnd_record(Timestamp end_record) {
         this.end_record = end_record;
     }
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+
 }

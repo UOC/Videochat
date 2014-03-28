@@ -32,7 +32,7 @@ public class Course implements java.io.Serializable{
     @Id
     @GeneratedValue(strategy=IDENTITY)
     @Column(name="course_id",length=11)
-    private int id;
+    private Integer id;
     
     @Column(name="course_coursekey",length=255)
     private String coursekey;
@@ -58,7 +58,7 @@ public class Course implements java.io.Serializable{
     public Course() {
     }
 
-    public Course(int id, String coursekey, String title, String lang, Timestamp created, List<UserCourse> userCourse, List<Room> room) {
+    public Course(Integer id, String coursekey, String title, String lang, Timestamp created, List<UserCourse> userCourse, List<Room> room) {
         this.id = id;
         this.coursekey = coursekey;
         this.title = title;
@@ -78,11 +78,11 @@ public class Course implements java.io.Serializable{
 
     
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
