@@ -202,7 +202,7 @@
                         </div> 
                         <p>Enter your text here:</p>
                             <div class="row">
-                                <div class="col-xs-10 col-md-9"><input type="text" class="form-control" id="messageTxt" /></div>
+                                <div class="col-xs-10 col-md-9"><input type="text" class="form-control" id="messageTxt" maxlength="100" /></div>
                                 <div class="col-xs-2 col-md-3"><button class="btn btn-warning" name="button-sendMessage" id="button-sendMessage">Send</button></div>
                             </div>
                     </div>
@@ -250,6 +250,21 @@
                     var flash = swfobject.getObjectById("videochat_stream_id");
                     flash.sendChatMessage(message);
                     $("#messageTxt").val("");
+                    var json = { "message" : message};  
+
+                    $.ajax({  
+                        url: 'rest/chat.json',  
+                        data: JSON.stringify(json),  
+                        type: "POST",  
+
+                        beforeSend: function(xhr) {  
+                            xhr.setRequestHeader("Accept", "application/json");  
+                            xhr.setRequestHeader("Content-Type", "application/json");  
+                        },  
+                        success: function(response) {  
+                            console.log(response);
+                        }  
+                    });  
 
                 }
             }
@@ -286,7 +301,20 @@
                 this.username = username;
                 this.publishName = publishName;
             }
+            function returnPositionUser(username){
+                var pos = -1;
+                for(i=0; i<array_streams.length; i++) {
+                    if (array_streams[i].username==username) {
+                        post = i;
+                        break;
+                    }
+                }
+                return pos;
+            }
             function registeredUser(info) {
+                if (returnPositionUser(info.username)>=0) {
+                    return;
+                }
                 streamObj = new StreamObject(info.username, info.publishName);
                 if (array_streams.length<6) {
                     array_streams.push(streamObj);
