@@ -44,21 +44,24 @@ public class UserController {
 
     @RequestMapping("/player")
 //@RequestMapping(method = RequestMethod.GET)
-    public ModelAndView handleRequestInternal(HttpServletRequest request,
-            HttpServletResponse response) {
+    public ModelAndView handleRequestInternal(HttpSession session) {
 
-//LTIAuthenticator lti = new LTIAuthenticator();
-        ApplicationContext context = ContextLoader.getCurrentWebApplicationContext();
-        User user = context.getBean(User.class);
         ModelAndView model = new ModelAndView("player");
-
-        user.setPassword("");
-        user.setUsername(user.getFullname());
-        user.setSurname(user.getFullname());
-        user.setBlocked((byte) 0);
-
-        model.addObject("user", user.getFullname());
-
+        Room room = (Room)session.getAttribute(Constants.ROOM_SESSION);
+        User user = (User) session.getAttribute(Constants.USER_SESSION);
+        if (user!=null && room!=null) {
+            model.addObject("user", user);
+            model.addObject("course", session.getAttribute(Constants.COURSE_SESSION));
+            model.addObject("room", room);
+            //get the list of current participants
+            ApplicationContext context = ContextLoader.getCurrentWebApplicationContext();
+            UserMeetingDao userMeetingDao = context.getBean(UserMeetingDao.class);
+            //List<UserMeeting> participants = userMeetingDao.findUsersByMeetingId(meeting, -1, true);
+            //model.addObject("participants", participants);
+        } else {
+            model.setViewName("errorSession");
+        }
+        
         return model;
     }
 
@@ -177,44 +180,45 @@ public class UserController {
 
                     userCourseDao.save(userCourse);
 
-                    if (!redirectToPlayer) {
 
-                        Course courseRoom = courseDao.findByCourseKey(course_key);
+                    Course courseRoom = courseDao.findByCourseKey(course_key);
 
-                        Room room = roomDao.findByRoomKey(resource_key);
-                        if (room == null) {
-                            room = new Room();
-                        }
-                        room.setId_course(courseRoom);
-                        room.setLabel(resource_label);
+                    Room room = roomDao.findByRoomKey(resource_key);
+                    if (room == null) {
+                        room = new Room();
+                    }
+                    room.setId_course(courseRoom);
+                    room.setLabel(resource_label);
                         boolean can_access_to_meeting = true;
                         boolean is_new_meeting = true;
                         MeetingRoom meeting = null;
                         UserMeeting userMeeting;
                         if (room.getId() > 0) {
-                            if (!room.isIs_blocked()) {
+                            if (!redirectToPlayer) {
+                                if (!room.isIs_blocked()) {
 
-                                //Find the room and the meeting room associate to this room
-                                MeetingRoom mr = meetingroomDao.findbyPath(room.getKey() + room.getId());
-                                //If we find it, set +1 to participants and update
-                                if (mr.getId() != 0) {
-                                    meeting = mr;
-                                    UserMeeting aux = userMeetingDao.findUserMeetingByPK(new UserMeetingId(user, meeting));
-                                    if (aux.getPk() == null) {
-                                        meeting.setNumber_participants(mr.getNumber_participants() + 1);
+                                    //Find the room and the meeting room associate to this room
+                                    MeetingRoom mr = meetingroomDao.findbyPath(room.getKey() + room.getId());
+                                    //If we find it, set +1 to participants and update
+                                    if (mr.getId() != 0) {
+                                        meeting = mr;
+                                        UserMeeting aux = userMeetingDao.findUserMeetingByPK(new UserMeetingId(user, meeting));
+                                        if (aux.getPk() == null) {
+                                            meeting.setNumber_participants(mr.getNumber_participants() + 1);
+                                        }
+                                        //If the number of participants == 6 then the room is blocked
+                                        if (mr.getNumber_participants() == Constants.MAX_PARTICIPANTS) {
+                                            room.setIs_blocked(true);
+                                            room.setReason_blocked(Constants.REASON_BLOCK_MAX_PARTICIPANTS);
+                                            can_access_to_meeting = false;
+                                        }
+                                        roomDao.save(room);
+                                        is_new_meeting = false;
+                                        //if there is no meeting to this rooom, create a new meeting room
                                     }
-                                    //If the number of participants == 6 then the room is blocked
-                                    if (mr.getNumber_participants() == Constants.MAX_PARTICIPANTS) {
-                                        room.setIs_blocked(true);
-                                        room.setReason_blocked(Constants.REASON_BLOCK_MAX_PARTICIPANTS);
-                                        can_access_to_meeting = false;
-                                    }
-                                    roomDao.save(room);
-                                    is_new_meeting = false;
-                                    //if there is no meeting to this rooom, create a new meeting room
+                                } else {
+                                    can_access_to_meeting = false;
                                 }
-                            } else {
-                                can_access_to_meeting = false;
                             }
 
                         } else {
@@ -225,7 +229,7 @@ public class UserController {
                             roomDao.save(room);
                         }
 
-                        if (can_access_to_meeting) {
+                        if (!redirectToPlayer && can_access_to_meeting) {
                             if (is_new_meeting) {
                                 meeting = new MeetingRoom();
                                 meeting.setId_room(room);
@@ -251,8 +255,7 @@ public class UserController {
                             session.setAttribute(Constants.USER_METTING_SESSION, userMeeting);
                         }
                         session.setAttribute(Constants.MEETING_SESSION, meeting);
-
-                    }
+                        session.setAttribute(Constants.ROOM_SESSION, room);
                 //Steps to integrate with your applicationa
                     //6. Check if username exists in system
                     //6.1 If doesn't exist you have to create user using Tool Api
