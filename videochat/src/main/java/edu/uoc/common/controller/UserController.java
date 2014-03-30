@@ -1,79 +1,306 @@
 package edu.uoc.common.controller;
 
+import edu.uoc.dao.CourseDao;
+import edu.uoc.dao.MeetingRoomDao;
+import edu.uoc.dao.RoomDao;
+import edu.uoc.dao.UserCourseDao;
 import edu.uoc.dao.UserDao;
+import edu.uoc.dao.UserMeetingDao;
+import edu.uoc.lti.LTIEnvironment;
+import edu.uoc.model.Course;
+import edu.uoc.model.MeetingRoom;
+import edu.uoc.model.Room;
 import edu.uoc.model.User;
+import edu.uoc.model.UserCourse;
+import edu.uoc.model.UserCourseId;
+import edu.uoc.model.UserMeeting;
+import edu.uoc.model.UserMeetingId;
+import edu.uoc.util.Constants;
+import java.sql.Timestamp;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.context.ContextLoader;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.bind.support.SessionStatus;
 
 @Controller
+//@Scope("session")
+//@SessionAttributes({"sUser", "sCourse", "sMeeting", "sUserMeeting"})
 public class UserController {
-    
-    
+
     @Autowired
     private UserDao userDao;
-    
-@RequestMapping("/player")    
+
+    @RequestMapping("/player")
 //@RequestMapping(method = RequestMethod.GET)
-public ModelAndView handleRequestInternal(HttpServletRequest request,
-		HttpServletResponse response)  {
-    
+    public ModelAndView handleRequestInternal(HttpServletRequest request,
+            HttpServletResponse response) {
+
 //LTIAuthenticator lti = new LTIAuthenticator();
-        
-        
-    ApplicationContext context = ContextLoader.getCurrentWebApplicationContext();
-                User user = context.getBean(User.class);
-		ModelAndView model = new ModelAndView("player");
-                
-                user.setPassword("");
-                user.setUsername(user.getFullname());
-                user.setSurname(user.getFullname());
-                user.setBlocked((byte)0);
-                
-		model.addObject("user", user.getFullname());
-               
- 
-		return model;        
+        ApplicationContext context = ContextLoader.getCurrentWebApplicationContext();
+        User user = context.getBean(User.class);
+        ModelAndView model = new ModelAndView("player");
+
+        user.setPassword("");
+        user.setUsername(user.getFullname());
+        user.setSurname(user.getFullname());
+        user.setBlocked((byte) 0);
+
+        model.addObject("user", user.getFullname());
+
+        return model;
     }
 
-@RequestMapping("/videochat")    
-public ModelAndView showVideochat(HttpServletRequest request,
-		HttpServletResponse response)  {
-    
-//LTIAuthenticator lti = new LTIAuthenticator();
+    @RequestMapping("/videochat")
+    public ModelAndView showVideochat(HttpSession session) {
+
+        ModelAndView model = new ModelAndView("videochat");
+        MeetingRoom meeting = (MeetingRoom)session.getAttribute(Constants.MEETING_SESSION);
+        User user = (User) session.getAttribute(Constants.USER_SESSION);
+        if (user!=null && meeting!=null) {
+            model.addObject("user", user);
+            model.addObject("course", session.getAttribute(Constants.COURSE_SESSION));
+            model.addObject("meeting", meeting);
+            model.addObject("userMeeting", session.getAttribute(Constants.USER_METTING_SESSION));
+            //get the list of current participants
+            ApplicationContext context = ContextLoader.getCurrentWebApplicationContext();
+            UserMeetingDao userMeetingDao = context.getBean(UserMeetingDao.class);
+            List<UserMeeting> participants = userMeetingDao.findUsersByMeetingId(meeting, user.getId(), true);
+            model.addObject("participants", participants);
+        } else {
+            model.setViewName("errorSession");
+        }
         
-        
-    ApplicationContext context = ContextLoader.getCurrentWebApplicationContext();
-		ModelAndView model = new ModelAndView("videochat");
-                User user = context.getBean(User.class);
-                
-                user.setPassword("");
-                user.setUsername(user.getFullname());
-                user.setSurname(user.getFullname());
-                user.setBlocked((byte)0);
-                
-		model.addObject("user", user.getFullname());
-                
-		return model;
-        
-        
+
+        return model;
+
     }
 
-@RequestMapping("/getUsers")    
+    @RequestMapping(value = "/login", method = RequestMethod.POST)
+    public String loginLTI(HttpSession session, HttpServletRequest request) {
+        String nextPage = "error";
+        //ModelAndView model = new ModelAndView();
+        session.setAttribute("sUser", null);
+        session.setAttribute("sCourse", null);
+        session.setAttribute("sMeeting", null);
+        session.setAttribute("sUserMeeting", null);
+
+        try {
+            request.setCharacterEncoding("UTF-8");
+            //1. Check if LTI call is valid
+            LTIEnvironment LTIEnvironment;
+            LTIEnvironment = new LTIEnvironment();
+            if (LTIEnvironment.is_lti_request(request)) {
+
+                LTIEnvironment.parseRequest(request);
+                if (LTIEnvironment.isAuthenticated()) {
+
+                    //2. Get the values of user and course  	 
+                    String username = LTIEnvironment.getUserName();
+                //TODO mirar si cal posar
+				/*if (username.startsWith(LTIEnvironment.getResourcekey()+":")) {
+                     username = username.substring((LTIEnvironment.getResourcekey()+":").length());
+                     }*/
+                    String full_name = LTIEnvironment.getFullName();
+
+                    String first_name = LTIEnvironment.getParameter(Constants.FIRST_NAME_LTI_PARAMETER);
+                    String last_name = LTIEnvironment.getParameter(Constants.LAST_NAME_LTI_PARAMETER);
+
+                    String email = LTIEnvironment.getEmail();
+                    String user_image = LTIEnvironment.getUser_image();
+
+                    //3. Get the role
+                    boolean is_instructor = LTIEnvironment.isInstructor();
+                    boolean is_course_autz = LTIEnvironment.isCourseAuthorized();
+
+                    ApplicationContext context = ContextLoader.getCurrentWebApplicationContext();
+                    UserDao userDao = context.getBean(UserDao.class);
+                    CourseDao courseDao = context.getBean(CourseDao.class);
+                    UserCourseDao userCourseDao = context.getBean(UserCourseDao.class);
+                    RoomDao roomDao = context.getBean(RoomDao.class);
+                    MeetingRoomDao meetingroomDao = context.getBean(MeetingRoomDao.class);
+                    UserMeetingDao userMeetingDao = context.getBean(UserMeetingDao.class);
+
+                    //4. Get course data
+                    String course_key = LTIEnvironment.getCourseKey();
+                    String course_label = LTIEnvironment.getCourseName();
+                    String resource_key = LTIEnvironment.getResourceKey();
+                    String resource_label = LTIEnvironment.getResourceTitle();
+
+                //LTIEnvironment.getParameter(lis_person_name_given);
+                    //5. Get the locale
+                    String locale = LTIEnvironment.getLocale();
+
+                    java.util.Date date = new java.util.Date();
+
+                    //Steps to integrate with your applicationa
+                    boolean redirectToPlayer = LTIEnvironment.getCustomParameter(Constants.PLAYER_CUSTOM_LTI_PARAMETER, request) != null;
+                    boolean is_debug = LTIEnvironment.getCustomParameter(Constants.DEBUG_CUSTOM_LTI_PARAMETER, request) != null;
+
+                    // System.out.println("ID:" + userDao.findByUserCode(1));
+                    User user = userDao.findByUserName(username);
+                    user.setUsername(username);
+                    user.setFirstname(first_name);
+                    user.setSurname(last_name);
+                    user.setFullname(full_name);
+                    user.setEmail(email);
+                    user.setImage(user_image);
+                    userDao.save(user);
+
+                    Course course = courseDao.findByCourseKey(course_key);
+                    course.setTitle(course_label);
+                    course.setLang(locale);
+
+                    if (course.getId() <= 0) {
+                        course.setCreated(new Timestamp(date.getTime()));
+                    }
+                    courseDao.save(course);
+
+                    UserCourse userCourse = userCourseDao.findByCourseCode(course.getId(), user.getId());
+                    userCourse.setIs_instructor(is_instructor);
+                    //TODO change it
+                    userCourse.setRole("admin");
+
+                    UserCourseId userCourseId = new UserCourseId(user, course);
+                    userCourse.setPk(userCourseId);
+
+                    userCourseDao.save(userCourse);
+
+                    if (!redirectToPlayer) {
+
+                        Course courseRoom = courseDao.findByCourseKey(course_key);
+
+                        Room room = roomDao.findByRoomKey(resource_key);
+                        if (room == null) {
+                            room = new Room();
+                        }
+                        room.setId_course(courseRoom);
+                        room.setLabel(resource_label);
+                        boolean can_access_to_meeting = true;
+                        boolean is_new_meeting = true;
+                        MeetingRoom meeting = null;
+                        UserMeeting userMeeting;
+                        if (room.getId() > 0) {
+                            if (!room.isIs_blocked()) {
+
+                                //Find the room and the meeting room associate to this room
+                                MeetingRoom mr = meetingroomDao.findbyPath(room.getKey() + room.getId());
+                                //If we find it, set +1 to participants and update
+                                if (mr.getId() != 0) {
+                                    meeting = mr;
+                                    UserMeeting aux = userMeetingDao.findUserMeetingByPK(new UserMeetingId(user, meeting));
+                                    if (aux.getPk() == null) {
+                                        meeting.setNumber_participants(mr.getNumber_participants() + 1);
+                                    }
+                                    //If the number of participants == 6 then the room is blocked
+                                    if (mr.getNumber_participants() == Constants.MAX_PARTICIPANTS) {
+                                        room.setIs_blocked(true);
+                                        room.setReason_blocked(Constants.REASON_BLOCK_MAX_PARTICIPANTS);
+                                        can_access_to_meeting = false;
+                                    }
+                                    roomDao.save(room);
+                                    is_new_meeting = false;
+                                    //if there is no meeting to this rooom, create a new meeting room
+                                }
+                            } else {
+                                can_access_to_meeting = false;
+                            }
+
+                        } else {
+                            //if there is no room, create a new room and meeting room
+                            room.setIs_blocked(false);
+                            room.setKey(resource_key);
+                            room.setReason_blocked(null);
+                            roomDao.save(room);
+                        }
+
+                        if (can_access_to_meeting) {
+                            if (is_new_meeting) {
+                                meeting = new MeetingRoom();
+                                meeting.setId_room(room);
+                                meeting.setNumber_participants(1);
+                                meeting.setPath(room.getKey() + room.getId());
+                                meeting.setRecorded((byte) 0);
+                                meeting.setDescription(room.getKey());
+                                meeting.setStart_meeting(new Timestamp(date.getTime()));
+                                meeting.setStart_record(null);
+                                meeting.setEnd_record(null);
+                                meeting.setEnd_meeting(null);
+                            }
+                            meetingroomDao.save(meeting);
+                            if (is_new_meeting) {
+                                String meetingIdPath = course_key + "_" + room.getKey() + "_" + meeting.getId();
+                                meetingIdPath = meetingIdPath.replaceAll(":", "_");
+                                meeting.setPath(meetingIdPath);
+
+                            }
+                            UserMeetingId umId = new UserMeetingId(user, meeting);
+                            userMeeting = new UserMeeting(umId, new Timestamp(date.getTime()), meeting.getPath() + "_" + (user.getUsername()).replaceAll(":", "_"));
+                            userMeetingDao.save(userMeeting);
+                            session.setAttribute(Constants.USER_METTING_SESSION, userMeeting);
+                        }
+                        session.setAttribute(Constants.MEETING_SESSION, meeting);
+
+                    }
+                //Steps to integrate with your applicationa
+                    //6. Check if username exists in system
+                    //6.1 If doesn't exist you have to create user using Tool Api
+                    //TODO create_user
+                    //6.2 If exists you can update the values of user (if you want)
+                    //TODO update_user
+                    //7. Check if course exists in system (you can set the locale of course)
+                    //7.1 If doesn't exist you have to create course using Tool Api
+                    //TODO create_course
+                    //7.2 If exists you can update the values of course (if you want)
+                    //TODO update_course
+                    //8. Register user in course 
+                    session.setAttribute(Constants.USER_SESSION, user);
+                    session.setAttribute(Constants.COURSE_SESSION, course);
+                    nextPage = redirectToPlayer ? "player" : "videochat";
+
+                } else {
+
+                    Exception lastException = LTIEnvironment.getLastException();
+                    //Retornar excepcio
+                    nextPage = "errorLTI";
+                }
+            } else {
+                nextPage = "errorNoLTIRequest";
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+
+        }
+        return "redirect:" + nextPage + ".htm";
+    }
+
+    @RequestMapping("/getUsers")
     public ModelAndView getAllUsers(HttpServletRequest request,
-		HttpServletResponse response){
+            HttpServletResponse response) {
         List<User> listUsers = userDao.findAll();
-        
+
         ModelAndView model = new ModelAndView("getUsers");
-        request.setAttribute("list",listUsers);
+        request.setAttribute("list", listUsers);
         model.addObject("userList", listUsers);
         return model;
     }
-    
+
+    @RequestMapping("/logout")
+    public String logoutSession(SessionStatus status) {
+        status.setComplete();
+        return "logout";
+
+    }
+
 }

@@ -87,7 +87,7 @@
                     <span class="glyphicon glyphicon-remove"></span>
                 </div>
             </header>
-            <h3>Videoconference Recorder Amazon LTI</h3>
+            <h3><c:out value="${sMeeting.getId_room().getLabel()}"/></h3>
             <div class="row wrapper_buttons">	
                 <div class="col-md-3 col-xs-7">
                 	<button type="button" id="button-record" class="btn btn-warning" data-toggle="modal" data-target="#record"><span class="glyphicon glyphicon-record"></span> RECORD</button>
@@ -150,7 +150,7 @@
                         <div class="row">
                             <div class="col-md-4 participant" id="user-1">
                                 <div class="participant_content">
-                                    <div id="nom-1"><c:out value="${user}"/></div>
+                                    <div id="nom-1"><c:out value="${sUser.getFullname()}"/></div>
                                     <div id="videochat_stream">
                                         <p>Alternative content</p>
                                         <p><a href="http://www.adobe.com/go/getflashplayer"><img src="http://www.adobe.com/images/shared/download_buttons/get_flash_player.gif" alt="Get Adobe Flash player" /></a></p>
@@ -166,7 +166,7 @@
                             <div class="col-md-4 participant" id="user-3">
                                 <div class="participant_content">
                                     <div id="nom-3">&nbsp;</div>
-                                    <div id="user-video-2"><img src="css/images/participant.png" alt="participant 4"></div>
+                                    <div id="user-video-3"><img src="css/images/participant.png" alt="participant 4"></div>
                                 </div>
                             </div>
                         </div>
@@ -174,13 +174,13 @@
                             <div class="col-md-4 participant" id="user-4">
                             	<div class="participant_content">
                                     <div id="nom-4">&nbsp;</div>
-                                    <div id="user-video-3"><img src="css/images/participant.png" alt="participant 4"></div>
+                                    <div id="user-video-4"><img src="css/images/participant.png" alt="participant 4"></div>
                                 </div>
                             </div>
                             <div class="col-md-4 participant" id="user-5">
                             	<div class="participant_content">
                                     <div id="nom-5">&nbsp;</div>
-                                    <div id="user-video-4"><img src="css/images/participant.png" alt="participant 5"></div>
+                                    <div id="user-video-5"><img src="css/images/participant.png" alt="participant 5"></div>
                                 </div>
                             </div>
                             <div class="col-md-4 participant" id="user-6">
@@ -225,14 +225,18 @@
                 $('#button-volume').hide();
                 $('#button-record').hide();
                 $('#button-archive').hide();
+                <c:forEach items="${participants}" var="item">
+                    var participant = new StreamObject("${item.getPk().getUser().getFullname()}", "${item.getStreamKey()}");
+                    registeredUser(participant);
+                 </c:forEach>                
             });
             var swf_is_ready = false;
             var flashvars = {
               debug: "0",
-              publishName: "${fn:replace(user, ' ', '_')}",
+              publishName: "${sUserMeeting.getStreamKey()}",
               rmtpServer: "rtmp://184.73.205.58/videochat",
-              username: "${user}",
-              roomID: "Room123",
+              username: "${sUser.getFullname()}",
+              roomID: "${sMeeting.getPath()}",
             };
             var params = {
             };
@@ -263,7 +267,7 @@
                 if (array_streams.length<6) {
                     array_streams.push(streamObj);
                     pos = array_streams.length+1;
-                    $("#nom-"+pos).innerHTML = info.username;
+                    $("#nom-"+pos).html(info.username);
                     jwplayer("user-video-"+(pos)).setup({
                                             file: "rtmp://184.73.205.58:1935/videochat/"+info.publishName,
                                             image: "",
@@ -271,7 +275,11 @@
                                             height: 138,
                                             controls: 'false',
                                             icons: 'false',
-                                            flashplayer: "./js/jwplayer/jwplayer.flash.swf",
+                                            modes: [
+                                                { type: "html5" },
+                                                { type: "flash", src: "./js/jwplayer/jwplayer.flash.swf" }
+                                              ],
+                                            //flashplayer: "./js/jwplayer/jwplayer.flash.swf",
                                             events:{
                                                 onReady: function(e){
                                                     // Fires when player is ready, can disable Play button until this is fired for all videos i.e.
@@ -290,7 +298,24 @@
                            jwplayer("user-video-"+(pos)).play();             
                   }
             }
-        
+            
+            function currentUserAcceptConnection() {
+                var json = { "streamKey" : "${sUserMeeting.getStreamKey()}"};  
+
+              $.ajax({  
+                  url: 'rest/meeting.json',  
+                  data: JSON.stringify(json),  
+                  type: "POST",  
+
+                  beforeSend: function(xhr) {  
+                      xhr.setRequestHeader("Accept", "application/json");  
+                      xhr.setRequestHeader("Content-Type", "application/json");  
+                  },  
+                  success: function(response) {  
+                      console.log(response);
+                  }  
+              });  
+            }
 		</script>
     </body>
 </html>

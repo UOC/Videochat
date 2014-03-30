@@ -7,6 +7,8 @@
 package edu.uoc.dao.impl;
 
 import edu.uoc.dao.UserMeetingDao;
+import edu.uoc.model.MeetingRoom;
+import edu.uoc.model.User;
 import edu.uoc.model.UserMeeting;
 import edu.uoc.model.UserMeetingId;
 import edu.uoc.util.CustomHibernateDaoSupport;
@@ -36,6 +38,16 @@ public class UserMeetingDaoImpl extends CustomHibernateDaoSupport implements Use
         
         if(list.size() > 0) return (UserMeeting) list.get(0);
         else return new UserMeeting();
+    }
+
+    @Override
+    public List<UserMeeting> findUsersByMeetingId(MeetingRoom meeting, int user_id, boolean onlyConfimed) {
+        String extraSQL = "";
+        if (onlyConfimed) {
+            extraSQL = " and usermeeting_access_confirmed = 1 ";
+        }
+        List list = getHibernateTemplate().find("from UserMeeting where user_id != ? and meeting_id = ?"+extraSQL, user_id, meeting.getId());
+        return list;
     }
     
 }
