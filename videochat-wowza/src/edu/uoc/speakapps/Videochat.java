@@ -75,11 +75,11 @@ public class Videochat extends ModuleBase {
 	 */
 	public void startRecord(IClient client, RequestFunction function,
 			AMFDataList params) {
-		//WMSProperties props = client.getProperties();
-		String room = params.getString(PARAM1);
-		getLogger().info("Videochat speakapps - startRecordClient "+room);
-		_appInstance.broadcastMsg("startRecordClient", new AMFDataItem(room));
-		//sendResult(client, params, "Hello Wowza");
+		WMSProperties props = client.getProperties();
+		String username =  props.getPropertyStr("username");
+		String room =  props.getPropertyStr("room");
+		getLogger().error("Videochat speakapps - startRecordClient "+room);
+		_appInstance.broadcastMsg("startRecordClient", new AMFDataItem(username), new AMFDataItem(room));
 	}
 	/**
 	 * Register a new user

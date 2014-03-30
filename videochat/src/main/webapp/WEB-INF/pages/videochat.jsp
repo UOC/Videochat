@@ -271,7 +271,7 @@
             var swf_is_ready = false;
             var flashvars = {
               debug: "0",
-              publishName: "${sUserMeeting.getStreamKey()}",
+              publishName: "${fn:replace(sUserMeeting.getStreamKey(), ":", ".")}",
               rmtpServer: "rtmp://184.73.205.58/videochat",
               username: "${sUser.getFullname()}",
               roomID: "${sMeeting.getPath()}",
