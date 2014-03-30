@@ -197,13 +197,14 @@
                     	<div class="header_chat row">
                 			<h4>Chat</h4>
                     	</div>
-                        <div class="wrapper_chat">
-                        	<p>15:16:42 -  Admin SpeakApps - -- Locked Room --</p>
-                            <p>15:16:45 -  Admin SpeakApps - -- unLocked Room --</p>
-                            <p>16:15:09 -  Admin SpeakApps - dadad</p>
+                        <div class="wrapper_chat" id="chatContainer">
+                        	
                         </div> 
                         <p>Enter your text here:</p>
-                        <textarea class="form-control" rows="2"></textarea>	
+                            <div class="row">
+                                <div class="col-xs-10 col-md-9"><input type="text" class="form-control" id="messageTxt" /></div>
+                                <div class="col-xs-2 col-md-3"><button class="btn btn-warning" name="button-sendMessage" id="button-sendMessage">Send</button></div>
+                            </div>
                     </div>
                 </div>
             </div>
@@ -225,11 +226,33 @@
                 $('#button-volume').hide();
                 $('#button-record').hide();
                 $('#button-archive').hide();
+                $('#button-sendMessage').hide();
+                
                 <c:forEach items="${participants}" var="item">
                     var participant = new StreamObject("${item.getPk().getUser().getFullname()}", "${item.getStreamKey()}");
                     registeredUser(participant);
-                 </c:forEach>                
+                 </c:forEach>  
+                $("#button-sendMessage").click(
+                   function() {
+                        sendChatMessage();
+                    }     
+                );
+                $('#messageTxt').keydown(function (e){
+                    if(e.keyCode == 13){
+                        sendChatMessage();
+                    }
+                })
             });
+            function sendChatMessage() {
+                var message = $("#messageTxt").val();
+                if (message.length>0) {
+
+                    var flash = swfobject.getObjectById("videochat_stream_id");
+                    flash.sendChatMessage(message);
+                    $("#messageTxt").val("");
+
+                }
+            }
             var swf_is_ready = false;
             var flashvars = {
               debug: "0",
@@ -251,6 +274,7 @@
                 $('#button-volume').show();
                 $('#button-record').show();
                 $('#button-archive').show();
+                $('#button-sendMessage').show();
             }
 
             function startRecordRequest(){
@@ -316,6 +340,12 @@
                   }  
               });  
             }
+            
+            function newChatMessage(info) {
+                var str = "<p><b>"+info.username+":</b> "+info.message+"</p>";
+                $("#chatContainer").append(str);                
+            }
+            
 		</script>
     </body>
 </html>
