@@ -270,7 +270,7 @@ public class UserController {
                     //8. Register user in course 
                     session.setAttribute(Constants.USER_SESSION, user);
                     session.setAttribute(Constants.COURSE_SESSION, course);
-                    nextPage = redirectToPlayer ? "player" : "videochat";
+                    nextPage = redirectToPlayer ? "searchMeeting" : "videochat";
 
                 } else {
 
