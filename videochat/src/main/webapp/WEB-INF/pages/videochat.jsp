@@ -424,6 +424,9 @@
             function stoppedRecord() {
                 $('#button-record').hide();
                 $('#button-record-stop').hide();
+            }
+            
+            function stoppedRecordAjax() {
                 var json = { "streamKey" : "${sUserMeeting.getStreamKey()}"};  
 
                 $.ajax({  
@@ -439,7 +442,6 @@
                       console.log(response);
                   }  
               });
-                $('#button-record-stop').show();
             }
 		</script>
     </body>

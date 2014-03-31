@@ -15,6 +15,8 @@ import edu.uoc.model.Room;
 import edu.uoc.model.User;
 import edu.uoc.model.UserMeeting;
 import edu.uoc.util.Constants;
+import java.sql.Timestamp;
+import java.util.Date;
 import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -65,6 +67,8 @@ public class MeetingController {
                 room.setIs_blocked(true);
                 this.roomDao.save(room);
                 meeting.setRecorded((byte)1);
+                meeting.setPath(Constants.RECORD_FOLDER+"/"+meeting.getPath().replaceAll("_", "/"));
+                meeting.setStart_record(new Timestamp(new Date().getTime()));
                 this.meetingDao.save(meeting);
                 response.setOk(true);
             }
@@ -87,6 +91,8 @@ public class MeetingController {
                 room.setIs_blocked(false);
                 this.roomDao.save(room);
                 meeting.setRecorded((byte)1);
+                meeting.setEnd_meeting(new Timestamp(new Date().getTime()));
+                meeting.setEnd_record(new Timestamp(new Date().getTime()));
                 meeting.setFinished((byte)1);
                 this.meetingDao.save(meeting);
                 response.setOk(true);
