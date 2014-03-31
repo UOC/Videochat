@@ -111,7 +111,28 @@
                                     </div><!-- /.modal-dialog -->
                                 </div>
         						<!-- END modal del botó RECORD -->
-                    <button type="button" id="button-volume" class="btn btn-warning"><span class="glyphicon glyphicon-volume-up"></span></button>
+                	<button type="button" id="button-record-stop" class="btn btn-warning" data-toggle="modal" data-target="#record-stop"><span class="glyphicon glyphicon-stop"></span> STOP</button>
+                    <!-- modal del botó RECORD -->
+                                <div class="modal fade" id="record-stop">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                                <h4 class="modal-title">Important</h4>
+                                            </div>
+                                            <div class="modal-body">
+                                                <div><strong>Are you sure you want to stop a recorder?</strong></div>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" data-dismiss="modal" class="btn btn-default">Cancel</button>
+                                                <button type="button" data-dismiss="modal" class="btn btn-warning" onclick="stopRecordRequest()">Continue</button>
+                                            </div>
+                                        </div><!-- /.modal-content -->
+                                    </div><!-- /.modal-dialog -->
+                                </div>
+        						<!-- END modal del botó RECORD -->
+                                                        
+                     <button type="button" id="button-volume" class="btn btn-warning"><span class="glyphicon glyphicon-volume-up"></span></button>
                 </div>
                 <div class="col-md-2 col-md-offset-7 col-xs-5">
                 	<button type="button" class="btn btn-warning" data-toggle="modal" id="button-archive" data-target="#archive"><span class="glyphicon glyphicon-save"></span> ARCHIVE & CLOSE</button>
@@ -223,6 +244,7 @@
         <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
         <script>
             $( document ).ready(function() {
+                $('#button-record-stop').hide();
                 $('#button-volume').hide();
                 $('#button-record').hide();
                 $('#button-archive').hide();
@@ -292,6 +314,11 @@
                 $('#button-sendMessage').show();
             }
 
+            function stopRecordRequest(){
+                var flash = swfobject.getObjectById("videochat_stream_id");
+                flash.stopRecordFromJS();
+            }
+            
             function startRecordRequest(){
                 var flash = swfobject.getObjectById("videochat_stream_id");
                 flash.startRecordFromJS();
@@ -357,7 +384,7 @@
               $.ajax({  
                   url: 'rest/meeting.json',  
                   data: JSON.stringify(json),  
-                  type: "POST",  
+                  type: "GET",  
 
                   beforeSend: function(xhr) {  
                       xhr.setRequestHeader("Accept", "application/json");  
@@ -374,6 +401,46 @@
                 $("#chatContainer").append(str);                
             }
             
+            function startedRecord() {
+                $('#button-record').hide();
+                var json = { "streamKey" : "${sUserMeeting.getStreamKey()}"};  
+
+                $.ajax({  
+                  url: 'rest/meeting.json',  
+                  data: JSON.stringify(json),  
+                  type: "PUT",  
+
+                  beforeSend: function(xhr) {  
+                      xhr.setRequestHeader("Accept", "application/json");  
+                      xhr.setRequestHeader("Content-Type", "application/json");  
+                  },  
+                  success: function(response) {  
+                      console.log(response);
+                  }  
+              });
+                $('#button-record-stop').show();
+            }
+            
+            function stoppedRecord() {
+                $('#button-record').hide();
+                $('#button-record-stop').hide();
+                var json = { "streamKey" : "${sUserMeeting.getStreamKey()}"};  
+
+                $.ajax({  
+                  url: 'rest/meeting.json',  
+                  data: JSON.stringify(json),  
+                  type: "PUT",  
+
+                  beforeSend: function(xhr) {  
+                      xhr.setRequestHeader("Accept", "application/json");  
+                      xhr.setRequestHeader("Content-Type", "application/json");  
+                  },  
+                  success: function(response) {  
+                      console.log(response);
+                  }  
+              });
+                $('#button-record-stop').show();
+            }
 		</script>
     </body>
 </html>
