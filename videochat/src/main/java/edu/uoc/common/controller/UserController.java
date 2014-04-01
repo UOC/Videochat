@@ -24,13 +24,9 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.context.ContextLoader;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.bind.support.SessionStatus;
@@ -44,7 +40,7 @@ public class UserController {
     private UserDao userDao;
 
     @RequestMapping("/player")
-//@RequestMapping(method = RequestMethod.GET)
+
     public ModelAndView handleRequestInternal(HttpSession session) {
 
         ModelAndView model = new ModelAndView("player");
