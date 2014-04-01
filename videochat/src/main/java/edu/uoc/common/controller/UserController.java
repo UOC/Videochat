@@ -16,6 +16,7 @@ import edu.uoc.model.UserCourseId;
 import edu.uoc.model.UserMeeting;
 import edu.uoc.model.UserMeetingId;
 import edu.uoc.util.Constants;
+import edu.uoc.util.Util;
 import java.sql.Timestamp;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
@@ -70,6 +71,7 @@ public class UserController {
 
         ModelAndView model = new ModelAndView("videochat");
         MeetingRoom meeting = (MeetingRoom)session.getAttribute(Constants.MEETING_SESSION);
+        Room room = (Room)session.getAttribute(Constants.ROOM_SESSION);
         User user = (User) session.getAttribute(Constants.USER_SESSION);
         if (user!=null && meeting!=null) {
             model.addObject("user", user);
@@ -82,7 +84,12 @@ public class UserController {
             List<UserMeeting> participants = userMeetingDao.findUsersByMeetingId(meeting, user.getId(), true);
             model.addObject("participants", participants);
         } else {
-            model.setViewName("errorSession");
+            String error = "errorSession";
+            if (user!=null && meeting==null && room!=null && room.isIs_blocked()) {
+                //nloquejada
+                error = "errorBlocked"; 
+            }
+            model.setViewName(error);
         }
         
 
@@ -110,7 +117,7 @@ public class UserController {
                 if (LTIEnvironment.isAuthenticated()) {
 
                     //2. Get the values of user and course  	 
-                    String username = LTIEnvironment.getUserName();
+                    String username = Util.sanitizeString(LTIEnvironment.getUserName());
                 //TODO mirar si cal posar
 				/*if (username.startsWith(LTIEnvironment.getResourcekey()+":")) {
                      username = username.substring((LTIEnvironment.getResourcekey()+":").length());
@@ -136,9 +143,9 @@ public class UserController {
                     UserMeetingDao userMeetingDao = context.getBean(UserMeetingDao.class);
 
                     //4. Get course data
-                    String course_key = LTIEnvironment.getCourseKey();
+                    String course_key = Util.sanitizeString(LTIEnvironment.getCourseKey());
                     String course_label = LTIEnvironment.getCourseName();
-                    String resource_key = LTIEnvironment.getResourceKey();
+                    String resource_key = Util.sanitizeString(LTIEnvironment.getResourceKey());
                     String resource_label = LTIEnvironment.getResourceTitle();
 
                 //LTIEnvironment.getParameter(lis_person_name_given);
@@ -167,6 +174,7 @@ public class UserController {
 
                     if (course.getId() <= 0) {
                         course.setCreated(new Timestamp(date.getTime()));
+                        course.setCoursekey(course_key);
                     }
                     courseDao.save(course);
 
@@ -189,6 +197,7 @@ public class UserController {
                     }
                     room.setId_course(courseRoom);
                     room.setLabel(resource_label);
+                    String pathMeeting = course_key + "_" + room.getKey() +"_"+ room.getId();
                         boolean can_access_to_meeting = true;
                         boolean is_new_meeting = true;
                         MeetingRoom meeting = null;
@@ -198,7 +207,7 @@ public class UserController {
                                 if (!room.isIs_blocked()) {
 
                                     //Find the room and the meeting room associate to this room
-                                    MeetingRoom mr = meetingroomDao.findbyPath(room.getKey() + room.getId());
+                                    MeetingRoom mr = meetingroomDao.findbyPath(pathMeeting);
                                     //If we find it, set +1 to participants and update
                                     if (mr.getId() != 0) {
                                         meeting = mr;
@@ -234,23 +243,19 @@ public class UserController {
                                 meeting = new MeetingRoom();
                                 meeting.setId_room(room);
                                 meeting.setNumber_participants(1);
-                                meeting.setPath(room.getKey() + room.getId());
+                                meeting.setPath(pathMeeting);
                                 meeting.setRecorded((byte) 0);
-                                meeting.setDescription(room.getKey());
+                                meeting.setDescription(room.getLabel());
                                 meeting.setStart_meeting(new Timestamp(date.getTime()));
                                 meeting.setStart_record(null);
                                 meeting.setEnd_record(null);
                                 meeting.setEnd_meeting(null);
                             }
                             meetingroomDao.save(meeting);
-                            if (is_new_meeting) {
-                                String meetingIdPath = course_key + "_" + room.getKey() + "_" + meeting.getId();
-                                meetingIdPath = meetingIdPath.replaceAll(":", "_");
-                                meeting.setPath(meetingIdPath);
-
-                            }
+                            String meetingIdPath = course_key + "_" + room.getKey() + "_" + meeting.getId();
+                                
                             UserMeetingId umId = new UserMeetingId(user, meeting);
-                            userMeeting = new UserMeeting(umId, new Timestamp(date.getTime()), meeting.getPath() + "_" + (user.getUsername()).replaceAll(":", "_"));
+                            userMeeting = new UserMeeting(umId, new Timestamp(date.getTime()), meetingIdPath + "_" + user.getUsername());
                             userMeetingDao.save(userMeeting);
                             session.setAttribute(Constants.USER_METTING_SESSION, userMeeting);
                         }
