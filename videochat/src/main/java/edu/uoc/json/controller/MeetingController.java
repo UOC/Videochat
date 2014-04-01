@@ -65,9 +65,10 @@ public class MeetingController {
             User user = (User) session.getAttribute(Constants.USER_SESSION);
             if (user!=null && meeting!=null) {
                 room.setIs_blocked(true);
+                room.setReason_blocked(Constants.REASON_BLOCK_MAX_RECORDING);
                 this.roomDao.save(room);
                 meeting.setRecorded((byte)1);
-                meeting.setPath(Constants.RECORD_FOLDER+"/"+meeting.getPath().replaceAll("_", "/"));
+                meeting.setPath(meeting.getPath().replaceAll("_", "/"));
                 meeting.setStart_record(new Timestamp(new Date().getTime()));
                 this.meetingDao.save(meeting);
                 response.setOk(true);
@@ -89,6 +90,7 @@ public class MeetingController {
             User user = (User) session.getAttribute(Constants.USER_SESSION);
             if (user!=null && meeting!=null) {
                 room.setIs_blocked(false);
+                room.setReason_blocked(null);
                 this.roomDao.save(room);
                 meeting.setRecorded((byte)1);
                 meeting.setEnd_meeting(new Timestamp(new Date().getTime()));

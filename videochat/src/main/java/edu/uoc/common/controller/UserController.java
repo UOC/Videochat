@@ -207,9 +207,9 @@ public class UserController {
                                 if (!room.isIs_blocked()) {
 
                                     //Find the room and the meeting room associate to this room
-                                    MeetingRoom mr = meetingroomDao.findbyPath(pathMeeting);
+                                    MeetingRoom mr = meetingroomDao.findByRoomIdNotFinished(room.getId());
                                     //If we find it, set +1 to participants and update
-                                    if (mr.getId() != 0) {
+                                    if (mr!=null && mr.getId() != 0) {
                                         meeting = mr;
                                         UserMeeting aux = userMeetingDao.findUserMeetingByPK(new UserMeetingId(user, meeting));
                                         if (aux.getPk() == null) {

@@ -82,6 +82,20 @@ public class Videochat extends ModuleBase {
 		_appInstance.broadcastMsg("startRecordClient", new AMFDataItem(username), new AMFDataItem(room));
 	}
 	/**
+	 * Send a message to a client
+	 * @param client
+	 * @param function
+	 * @param params
+	 */
+	public void stopRecord(IClient client, RequestFunction function,
+			AMFDataList params) {
+		WMSProperties props = client.getProperties();
+		String username =  props.getPropertyStr("username");
+		String room =  props.getPropertyStr("room");
+		getLogger().error("Videochat speakapps - stopRecordClient "+room);
+		_appInstance.broadcastMsg("stopRecordClient", new AMFDataItem(username), new AMFDataItem(room));
+	}
+	/**
 	 * Register a new user
 	 * @param client
 	 * @param function

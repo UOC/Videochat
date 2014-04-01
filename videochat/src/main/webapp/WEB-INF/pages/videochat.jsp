@@ -422,7 +422,7 @@
             }
             
             function stoppedRecord() {
-                $('#button-record').hide();
+                $('#button-record').show();
                 $('#button-record-stop').hide();
             }
             
@@ -432,7 +432,7 @@
                 $.ajax({  
                   url: 'rest/meeting.json',  
                   data: JSON.stringify(json),  
-                  type: "PUT",  
+                  type: "POST",  
 
                   beforeSend: function(xhr) {  
                       xhr.setRequestHeader("Accept", "application/json");  

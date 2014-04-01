@@ -47,6 +47,18 @@ public class MeetingRoomDaoImpl extends CustomHibernateDaoSupport implements Mee
             return new ArrayList<MeetingRoom>();
         }
     }
+    
+    @Override
+    public MeetingRoom findByRoomIdNotFinished(int roomId) {
+
+        List list = getHibernateTemplate().find(
+                "from MeetingRoom where room_id=? and meeting_room_finished=?", roomId, 0);
+        if (list.size() > 0) {
+            return (MeetingRoom)list.get(0);
+        } else {
+            return null;
+        }
+    }
 
     @Override
     public MeetingRoom findbyPath(String path) {

@@ -24,6 +24,8 @@ public interface MeetingRoomDao {
 
     List<MeetingRoom> findByRoomId(int meetingroomId);
 
+    MeetingRoom findByRoomIdNotFinished(int meetingroomId);
+    
     MeetingRoom findbyPath(String path);
 
 }
