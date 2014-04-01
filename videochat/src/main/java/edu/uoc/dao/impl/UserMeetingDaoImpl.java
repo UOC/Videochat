@@ -50,4 +50,10 @@ public class UserMeetingDaoImpl extends CustomHibernateDaoSupport implements Use
         return list;
     }
     
+    @Override
+    public List<UserMeeting> findUsersByMeetingId(MeetingRoom meeting){
+        List list = getHibernateTemplate().find("from UserMeeting where meeting_id = ?",meeting.getId());
+        
+        return list;
+    }
 }

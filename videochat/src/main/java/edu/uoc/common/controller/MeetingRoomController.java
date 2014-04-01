@@ -13,6 +13,7 @@ import edu.uoc.model.Room;
 import edu.uoc.model.User;
 import edu.uoc.model.UserMeeting;
 import edu.uoc.util.Constants;
+import java.util.ArrayList;
 import java.util.List;
 import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -58,6 +59,12 @@ public class MeetingRoomController {
             //get the list of current participants
             List<MeetingRoom> listMR = meetingDao.findByRoomId(room.getId());
             model.addObject("listMR", listMR);
+            List<List<UserMeeting>> participants = new ArrayList<List<UserMeeting>>();
+            for(int i=0;i<listMR.size(); i++){
+                participants.add(userMeetingDao.findUsersByMeetingId(listMR.get(i)));
+            }
+            
+            model.addObject("AllParticipants", participants);
         } else {
             model.setViewName("errorSession");
         }

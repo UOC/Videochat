@@ -36,4 +36,6 @@ public interface UserMeetingDao {
      * @return 
      */
     public List<UserMeeting> findUsersByMeetingId(MeetingRoom meeting, int user_id, boolean onlyConfirmed);
+    
+    public List<UserMeeting> findUsersByMeetingId(MeetingRoom meeting);
 }
