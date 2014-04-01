@@ -50,7 +50,6 @@ header #close{
 .participant{
 	border-left:1px solid #ccc;
 	border-bottom:1px solid #ccc;
-
 	/*padding-top:20px;*/ 
 	padding-bottom:30px;
 	margin-bottom:20px;
@@ -61,25 +60,18 @@ header #close{
 	margin:0 auto; 
 	text-align:left; 
 	display:block;
-
 	width:215px;
 }
-
 
 .participant:first-child{
 	border-left:none;
 }
 	
 	
-.participant img{
-	margin-bottom:20px;
-	border:1px solid #ccc;
-}
 /*.participant img{
 	margin-bottom:20px;
 	border:1px solid #ccc;
 }*/
-
 
 .header_chat{
 	text-transform:uppercase;
@@ -106,9 +98,5 @@ header #close{
 
 .wrapper_recorder{
 	margin-top:20px;
-	margin-bottom:20px;}
-
-	
-	
-	
-
+	margin-bottom:20px;
+}

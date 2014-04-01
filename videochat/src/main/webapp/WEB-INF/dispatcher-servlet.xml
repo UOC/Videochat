@@ -57,7 +57,7 @@
     </bean>
     <import resource="database/DataSource.xml"/>
     <import resource="database/Hibernate.xml"/>
-         
+    
             
     <!--
     The index controller.

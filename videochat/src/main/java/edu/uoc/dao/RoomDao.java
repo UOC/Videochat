@@ -16,7 +16,7 @@ public interface RoomDao {
 
     void save(Room room);
 
-    void update(Room room);
+    //void update(Room room);
 
     void delete(Room room);
 

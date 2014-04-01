@@ -10,6 +10,7 @@ import edu.uoc.model.MeetingRoom;
 import edu.uoc.model.Room;
 import edu.uoc.model.UserCourse;
 import edu.uoc.util.CustomHibernateDaoSupport;
+import java.util.ArrayList;
 import java.util.List;
 import org.springframework.stereotype.Repository;
 
@@ -22,13 +23,13 @@ public class MeetingRoomDaoImpl extends CustomHibernateDaoSupport implements Mee
 
     @Override
     public void save(MeetingRoom meetingRoom) {
-        getHibernateTemplate().save(meetingRoom);
+        getHibernateTemplate().saveOrUpdate(meetingRoom);
     }
 
-    @Override
+    /*@Override
     public void update(MeetingRoom meetingRoom) {
         getHibernateTemplate().merge(meetingRoom);
-    }
+    }*/
 
     @Override
     public void delete(MeetingRoom meetingRoom) {
@@ -36,30 +37,26 @@ public class MeetingRoomDaoImpl extends CustomHibernateDaoSupport implements Mee
     }
 
     @Override
-    public List<MeetingRoom> getMeetingRoomsByCourseKey(String courseKey) {
-
-        /* SQL QUERY:
-         SELECT m.meeting_room_description, m.meeting_room_number_participants, m.meeting_room_start_meeting, m.meeting_room_end_meeting
-         FROM vc_meeting m, vc_room r
-         WHERE m.room_id = r.room_id
-         AND r.course_key =  '586' */
-        String query = "SELECT m.description, m.number_participants, m.start_meeting, m.end_meeting"
-                + " FROM MeetingRoom m, Room r"
-                + " WHERE m.id_room = r.id AND r.key = ?";
-
-        List list = getHibernateTemplate().find(query, courseKey);
-        return list;
-    }
-
-    @Override
-    public MeetingRoom findByRoomCode(int meetingroomId) {
+    public List<MeetingRoom> findByRoomId(int roomId) {
 
         List list = getHibernateTemplate().find(
-                "from MeetingRoom where meeting_room_id=?", meetingroomId);
+                "from MeetingRoom where room_id=?", roomId);
         if (list.size() > 0) {
-            return (MeetingRoom) list.get(0);
+            return list;
         } else {
-            return new MeetingRoom();
+            return new ArrayList<MeetingRoom>();
+        }
+    }
+    
+    @Override
+    public MeetingRoom findByRoomIdNotFinished(int roomId) {
+
+        List list = getHibernateTemplate().find(
+                "from MeetingRoom where room_id=? and meeting_room_finished=?", roomId, 0);
+        if (list.size() > 0) {
+            return (MeetingRoom)list.get(0);
+        } else {
+            return null;
         }
     }
 

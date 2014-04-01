@@ -28,13 +28,13 @@ public class UserDaoImpl extends CustomHibernateDaoSupport implements UserDao{
  
         @Override
 	public void save(User user){
-		getHibernateTemplate().save(user);
+		getHibernateTemplate().saveOrUpdate(user);
 	}
  
-        @Override
+        /*@Override
 	public void update(User user){
 		getHibernateTemplate().merge(user);
-	}
+	}*/
  
         @Override
 	public void delete(User user){

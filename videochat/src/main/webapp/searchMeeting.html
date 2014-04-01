@@ -69,7 +69,18 @@ function search() {
   </tr>
     </thead>
   
-  
+<c:forEach var="item" items="${listMR}">
+<tr>
+<td></td>
+<td>${item.getNumber_participants()}</td>
+<td>${item.getStart_record()}</td>
+<td>${item.getEnd_record()}</td>
+<td></td>
+<td></td>
+</tr>
+</c:forEach>
+             
+<!-- 
 <tr>
 <td>test</td>
 <td>Admin SpeakApps</td>
@@ -618,7 +629,7 @@ function search() {
 <td>0:0:17</td>
 <td><a href="http://videoconference.speakapps.org:8080/red5/Front?control=play&id_meeting=76166222">View</a></td>
 </tr>
-
+-->
     
   
 </table>

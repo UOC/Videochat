@@ -1,13 +1,13 @@
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib uri="http://www.springframework.org/tags" prefix="spring"%>
 <%@taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%-- 
     Document   : videochat
     Created on : 25/03/2014, 21:58:38
     Author     : antonibertranbellido
 --%>
-
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="es">
 	<head>
@@ -20,7 +20,10 @@
         <!-- Optional theme -->
         <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap-theme.min.css">
         <link rel="stylesheet" href="css/general.css">
-        <script type="text/javascript" src="FlashRTMPPlayer/AC_RunActiveContent.js" ></script>
+        <script type="text/javascript" src="js/swfobject.js" ></script>
+        <!-- VIDEO PLAYER JS -->
+        <script type="text/javascript" src="js/jwplayer/jwplayer.js"></script>
+
 	</head>	
     <body>
     	<!-- modal que apareix al carregar la pàgina-->
@@ -42,7 +45,7 @@
         </div>
         <!-- /.modal -->
         <!-- modal parar gravació-->
-    	<div class="modal fade" id="camera">
+    	<div class="modal fade" id="Recorded">
             <div class="modal-dialog">
             	<div class="modal-content">
             		<div class="modal-header">
@@ -84,10 +87,10 @@
                     <span class="glyphicon glyphicon-remove"></span>
                 </div>
             </header>
-            <h3>Videoconference Recorder Amazon LTI</h3>
+            <h3><c:out value="${sMeeting.getId_room().getLabel()}"/></h3>
             <div class="row wrapper_buttons">	
                 <div class="col-md-3 col-xs-7">
-                	<button type="button" class="btn btn-warning" data-toggle="modal" data-target="#record"><span class="glyphicon glyphicon-record"></span> RECORD</button>
+                	<button type="button" id="button-record" class="btn btn-warning" data-toggle="modal" data-target="#record"><span class="glyphicon glyphicon-record"></span> RECORD</button>
                     <!-- modal del botó RECORD -->
                                 <div class="modal fade" id="record">
                                     <div class="modal-dialog">
@@ -102,16 +105,37 @@
                                             </div>
                                             <div class="modal-footer">
                                                 <button type="button" data-dismiss="modal" class="btn btn-default">Cancel</button>
-                                                <button type="button" class="btn btn-warning">Continue</button>
+                                                <button type="button" data-dismiss="modal" class="btn btn-warning" onclick="startRecordRequest()">Continue</button>
                                             </div>
                                         </div><!-- /.modal-content -->
                                     </div><!-- /.modal-dialog -->
                                 </div>
         						<!-- END modal del botó RECORD -->
-                    <button type="button" class="btn btn-warning"><span class="glyphicon glyphicon-volume-up"></span></button>
+                	<button type="button" id="button-record-stop" class="btn btn-warning" data-toggle="modal" data-target="#record-stop"><span class="glyphicon glyphicon-stop"></span> STOP</button>
+                    <!-- modal del botó RECORD -->
+                                <div class="modal fade" id="record-stop">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                                <h4 class="modal-title">Important</h4>
+                                            </div>
+                                            <div class="modal-body">
+                                                <div><strong>Are you sure you want to stop a recorder?</strong></div>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" data-dismiss="modal" class="btn btn-default">Cancel</button>
+                                                <button type="button" data-dismiss="modal" class="btn btn-warning" onclick="stopRecordRequest()">Continue</button>
+                                            </div>
+                                        </div><!-- /.modal-content -->
+                                    </div><!-- /.modal-dialog -->
+                                </div>
+        						<!-- END modal del botó RECORD -->
+                                                        
+                     <button type="button" id="button-volume" class="btn btn-warning"><span class="glyphicon glyphicon-volume-up"></span></button>
                 </div>
                 <div class="col-md-2 col-md-offset-7 col-xs-5">
-                	<button type="button" class="btn btn-warning" data-toggle="modal" data-target="#archive"><span class="glyphicon glyphicon-save"></span> ARCHIVE & CLOSE</button>
+                	<button type="button" class="btn btn-warning" data-toggle="modal" id="button-archive" data-target="#archive"><span class="glyphicon glyphicon-save"></span> ARCHIVE & CLOSE</button>
                     <!-- modal del botó RECORD -->
                     <div class="modal fade" id="archive">
                         <div class="modal-dialog">
@@ -147,83 +171,43 @@
                         <div class="row">
                             <div class="col-md-4 participant" id="user-1">
                                 <div class="participant_content">
-                                    <div id="nom"><c:out value="${user}"/></div>
-                                    <!--script>
-            
-                /*if (AC_FL_RunContent == 0) {
-                    alert("This page requires AC_RunActiveContent.js.");
-                } else {
-                    AC_FL_RunContent(
-                                     'codebase', 'http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=9,0,0,0',
-                                     'width', '160',
-                                     'height', '110',
-                                     'src', 'FlashRTMPPlayer/recorder',
-                                     'quality', 'high',
-                                     'pluginspage', 'http://www.macromedia.com/go/getflashplayer',
-                                     'align', 'middle',
-                                     'play', 'true',
-                                     'loop', 'true',
-                                     'scale', 'showall',
-                                     'wmode', 'window',
-                                     'devicefont', 'false',
-                                     'id', 'recorder',
-                                     'bgcolor', '#ffffff',
-                                     'name', 'recorder',
-                                     'menu', 'true',
-                                     'allowFullScreen', 'true',
-                                     'allowScriptAccess','sameDomain',
-                                     'movie', 'FlashRTMPPlayer/recorder',
-                                     'rmtpServer', 'rtmp://184.73.205.58/videochat',
-                                     'debug', '0',
-                                     'publishName', 'uoc.edu-resourcekey-id_room-username',
-                                     'salign', ''
-                                     ); //end AC code
-                }
-                */
-        </script-->
-                <embed width="215" height="138" src="FlashRTMPPlayer/recorder.swf?debug=0&publishName=uoc.edu-resourcekey-id_room-username&rmtpServer=rtmp://184.73.205.58/videochat" quality="high" pluginspage="http://www.macromedia.com/go/getflashplayer" align="middle" play="true" loop="true" scale="showall" wmode="window" devicefont="false" bgcolor="#ffffff" name="recorder" menu="true" allowfullscreen="true" allowscriptaccess="sameDomain" salign="" type="application/x-shockwave-flash"> 
-            <noscript>
-                &lt;object classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=9,0,0,0" width="636" height="360" id="recorder" align="middle"&gt;
-                    &lt;param name="allowScriptAccess" value="sameDomain" /&gt;
-                    &lt;param name="allowFullScreen" value="true" /&gt;
-                    &lt;param name="debug" value="0" /&gt;
-                    &lt;param name="rmtpServer" value="rtmp://184.73.205.58/videochat" /&gt;
-                    &lt;param name="publishName" value="uoc.edu-resourcekey-id_room-username" /&gt;
-                    &lt;param name="movie" value="FlashRTMPPlayer/recorder.swf" /&gt;&lt;param name="quality" value="high" /&gt;&lt;param name="bgcolor" value="#ffffff" /&gt;  &lt;embed src="FlashRTMPPlayer/recorder.swf" quality="high" bgcolor="#ffffff" width="160" height="110" name="recorder" align="middle" allowScriptAccess="sameDomain" allowFullScreen="true" type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/go/getflashplayer" /&gt;
-                &lt;/object&gt;
-            </noscript>
+                                    <div id="nom-1"><c:out value="${sUser.getFullname()}"/></div>
+                                    <div id="videochat_stream">
+                                        <p>Alternative content</p>
+                                        <p><a href="http://www.adobe.com/go/getflashplayer"><img src="http://www.adobe.com/images/shared/download_buttons/get_flash_player.gif" alt="Get Adobe Flash player" /></a></p>
+                                    </div>
                                 </div>
                             </div>
                             <div class="col-md-4 participant" id="user-2">
                                 <div class="participant_content">
-                                    <div id="nom">Nom</div>
-                                    <img src="css/images/participant.png" alt="participant 4">
+                                    <div id="nom-2">&nbsp;</div>
+                                    <div id="user-video-2"><img src="css/images/participant.png" alt="participant 4"></div>
                                 </div>
                             </div>
                             <div class="col-md-4 participant" id="user-3">
                                 <div class="participant_content">
-                                    <div id="nom">Nom</div>
-                                    <img src="css/images/participant.png" alt="participant 4">
+                                    <div id="nom-3">&nbsp;</div>
+                                    <div id="user-video-3"><img src="css/images/participant.png" alt="participant 4"></div>
                                 </div>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-md-4 participant" id="user-4">
                             	<div class="participant_content">
-                                    <div id="nom">Nom</div>
-                                    <img src="css/images/participant.png" alt="participant 4">
+                                    <div id="nom-4">&nbsp;</div>
+                                    <div id="user-video-4"><img src="css/images/participant.png" alt="participant 4"></div>
                                 </div>
                             </div>
                             <div class="col-md-4 participant" id="user-5">
                             	<div class="participant_content">
-                                    <div id="nom">Nom</div>
-                                    <img src="css/images/participant.png" alt="participant 5">
+                                    <div id="nom-5">&nbsp;</div>
+                                    <div id="user-video-5"><img src="css/images/participant.png" alt="participant 5"></div>
                                 </div>
                             </div>
                             <div class="col-md-4 participant" id="user-6">
                             	<div class="participant_content">
-                                    <div id="nom">Nom</div>
-                                    <img src="css/images/participant.png" alt="participant 6">
+                                    <div id="nom-6">&nbsp;</div>
+                                    <div id="user-video-6"><img src="css/images/participant.png" alt="participant 6"></div>
                                 </div>
                             </div>
                         </div>
@@ -234,28 +218,231 @@
                     	<div class="header_chat row">
                 			<h4>Chat</h4>
                     	</div>
-                        <div class="wrapper_chat">
-                        	<p>15:16:42 -  Admin SpeakApps - -- Locked Room --</p>
-                            <p>15:16:45 -  Admin SpeakApps - -- unLocked Room --</p>
-                            <p>16:15:09 -  Admin SpeakApps - dadad</p>
+                        <div class="wrapper_chat" id="chatContainer">
+                        	
                         </div> 
                         <p>Enter your text here:</p>
-                        <textarea class="form-control" rows="2"></textarea>	
+                            <div class="row">
+                                <div class="col-xs-10 col-md-9"><input type="text" class="form-control" id="messageTxt" maxlength="100" /></div>
+                                <div class="col-xs-2 col-md-3"><button class="btn btn-warning" name="button-sendMessage" id="button-sendMessage">Send</button></div>
+                            </div>
                     </div>
                 </div>
             </div>
+                                    
+                                    
+            <div id="debug_display">
+                <h4>Debug Data</h4>
+                <span class="time"></span> (<span class="duration"></span>) : <span class="time"></span> (<span class="duration"></span>) : <span class="time"></span> (<span class="duration"></span>) :
+                <span class="time"></span> (<span class="duration"></span>) : <span class="time"></span> (<span class="duration"></span>) : <span class="time"></span> (<span class="duration"></span>)
+            </div>
+                        
         </div>  
-        <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+        <!-- jQuery -->
+        <script src="http://code.jquery.com/jquery-latest.min.js" type="text/javascript"></script> 
         <!-- Include all compiled plugins (below), or include individual files as needed -->
         <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
         <script>
-			$( document ).ready(function() {
-				//$('#camera').modal('show');
-				//$('.participant > div > div').css("visibility", "hidden");
-               
-				
-			});
+            $( document ).ready(function() {
+                $('#button-record-stop').hide();
+                $('#button-volume').hide();
+                $('#button-record').hide();
+                $('#button-archive').hide();
+                $('#button-sendMessage').hide();
+                
+                <c:forEach items="${participants}" var="item">
+                    var participant = new StreamObject("${item.getPk().getUser().getFullname()}", "${item.getStreamKey()}");
+                    registeredUser(participant);
+                 </c:forEach>  
+                $("#button-sendMessage").click(
+                   function() {
+                        sendChatMessage();
+                    }     
+                );
+                $('#messageTxt').keydown(function (e){
+                    if(e.keyCode == 13){
+                        sendChatMessage();
+                    }
+                })
+            });
+            function sendChatMessage() {
+                var message = $("#messageTxt").val();
+                if (message.length>0) {
+
+                    var flash = swfobject.getObjectById("videochat_stream_id");
+                    flash.sendChatMessage(message);
+                    $("#messageTxt").val("");
+                    var json = { "message" : message};  
+
+                    $.ajax({  
+                        url: 'rest/chat.json',  
+                        data: JSON.stringify(json),  
+                        type: "POST",  
+
+                        beforeSend: function(xhr) {  
+                            xhr.setRequestHeader("Accept", "application/json");  
+                            xhr.setRequestHeader("Content-Type", "application/json");  
+                        },  
+                        success: function(response) {  
+                            console.log(response);
+                        }  
+                    });  
+
+                }
+            }
+            var swf_is_ready = false;
+            var flashvars = {
+              debug: "0",
+              publishName: "${fn:replace(sUserMeeting.getStreamKey(), ":", ".")}",
+              rmtpServer: "rtmp://184.73.205.58/videochat",
+              username: "${sUser.getFullname()}",
+              roomID: "${sMeeting.getPath()}",
+            };
+            var params = {
+            };
+            var attributes = {
+                id : "videochat_stream_id"
+            };
+            swfobject.embedSWF("FlashRTMPPlayer/recorder.swf", "videochat_stream", "215", "138", "9.0.0", "expressInstall.swf", flashvars, params, attributes);
+        
+            function setSWFIsReady() {
+                swf_is_ready= true;
+                //alert("swf_is_ready");
+                $('#button-volume').show();
+                $('#button-record').show();
+                $('#button-archive').show();
+                $('#button-sendMessage').show();
+            }
+
+            function stopRecordRequest(){
+                var flash = swfobject.getObjectById("videochat_stream_id");
+                flash.stopRecordFromJS();
+            }
+            
+            function startRecordRequest(){
+                var flash = swfobject.getObjectById("videochat_stream_id");
+                flash.startRecordFromJS();
+            }
+            var array_streams = Array();
+            function StreamObject(username, publishName) {
+                this.username = username;
+                this.publishName = publishName;
+            }
+            function returnPositionUser(username){
+                var pos = -1;
+                for(i=0; i<array_streams.length; i++) {
+                    if (array_streams[i].username==username) {
+                        post = i;
+                        break;
+                    }
+                }
+                return pos;
+            }
+            function registeredUser(info) {
+                if (returnPositionUser(info.username)>=0) {
+                    return;
+                }
+                streamObj = new StreamObject(info.username, info.publishName);
+                if (array_streams.length<6) {
+                    array_streams.push(streamObj);
+                    pos = array_streams.length+1;
+                    $("#nom-"+pos).html(info.username);
+                    jwplayer("user-video-"+(pos)).setup({
+                                            file: "rtmp://184.73.205.58:1935/videochat/"+info.publishName,
+                                            image: "",
+                                            width: 215,
+                                            height: 138,
+                                            controls: 'false',
+                                            icons: 'false',
+                                            modes: [
+                                                { type: "html5" },
+                                                { type: "flash", src: "./js/jwplayer/jwplayer.flash.swf" }
+                                              ],
+                                            //flashplayer: "./js/jwplayer/jwplayer.flash.swf",
+                                            events:{
+                                                onReady: function(e){
+                                                    // Fires when player is ready, can disable Play button until this is fired for all videos i.e.
+                                                },
+                                                onBuffer: function(t){
+                                                    // Buffer not exposed in RMTP playback
+                                                },
+                                                onPlay: function() {
+                                                },
+                                                onTime: function(t) {
+                                                    if ($($("#debug_display .duration")[v]).html() == ""){$($("#debug_display .duration")[v]).html(t.duration)}
+                                                    $($("#debug_display .time")[v]).html(t.position);
+                                                }
+                                            }
+                                        });
+                           jwplayer("user-video-"+(pos)).play();             
+                  }
+            }
+            
+            function currentUserAcceptConnection() {
+                var json = { "streamKey" : "${sUserMeeting.getStreamKey()}"};  
+
+              $.ajax({  
+                  url: 'rest/meeting.json',  
+                  data: JSON.stringify(json),  
+                  type: "GET",  
+
+                  beforeSend: function(xhr) {  
+                      xhr.setRequestHeader("Accept", "application/json");  
+                      xhr.setRequestHeader("Content-Type", "application/json");  
+                  },  
+                  success: function(response) {  
+                      console.log(response);
+                  }  
+              });  
+            }
+            
+            function newChatMessage(info) {
+                var str = "<p><b>"+info.username+":</b> "+info.message+"</p>";
+                $("#chatContainer").append(str);                
+            }
+            
+            function startedRecord() {
+                $('#button-record').hide();
+                var json = { "streamKey" : "${sUserMeeting.getStreamKey()}"};  
+
+                $.ajax({  
+                  url: 'rest/meeting.json',  
+                  data: JSON.stringify(json),  
+                  type: "PUT",  
+
+                  beforeSend: function(xhr) {  
+                      xhr.setRequestHeader("Accept", "application/json");  
+                      xhr.setRequestHeader("Content-Type", "application/json");  
+                  },  
+                  success: function(response) {  
+                      console.log(response);
+                  }  
+              });
+                $('#button-record-stop').show();
+            }
+            
+            function stoppedRecord() {
+                $('#button-record').show();
+                $('#button-record-stop').hide();
+            }
+            
+            function stoppedRecordAjax() {
+                var json = { "streamKey" : "${sUserMeeting.getStreamKey()}"};  
+
+                $.ajax({  
+                  url: 'rest/meeting.json',  
+                  data: JSON.stringify(json),  
+                  type: "POST",  
+
+                  beforeSend: function(xhr) {  
+                      xhr.setRequestHeader("Accept", "application/json");  
+                      xhr.setRequestHeader("Content-Type", "application/json");  
+                  },  
+                  success: function(response) {  
+                      console.log(response);
+                  }  
+              });
+            }
 		</script>
     </body>
 </html>

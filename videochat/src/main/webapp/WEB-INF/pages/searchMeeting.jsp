@@ -78,13 +78,13 @@ function search() {
      
  <c:forEach var="item" items="${listMR}">
 <tr>
-<td>${item.getTopic()}</td>
+<td><c:out value="${item.getDescription()}"/></td>
 <td>${item.getNumber_participants()}</td>
-<td>${item.getStart_record()}</td>
-<td>${item.getEnd_record()}</td>
+<td>${item.getTimestampFormatted(item.getStart_meeting(), 0)}</td>
+<td>${item.getTimestampFormatted(item.getEnd_meeting(), 0)}</td>
+<td>${item.substractTimestamps(item.getEnd_meeting(),item.getStart_meeting())}</td>
 <td></td>
-<td></td>
-</tr>
+    </tr>
 </c:forEach>
 
 <!--

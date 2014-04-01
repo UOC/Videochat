@@ -18,4 +18,15 @@ public class Constants {
     public static final String PLAYER_CUSTOM_LTI_PARAMETER = "player";
     public static final String DEBUG_CUSTOM_LTI_PARAMETER = "debug";
 
+    public static final String REASON_BLOCK_MAX_PARTICIPANTS = "REASON_MAX_PARTICIPANTS";
+    public static final String REASON_BLOCK_MAX_RECORDING = "REASON_ROOM_RECORDING";
+    
+    /********* SESSION OBJS */
+    public static final String USER_SESSION = "sUser";
+    public static final String COURSE_SESSION = "sCoruse";
+    public static final String MEETING_SESSION = "sMeeting";
+    public static final String ROOM_SESSION = "sRoom";
+    public static final String USER_METTING_SESSION = "sUserMeeting";
+    //public static final String RECORD_FOLDER = "record";
+
 }

@@ -24,13 +24,13 @@ public class RoomDaoImpl  extends CustomHibernateDaoSupport implements RoomDao {
      
     @Override
     public void save(Room room) {
-        getHibernateTemplate().save(room);
+        getHibernateTemplate().saveOrUpdate(room);
     }
 
-    @Override
+    /*@Override
     public void update(Room room) {
         getHibernateTemplate().merge(room);
-    }
+    }*/
 
     @Override
     public void delete(Room room) {

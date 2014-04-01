@@ -18,14 +18,14 @@ public interface MeetingRoomDao {
 
     void save(MeetingRoom meetingRoom);
 
-    void update(MeetingRoom meetingRoom);
+    //void update(MeetingRoom meetingRoom);
 
     void delete(MeetingRoom meetingRoom);
 
-    List<MeetingRoom> getMeetingRoomsByCourseKey(String courseKey);
+    List<MeetingRoom> findByRoomId(int meetingroomId);
 
-    MeetingRoom findByRoomCode(int meetingroomId);
-
+    MeetingRoom findByRoomIdNotFinished(int meetingroomId);
+    
     MeetingRoom findbyPath(String path);
 
 }
