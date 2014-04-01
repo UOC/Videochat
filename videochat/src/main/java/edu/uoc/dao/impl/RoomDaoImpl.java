@@ -12,6 +12,7 @@ import edu.uoc.model.Course;
 import edu.uoc.model.Room;
 import edu.uoc.util.CustomHibernateDaoSupport;
 import java.util.List;
+import org.springframework.orm.hibernate3.HibernateTemplate;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -49,8 +50,10 @@ public class RoomDaoImpl  extends CustomHibernateDaoSupport implements RoomDao {
         
     }
     
+    @Override
     public Room findByRoomKey(String roomKey){
-         List list = getHibernateTemplate().find(
+        HibernateTemplate h = getHibernateTemplate();
+         List list = h.find(
                 "from Room where room_key=?", roomKey);
         if(list.size()>0){
             return (Room) list.get(0);
