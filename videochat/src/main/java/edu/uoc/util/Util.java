@@ -6,6 +6,10 @@
 
 package edu.uoc.util;
 
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 /**
  *
  * @author antonibertranbellido
@@ -20,4 +24,36 @@ public class Util {
         return s;
     }
     
+    
+    public static String getTimestampFormatted(Timestamp ts, int format){
+        String s = "";
+        if (ts!=null) {
+        Date dayte = new Date(ts.getTime());
+            String pattern = "";
+            switch(format){
+                case 0: pattern = "dd/MM/yyyy HH:mm:ss";
+                    break;
+                case 1:
+                    pattern = "HH:mm:ss";
+                    break;
+                default:
+                    break;
+            }
+            SimpleDateFormat sdf = new SimpleDateFormat(pattern);
+            s = sdf.format(dayte);
+        }
+        return s;
+    }
+
+    public static String substractTimestamps(Timestamp end, Timestamp start){
+        SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
+        Date firstParsedDate = new Date(start.getTime());
+        Date secondParsedDate = new Date(end.getTime());
+        
+        long diff = secondParsedDate.getTime() - firstParsedDate.getTime();
+       
+        String s = dateFormat.format(new Date(diff));
+        return s;
+    }
+
 }
