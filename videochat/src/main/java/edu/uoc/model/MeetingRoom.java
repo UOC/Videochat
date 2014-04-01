@@ -6,6 +6,8 @@
 package edu.uoc.model;
 
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -183,4 +185,32 @@ public class MeetingRoom implements java.io.Serializable {
         this.end_record = end_record;
     }
 
+    public String getTimestampFormatted(Timestamp ts, int format){
+        String s = "";
+        Date dayte = new Date(ts.getTime());
+        String pattern = "";
+        switch(format){
+            case 0: pattern = "dd/MM/yyyy HH:mm:ss";
+                break;
+            case 1:
+                pattern = "HH:mm:ss";
+                break;
+            default:
+                break;
+        }
+        SimpleDateFormat sdf = new SimpleDateFormat(pattern);
+        s = sdf.format(dayte);
+        return s;
+    }
+
+    public String substractTimestamps(Timestamp end, Timestamp start){
+        SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
+        Date firstParsedDate = new Date(start.getTime());
+        Date secondParsedDate = new Date(end.getTime());
+        
+        long diff = secondParsedDate.getTime() - firstParsedDate.getTime();
+       
+        String s = dateFormat.format(new Date(diff));
+        return s;
+    }
 }

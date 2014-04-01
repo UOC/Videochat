@@ -80,16 +80,9 @@ function search() {
 <tr>
 <td><c:out value="${item.getDescription()}"/></td>
 <td>${item.getNumber_participants()}</td>
-<td>${item.getStart_meeting()}</td>
-<td>${item.getEnd_meeting()}</td>
-<td><span id="length"></span><script>
-    var el = document.getElementById('length');
-    if(!${item.getEnd_meeting()}){
-        el.html = ${item.getEnd_meeting()} - ${item.getStart_meeting()};
-    }
-    else{
-        e1.html = 'TEST';
-    }</script> </td>
+<td>${item.getTimestampFormatted(item.getStart_meeting(), 0)}</td>
+<td>${item.getTimestampFormatted(item.getEnd_meeting(), 0)}</td>
+<td>${item.substractTimestamps(item.getEnd_meeting(),item.getStart_meeting())}</td>
 <td></td>
     </tr>
 </c:forEach>
