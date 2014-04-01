@@ -44,6 +44,13 @@ public class MeetingRoomController {
     @RequestMapping("/searchMeeting")
     public ModelAndView getMeetingRooms(HttpSession session){
         ModelAndView model = new ModelAndView("searchMeeting");
+        try{
+            Room room = (Room)session.getAttribute(Constants.ROOM_SESSION);
+            User user = (User) session.getAttribute(Constants.USER_SESSION);
+        }
+        catch(IllegalStateException ISE){
+             System.err.println("IllegalStateException: " + ISE.getMessage());
+        }
         Room room = (Room)session.getAttribute(Constants.ROOM_SESSION);
         User user = (User) session.getAttribute(Constants.USER_SESSION);
         if (user!=null && room!=null) {
@@ -51,7 +58,7 @@ public class MeetingRoomController {
             model.addObject("course", session.getAttribute(Constants.COURSE_SESSION));
             model.addObject("room", room);
             //get the list of current participants
-            List<MeetingRoom> listMR = meetingDao.getMeetingRoomsByCourseKey(room.getKey());
+            List<MeetingRoom> listMR = meetingDao.findByRoomId(room.getId());
             model.addObject("listMR", listMR);
         } else {
             model.setViewName("errorSession");

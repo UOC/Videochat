@@ -22,9 +22,7 @@ public interface MeetingRoomDao {
 
     void delete(MeetingRoom meetingRoom);
 
-    List<MeetingRoom> getMeetingRoomsByCourseKey(String courseKey);
-
-    MeetingRoom findByRoomCode(int meetingroomId);
+    List<MeetingRoom> findByRoomId(int meetingroomId);
 
     MeetingRoom findbyPath(String path);
 

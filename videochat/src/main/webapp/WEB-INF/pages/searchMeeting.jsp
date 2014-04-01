@@ -78,13 +78,20 @@ function search() {
      
  <c:forEach var="item" items="${listMR}">
 <tr>
-<td>${item.getTopic()}</td>
+<td><c:out value="${item.getDescription()}"/></td>
 <td>${item.getNumber_participants()}</td>
-<td>${item.getStart_record()}</td>
-<td>${item.getEnd_record()}</td>
+<td>${item.getStart_meeting()}</td>
+<td>${item.getEnd_meeting()}</td>
+<td><span id="length"></span><script>
+    var el = document.getElementById('length');
+    if(!${item.getEnd_meeting()}){
+        el.html = ${item.getEnd_meeting()} - ${item.getStart_meeting()};
+    }
+    else{
+        e1.html = 'TEST';
+    }</script> </td>
 <td></td>
-<td></td>
-</tr>
+    </tr>
 </c:forEach>
 
 <!--
