@@ -45,7 +45,11 @@
             <div class="row wrapper_recorder">
                 <div class="col-md-8 player"><div class="my-inner">
                     <!-- TEST PLAY BUTTON -->
-                    <button id="play-pause" type="button" class="btn btn-default">PLAY / PAUSE</button>
+                    <button id="play-pause" type="button" class="btn btn-warning" title="Play"><span class="glyphicon glyphicon-play" id="glyphicon-play"></button> ${item.getTotal_time_txt()}
+                    <section>   
+                            <span class="tooltip2"></span>   
+                            <div id="sliderPlay"></div>  
+                        </section> 
                 </div></div>
                 <div class="col-md-4">
                         <section>   
@@ -274,9 +278,42 @@
                       tooltip.fadeOut('fast');  
                     },  
                 });  
+                var sliderPlay = $('#sliderPlay'),  
+                    tooltipPlay = $('.tooltipPlay');  
+
+                tooltipPlay.hide();  
+
+                sliderPlay.slider({  
+                    range: "min",  
+                    min: 1,  
+                    value: 0,  
+
+                    start: function(event,ui) {  
+                      tooltipPlay.fadeIn('fast');  
+                    },  
+
+                    slide: function(event, ui) {  
+
+                        var value = sliderPlay.slider('value');
+                        $(array_streams).each(function(p){
+                            jwplayer("user-video-"+(p+1)).seek(duration_video*(value/100));    
+                        });
+
+                        tooltipPlay.css('left', value).text(ui.value);  
+
+
+                    },  
+
+                    stop: function(event,ui) {  
+                      tooltipPlay.fadeOut('fast');  
+                    },  
+                });  
+                               
                 });
+            var duration_video = 0;    
             var playing = false;
             var array_streams = Array();
+            var array_durations = Array();
             function registeredUser(info) {
                 var pos = returnPositionUser(info.userkey, array_streams);
                 streamObj = new StreamObject(info.userkey, info.username, info.publishName);
@@ -311,8 +348,10 @@
                                                 },
                                                 onBuffer: function(t){
                                                     // Buffer not exposed in RMTP playback
+                                                    duration_video = this.getDuration();              
                                                 },
                                                 onPlay: function() {
+                                                    duration_video = this.getDuration();              
                                                 },
                                                 onTime: function(t) {
                                                 }
@@ -327,6 +366,8 @@
                             jwplayer("user-video-"+(p+1)).pause();
                         });
                         playing = false;
+                        $("#glyphicon-play").removeClass("glyphicon-pause");
+                        $("#glyphicon-play").addClass("glyphicon-play");
                     } else {
                         $(array_streams).each(function(p){
                             // if (p == 0){setTimeout()}
@@ -334,6 +375,8 @@
                             jwplayer("user-video-"+(p+1)).setVolume(currentVolume);
                         });
                         playing = true;
+                        $("#glyphicon-play").removeClass("glyphicon-play");
+                        $("#glyphicon-play").addClass("glyphicon-pause");
                     }
                 });
 
