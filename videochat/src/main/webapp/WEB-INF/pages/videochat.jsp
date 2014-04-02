@@ -21,6 +21,7 @@
         <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap-theme.min.css">
         <link rel="stylesheet" href="css/general.css">
         <script type="text/javascript" src="js/swfobject.js" ></script>
+        <script type="text/javascript" src="js/videochat.js" ></script>
         <!-- VIDEO PLAYER JS -->
         <script type="text/javascript" src="js/jwplayer/jwplayer.js"></script>
 	</head>	
@@ -333,23 +334,9 @@
                 flash.startRecordFromJS();
             }
             var array_streams = Array();
-            function StreamObject(userkey, username, publishName) {
-                this.userkey = userkey;
-                this.username = username;
-                this.publishName = publishName;
-            }
-            function returnPositionUser(userkey){
-                var pos = -1;
-                for(i=0; i<array_streams.length; i++) {
-                    if (array_streams[i].userkey===userkey) {
-                        pos = i;
-                        break;
-                    }
-                }
-                return pos;
-            }
+           
             function registeredUser(info) {
-                var pos = returnPositionUser(info.userkey);
+                var pos = returnPositionUser(info.userkey, array_streams);
                 streamObj = new StreamObject(info.userkey, info.username, info.publishName);
                 if (array_streams.length<6 || pos>=0) {
                     if (pos<0) {
@@ -410,7 +397,9 @@
             }
             
             function newChatMessage(info) {
-                var str = "<p><b>"+info.username+":</b> "+info.message+"</p>";
+                var dt = new Date();
+                var time = dt.getHours() + ":" + dt.getMinutes() + ":" + dt.getSeconds();
+                var str = "<p><b>"+time+" - "+info.username+":</b> "+info.message+"</p>";
                 $("#chatContainer").append(str);  
                 var height = $("#chatContainer").get(0).scrollHeight;
                 $("#chatContainer").scrollTop(height);
@@ -537,7 +526,7 @@
             
             function disconnectedUser(info) {
                 if (!meeting_is_closed) {
-                    var pos = returnPositionUser(info.userkey);
+                    var pos = returnPositionUser(info.userkey, array_streams);
                     if (pos>=0) {
                        var array_streams_temp = array_streams;
                        removeByIndex(array_streams_temp, pos);

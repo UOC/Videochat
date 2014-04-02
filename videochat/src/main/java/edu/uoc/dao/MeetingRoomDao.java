@@ -22,9 +22,11 @@ public interface MeetingRoomDao {
 
     void delete(MeetingRoom meetingRoom);
 
-    List<MeetingRoom> findByRoomId(int meetingroomId);
+    List<MeetingRoom> findByRoomId(int meetingroomId, boolean onlyRecorded);
 
     MeetingRoom findByRoomIdNotFinished(int meetingroomId);
+    
+    MeetingRoom findById(int id);
     
     MeetingRoom findbyPath(String path);
 

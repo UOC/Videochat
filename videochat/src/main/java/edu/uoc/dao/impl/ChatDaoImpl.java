@@ -9,7 +9,6 @@ package edu.uoc.dao.impl;
 import edu.uoc.dao.ChatDao;
 import edu.uoc.model.Chat;
 import edu.uoc.model.MeetingRoom;
-import edu.uoc.model.UserMeeting;
 import edu.uoc.util.CustomHibernateDaoSupport;
 import java.util.List;
 import org.springframework.stereotype.Repository;
@@ -32,8 +31,8 @@ public class ChatDaoImpl extends CustomHibernateDaoSupport implements ChatDao{
     }
 
     @Override
-    public List<UserMeeting> findByMeetingId(MeetingRoom meeting) {
-        List list = getHibernateTemplate().find("from Chat where meeting_id = ?", meeting.getId());
+    public List<Chat> findByMeetingId(MeetingRoom meeting) {
+        List list = getHibernateTemplate().find("from Chat where chat_meeting_room_id = ?", meeting.getId());
         return list;
     }
     

@@ -7,7 +7,6 @@
 package edu.uoc.dao;
 
 import edu.uoc.model.Chat;
-import edu.uoc.model.UserMeeting;
 import edu.uoc.model.MeetingRoom;
 import java.util.List;
 
@@ -21,6 +20,6 @@ public interface ChatDao {
     
     void delete (Chat chat);
     
-    public List<UserMeeting> findByMeetingId(MeetingRoom umID);
+    public List<Chat> findByMeetingId(MeetingRoom umID);
     
 }

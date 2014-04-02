@@ -78,14 +78,14 @@ function search() {
      
  <c:forEach var="item" items="${listMR}">
 <tr>
-<td><c:out value="${item.getDescription()}"/></td>
+<td><c:out value="${item.getTopic()}"/></td>
 <td><c:forEach items="${item.getParticipants()}" var="participant">
         ${participant.getPk().getUser().getFullname()},  
      </c:forEach></td>
 <td>${item.getStart_meeting_txt()}</td>
 <td>${item.getEnd_meeting_txt()}</td>
 <td>${item.getTotal_time_txt()}</td>
-<td></td>
+<td><a href="player.htm?id=${item.getId()}">View</a></td>
     </tr>
 </c:forEach>  
 </table>

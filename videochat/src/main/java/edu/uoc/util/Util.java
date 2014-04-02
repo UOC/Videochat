@@ -33,6 +33,8 @@ public class Util {
             switch(format){
                 case Constants.FORMAT_DATETIME: pattern = "dd/MM/yyyy HH:mm:ss";
                     break;
+                case Constants.FORMAT_DATE: pattern = "dd/MM/yyyy";
+                    break;
                 case Constants.FORMAT_TIME:
                     pattern = "HH:mm:ss";
                     break;

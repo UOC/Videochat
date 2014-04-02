@@ -37,10 +37,14 @@ public class MeetingRoomDaoImpl extends CustomHibernateDaoSupport implements Mee
     }
 
     @Override
-    public List<MeetingRoom> findByRoomId(int roomId) {
+    public List<MeetingRoom> findByRoomId(int roomId, boolean onlyRecorded) {
 
+        String extraSQL = "";
+        if (onlyRecorded) {
+            extraSQL = " and meeting_room_recorded = 1 ";
+        }
         List list = getHibernateTemplate().find(
-                "from MeetingRoom where room_id=?", roomId);
+                "from MeetingRoom where room_id=?" + extraSQL, roomId);
         if (list.size() > 0) {
             return list;
         } else {
@@ -59,6 +63,19 @@ public class MeetingRoomDaoImpl extends CustomHibernateDaoSupport implements Mee
             return null;
         }
     }
+    
+    @Override
+    public MeetingRoom findById(int id) {
+
+        List list = getHibernateTemplate().find(
+                "from MeetingRoom where id=? ", id);
+        if (list.size() > 0) {
+            return (MeetingRoom)list.get(0);
+        } else {
+            return null;
+        }
+    }
+
 
     @Override
     public MeetingRoom findbyPath(String path) {

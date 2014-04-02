@@ -1,5 +1,6 @@
 package edu.uoc.common.controller;
 
+import edu.uoc.dao.ChatDao;
 import edu.uoc.dao.CourseDao;
 import edu.uoc.dao.MeetingRoomDao;
 import edu.uoc.dao.RoomDao;
@@ -9,6 +10,7 @@ import edu.uoc.dao.UserMeetingDao;
 import edu.uoc.lti.LTIEnvironment;
 import edu.uoc.model.Course;
 import edu.uoc.model.MeetingRoom;
+import edu.uoc.model.MeetingRoomExtended;
 import edu.uoc.model.Room;
 import edu.uoc.model.User;
 import edu.uoc.model.UserCourse;
@@ -27,6 +29,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.context.ContextLoader;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.bind.support.SessionStatus;
@@ -38,24 +41,51 @@ public class UserController {
 
     @Autowired
     private UserDao userDao;
+    @Autowired
+    private MeetingRoomDao meetingroomDao;
+    @Autowired
+    private UserMeetingDao userMeetingDao;
+    @Autowired
+    private ChatDao chatMeetingDao;
+                    
 
     @RequestMapping("/player")
-
-    public ModelAndView handleRequestInternal(HttpSession session) {
+    public ModelAndView handleRequestInternal(@RequestParam(value = "id") int id,
+            HttpSession session) {
 
         ModelAndView model = new ModelAndView("player");
         Room room = (Room)session.getAttribute(Constants.ROOM_SESSION);
         User user = (User) session.getAttribute(Constants.USER_SESSION);
         if (user!=null && room!=null) {
-            model.addObject("user", user);
-            model.addObject("course", session.getAttribute(Constants.COURSE_SESSION));
-            model.addObject("room", room);
-            model.addObject("wowza_stream_server", Constants.WOWZA_STREAM_SERVER);
-            //get the list of current participants
-            ApplicationContext context = ContextLoader.getCurrentWebApplicationContext();
-            UserMeetingDao userMeetingDao = context.getBean(UserMeetingDao.class);
-            //List<UserMeeting> participants = userMeetingDao.findUsersByMeetingId(meeting, -1, true);
-            //model.addObject("participants", participants);
+            MeetingRoom meeting = meetingroomDao.findById(id);
+            if (meeting.getId()>0) {
+                model.addObject("user", user);
+                MeetingRoomExtended meeting_extended = new MeetingRoomExtended(meeting);
+                meeting_extended.setParticipants(userMeetingDao.findUsersByMeetingId(meeting, -1, true));
+                meeting_extended.setEnd_meeting_txt(Util.getTimestampFormatted(meeting_extended.getEnd_meeting(), Constants.FORMAT_DATETIME));
+                meeting_extended.setStart_meeting_txt(Util.getTimestampFormatted(meeting_extended.getStart_meeting(), Constants.FORMAT_DATETIME));
+                meeting_extended.setEnd_record_txt(Util.getTimestampFormatted(meeting_extended.getEnd_record(), Constants.FORMAT_DATETIME));
+                meeting_extended.setStart_record_txt(Util.getTimestampFormatted(meeting_extended.getStart_record(), Constants.FORMAT_DATETIME));
+                
+                meeting_extended.setEnd_meeting_date_txt(Util.getTimestampFormatted(meeting_extended.getEnd_meeting(), Constants.FORMAT_DATE));
+                meeting_extended.setStart_meeting_date_txt(Util.getTimestampFormatted(meeting_extended.getStart_meeting(), Constants.FORMAT_DATE));
+                meeting_extended.setEnd_record_date_txt(Util.getTimestampFormatted(meeting_extended.getEnd_record(), Constants.FORMAT_DATE));
+                meeting_extended.setStart_record_date_txt(Util.getTimestampFormatted(meeting_extended.getStart_record(), Constants.FORMAT_DATE));
+
+                meeting_extended.setEnd_meeting_time_txt(Util.getTimestampFormatted(meeting_extended.getEnd_meeting(), Constants.FORMAT_TIME));
+                meeting_extended.setStart_meeting_time_txt(Util.getTimestampFormatted(meeting_extended.getStart_meeting(), Constants.FORMAT_TIME));
+                meeting_extended.setEnd_record_time_txt(Util.getTimestampFormatted(meeting_extended.getEnd_record(), Constants.FORMAT_TIME));
+                meeting_extended.setStart_record_time_txt(Util.getTimestampFormatted(meeting_extended.getStart_record(), Constants.FORMAT_TIME));
+
+                meeting_extended.setTotal_time_txt(Util.substractTimestamps(meeting_extended.getEnd_meeting(),meeting_extended.getStart_meeting()));
+                meeting_extended.setChat(chatMeetingDao.findByMeetingId(meeting));
+                model.addObject("course", session.getAttribute(Constants.COURSE_SESSION));
+                model.addObject("room", room);
+                model.addObject("meeting", meeting_extended);
+                model.addObject("wowza_stream_server", Constants.WOWZA_STREAM_SERVER);
+            } else {
+                model.setViewName("errorMeetingNotFound");
+            } 
         } else {
             model.setViewName("errorSession");
         }
@@ -138,7 +168,6 @@ public class UserController {
                     CourseDao courseDao = context.getBean(CourseDao.class);
                     UserCourseDao userCourseDao = context.getBean(UserCourseDao.class);
                     RoomDao roomDao = context.getBean(RoomDao.class);
-                    MeetingRoomDao meetingroomDao = context.getBean(MeetingRoomDao.class);
                     UserMeetingDao userMeetingDao = context.getBean(UserMeetingDao.class);
 
                     //4. Get course data
@@ -244,7 +273,8 @@ public class UserController {
                                 meeting.setNumber_participants(1);
                                 meeting.setPath(pathMeeting);
                                 meeting.setRecorded((byte) 0);
-                                meeting.setDescription(room.getLabel());
+                                meeting.setTopic(room.getLabel());
+                                meeting.setDescription(null);
                                 meeting.setStart_meeting(new Timestamp(date.getTime()));
                                 meeting.setStart_record(null);
                                 meeting.setEnd_record(null);

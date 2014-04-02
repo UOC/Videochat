@@ -33,6 +33,7 @@ public class Constants {
     public static final String WOWZA_STREAM_SERVER = "184.73.205.58";
     
     public static final int FORMAT_DATETIME = 1;
-    public static final int FORMAT_TIME = 2;
+    public static final int FORMAT_DATE = 2;
+    public static final int FORMAT_TIME = 3;
 
 }

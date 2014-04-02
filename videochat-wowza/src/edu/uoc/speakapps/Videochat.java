@@ -32,6 +32,7 @@ public class Videochat extends ModuleBase {
 		props.setProperty("username", params.getString(PARAM1));
 		props.setProperty("room", params.getString(PARAM2));
 		props.setProperty("publishName", params.getString(PARAM3));
+		props.setProperty("userkey", params.getString(PARAM4));
 		getLogger().info("Videochat speakapps - username: " + params.getString(PARAM1));
 		getLogger().info("Videochat speakapps - room: " + params.getString(PARAM2));
 		getLogger().info("Videochat speakapps - publishName: " + params.getString(PARAM3));
@@ -62,13 +63,18 @@ public class Videochat extends ModuleBase {
 	 * @param client
 	 */
 	public void onDisconnect(IClient client) {
+		WMSProperties props = client.getProperties();
+		String userkey =  props.getPropertyStr("userkey");
+		String username =  props.getPropertyStr("username");
+		String room =  props.getPropertyStr("room");
 		getLogger().info("Videochat speakapps - onDisconnect: " + client.getClientId());
+		_appInstance.broadcastMsg("disconnectUserClient", new AMFDataItem(userkey), new AMFDataItem(username), new AMFDataItem(room));
 	}
 	
 
 	// Client call functions ******************
 	/**
-	 * Send a message to a client
+	 * Start Record
 	 * @param client
 	 * @param function
 	 * @param params
@@ -78,11 +84,11 @@ public class Videochat extends ModuleBase {
 		WMSProperties props = client.getProperties();
 		String username =  props.getPropertyStr("username");
 		String room =  props.getPropertyStr("room");
-		getLogger().error("Videochat speakapps - startRecordClient "+room);
+		getLogger().info("Videochat speakapps - startRecordClient "+room);
 		_appInstance.broadcastMsg("startRecordClient", new AMFDataItem(username), new AMFDataItem(room));
 	}
 	/**
-	 * Send a message to a client
+	 * Stop Record
 	 * @param client
 	 * @param function
 	 * @param params
@@ -92,8 +98,22 @@ public class Videochat extends ModuleBase {
 		WMSProperties props = client.getProperties();
 		String username =  props.getPropertyStr("username");
 		String room =  props.getPropertyStr("room");
-		getLogger().error("Videochat speakapps - stopRecordClient "+room);
+		getLogger().info("Videochat speakapps - stopRecordClient "+room+" username "+username);
 		_appInstance.broadcastMsg("stopRecordClient", new AMFDataItem(username), new AMFDataItem(room));
+	}
+	/**
+	 * Close
+	 * @param client
+	 * @param function
+	 * @param params
+	 */
+	public void closeSession(IClient client, RequestFunction function,
+			AMFDataList params) {
+		WMSProperties props = client.getProperties();
+		String username =  props.getPropertyStr("username");
+		String room =  props.getPropertyStr("room");
+		getLogger().info("Videochat speakapps - closeSession "+room);
+		_appInstance.broadcastMsg("closeSessionClient", new AMFDataItem(username), new AMFDataItem(room));
 	}
 	/**
 	 * Register a new user
@@ -104,11 +124,12 @@ public class Videochat extends ModuleBase {
 	public void registerUser(IClient client, RequestFunction function,
 			AMFDataList params) {
 		WMSProperties props = client.getProperties();
+		String userkey =  props.getPropertyStr("userkey");
 		String username =  props.getPropertyStr("username");
 		String room =  props.getPropertyStr("room");
 		String publishName =  props.getPropertyStr("publishName");
 		getLogger().info("Videochat speakapps - registerUser username: "+username+" room: "+room+" publishName: "+publishName);
-		_appInstance.broadcastMsg("registeredUser", new AMFDataItem(username), new AMFDataItem(room), new AMFDataItem(publishName));
+		_appInstance.broadcastMsg("registeredUser", new AMFDataItem(userkey), new AMFDataItem(username), new AMFDataItem(room), new AMFDataItem(publishName));
 	}
 
 	/**
@@ -120,12 +141,13 @@ public class Videochat extends ModuleBase {
 	public void sendChatMessage(IClient client, RequestFunction function,
 			AMFDataList params) {
 		WMSProperties props = client.getProperties();
+		String userkey =  props.getPropertyStr("userkey");
 		String username =  props.getPropertyStr("username");
 		String room =  props.getPropertyStr("room");
 		String message = params.getString(PARAM1);
 		if (message!=null && message.length()>0) {
 			getLogger().info("Videochat speakapps - sendChatMessage username: "+username+" room: "+room+" message: "+message);
-			_appInstance.broadcastMsg("newChatMessage", new AMFDataItem(username), new AMFDataItem(room), new AMFDataItem(message));
+			_appInstance.broadcastMsg("newChatMessage", new AMFDataItem(userkey), new AMFDataItem(username), new AMFDataItem(room), new AMFDataItem(message));
 		}
 	}
 	// *************

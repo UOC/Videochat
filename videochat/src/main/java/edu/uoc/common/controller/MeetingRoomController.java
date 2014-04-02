@@ -59,7 +59,7 @@ public class MeetingRoomController {
             model.addObject("course", session.getAttribute(Constants.COURSE_SESSION));
             model.addObject("room", room);
             //get the list of current participants
-            List<MeetingRoom> listMR = meetingDao.findByRoomId(room.getId());
+            List<MeetingRoom> listMR = meetingDao.findByRoomId(room.getId(), true);
             List<MeetingRoomExtended> listMRE = new ArrayList<MeetingRoomExtended>();
             MeetingRoomExtended meeting_extended;
             MeetingRoom meeting;

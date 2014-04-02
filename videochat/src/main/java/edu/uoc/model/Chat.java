@@ -6,6 +6,8 @@
 
 package edu.uoc.model;
 
+import edu.uoc.util.Constants;
+import edu.uoc.util.Util;
 import java.sql.Timestamp;
 import javax.persistence.AssociationOverride;
 import javax.persistence.AssociationOverrides;
@@ -131,7 +133,9 @@ public class Chat implements java.io.Serializable{
         this.chat_message = chat_message;
     }
     
-    
+    public String getChat_sent_time_txt() {
+        return Util.getTimestampFormatted(chat_sent_time, Constants.FORMAT_TIME);
+    }
     
     
     

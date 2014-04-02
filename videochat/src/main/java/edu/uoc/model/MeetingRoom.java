@@ -39,6 +39,9 @@ public class MeetingRoom implements java.io.Serializable {
     @JoinColumn(name = "room_id")
     private Room id_room;
 
+    @Column(name = "meeting_room_topic", length = 255)
+    private String topic;
+    
     @Column(name = "meeting_room_description", length = 255)
     private String description;
 
@@ -182,5 +185,19 @@ public class MeetingRoom implements java.io.Serializable {
 
     public void setEnd_record(Timestamp end_record) {
         this.end_record = end_record;
+    }
+
+    /**
+     * @return the topic
+     */
+    public String getTopic() {
+        return topic;
+    }
+
+    /**
+     * @param topic the topic to set
+     */
+    public void setTopic(String topic) {
+        this.topic = topic;
     }
 }
