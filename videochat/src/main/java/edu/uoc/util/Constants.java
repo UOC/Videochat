@@ -28,5 +28,8 @@ public class Constants {
     public static final String ROOM_SESSION = "sRoom";
     public static final String USER_METTING_SESSION = "sUserMeeting";
     //public static final String RECORD_FOLDER = "record";
+    
+    //TODO put in propertiest
+    public static final String WOWZA_STREAM_SERVER = "184.73.205.58";
 
 }

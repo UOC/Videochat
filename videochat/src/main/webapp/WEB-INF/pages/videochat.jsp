@@ -23,7 +23,6 @@
         <script type="text/javascript" src="js/swfobject.js" ></script>
         <!-- VIDEO PLAYER JS -->
         <script type="text/javascript" src="js/jwplayer/jwplayer.js"></script>
-
 	</head>	
     <body>
     	<!-- modal que apareix al carregar la pàgina-->
@@ -61,8 +60,8 @@
             		</div>
             		<div class="modal-footer">
             			<button type="button" class="btn btn-warning">Cancel</button>
-                        <button type="button" class="btn btn-warning">Stop</button>
-                        <button type="button" class="btn btn-warning">Save and close</button>
+                        <button type="button" class="btn btn-warning" onclick="stopRecordRequest()">Stop</button>
+                        <button type="button" class="btn btn-warning" onclick="closeMeetingRequest()">Save and close</button>
             		</div>
             	</div><!-- /.modal-content -->
             </div><!-- /.modal-dialog -->
@@ -150,7 +149,7 @@
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-                                    <button type="button" class="btn btn-warning">Continue</button>
+                                    <button type="button" class="btn btn-warning" onclick="closeMeetingRequest()">Continue</button>
                                 </div>
                             </div><!-- /.modal-content -->
                         </div><!-- /.modal-dialog -->
@@ -164,8 +163,8 @@
                         <div class="row header_participants">
                             <h4 class="col-md-10 col-xs-6">Participants</h4>
                             <div class="btn-group col-md-2 col-xs-6">
-                                <button type="button" class="btn btn-warning"><span class="glyphicon glyphicon-repeat"></span></button>
-                                <button type="button" class="btn btn-warning"><span class="glyphicon glyphicon-cog"></span></button>
+                                <button type="button" class="btn btn-warning" id="button-reload"><span class="glyphicon glyphicon-repeat"></span></button>
+                                <button type="button" class="btn btn-warning" id="button-configuration"><span class="glyphicon glyphicon-cog"></span></button>
                             </div>
                         </div>
                         <div class="row">
@@ -231,19 +230,18 @@
             </div>
                                     
                                     
-            <div id="debug_display">
-                <h4>Debug Data</h4>
-                <span class="time"></span> (<span class="duration"></span>) : <span class="time"></span> (<span class="duration"></span>) : <span class="time"></span> (<span class="duration"></span>) :
-                <span class="time"></span> (<span class="duration"></span>) : <span class="time"></span> (<span class="duration"></span>) : <span class="time"></span> (<span class="duration"></span>)
-            </div>
                         
         </div>  
         <!-- jQuery -->
         <script src="http://code.jquery.com/jquery-latest.min.js" type="text/javascript"></script> 
         <!-- Include all compiled plugins (below), or include individual files as needed -->
         <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+        <script type="text/javascript" src="js/bootbox.min.js"></script>
         <script>
+            var meeting_is_recorded = ${is_recorded};
+            var meeting_is_closed = false;
             $( document ).ready(function() {
+                
                 $('#button-record-stop').hide();
                 $('#button-volume').hide();
                 $('#button-record').hide();
@@ -251,7 +249,7 @@
                 $('#button-sendMessage').hide();
                 
                 <c:forEach items="${participants}" var="item">
-                    var participant = new StreamObject("${item.getPk().getUser().getFullname()}", "${item.getStreamKey()}");
+                    var participant = new StreamObject("${item.getPk().getUser().getUsername()}", "${item.getPk().getUser().getFullname()}", "${item.getStreamKey()}");
                     registeredUser(participant);
                  </c:forEach>  
                 $("#button-sendMessage").click(
@@ -263,7 +261,17 @@
                     if(e.keyCode == 13){
                         sendChatMessage();
                     }
-                })
+                });
+                $("#button-reload").click(
+                   function() {
+                        location.reload();
+                    }     
+                );
+                $("#button-configuration").click(
+                   function() {
+                        bootbox.alert("Manage configuration is not available yet", function() {});
+                    }     
+                );
             });
             function sendChatMessage() {
                 var message = $("#messageTxt").val();
@@ -271,30 +279,14 @@
 
                     var flash = swfobject.getObjectById("videochat_stream_id");
                     flash.sendChatMessage(message);
-                    $("#messageTxt").val("");
-                    var json = { "message" : message};  
-
-                    $.ajax({  
-                        url: 'rest/chat.json',  
-                        data: JSON.stringify(json),  
-                        type: "POST",  
-
-                        beforeSend: function(xhr) {  
-                            xhr.setRequestHeader("Accept", "application/json");  
-                            xhr.setRequestHeader("Content-Type", "application/json");  
-                        },  
-                        success: function(response) {  
-                            console.log(response);
-                        }  
-                    });  
-
                 }
             }
             var swf_is_ready = false;
             var flashvars = {
               debug: "0",
               publishName: "${fn:replace(sUserMeeting.getStreamKey(), ":", ".")}",
-              rmtpServer: "rtmp://184.73.205.58/videochat",
+              rmtpServer: "rtmp://${wowza_stream_server}/videochat",
+              userkey: "${sUser.getUsername()}",
               username: "${sUser.getFullname()}",
               roomID: "${sMeeting.getPath()}",
             };
@@ -307,7 +299,6 @@
         
             function setSWFIsReady() {
                 swf_is_ready= true;
-                //alert("swf_is_ready");
                 $('#button-volume').show();
                 $('#button-record').show();
                 $('#button-archive').show();
@@ -319,36 +310,54 @@
                 flash.stopRecordFromJS();
             }
             
+            function closeMeetingRequest(){
+                if (meeting_is_recorded) {
+                    if ($('#button-record-stop').is(":visible") ) {
+                        stopRecordRequest();
+                    }
+                    var flash = swfobject.getObjectById("videochat_stream_id");
+                    flash.closeMeetingFromJS();
+                } else {
+                    bootbox.alert("The meeting has to be recorded to close it");
+                }
+            }
+            
             function startRecordRequest(){
                 var flash = swfobject.getObjectById("videochat_stream_id");
                 flash.startRecordFromJS();
             }
             var array_streams = Array();
-            function StreamObject(username, publishName) {
+            function StreamObject(userkey, username, publishName) {
+                this.userkey = userkey;
                 this.username = username;
                 this.publishName = publishName;
             }
-            function returnPositionUser(username){
+            function returnPositionUser(userkey){
                 var pos = -1;
                 for(i=0; i<array_streams.length; i++) {
-                    if (array_streams[i].username==username) {
-                        post = i;
+                    if (array_streams[i].userkey===userkey) {
+                        pos = i;
                         break;
                     }
                 }
                 return pos;
             }
             function registeredUser(info) {
-                if (returnPositionUser(info.username)>=0) {
-                    return;
-                }
-                streamObj = new StreamObject(info.username, info.publishName);
-                if (array_streams.length<6) {
-                    array_streams.push(streamObj);
-                    pos = array_streams.length+1;
+                var pos = returnPositionUser(info.userkey);
+                streamObj = new StreamObject(info.userkey, info.username, info.publishName);
+                if (array_streams.length<6 || pos>=0) {
+                    if (pos<0) {
+                        array_streams.push(streamObj);
+                        pos = array_streams.length+1;
+                    } else {
+                        //canviem
+                        var array_streams_temp = array_streams;
+                        array_streams_temp.splice(index, 1, streamObj);
+                        array_streams = array_streams_temp;
+                    }
                     $("#nom-"+pos).html(info.username);
                     jwplayer("user-video-"+(pos)).setup({
-                                            file: "rtmp://184.73.205.58:1935/videochat/"+info.publishName,
+                                            file: "rtmp://${wowza_stream_server}:1935/videochat/"+info.publishName,
                                             image: "",
                                             width: 215,
                                             height: 138,
@@ -369,8 +378,6 @@
                                                 onPlay: function() {
                                                 },
                                                 onTime: function(t) {
-                                                    if ($($("#debug_display .duration")[v]).html() == ""){$($("#debug_display .duration")[v]).html(t.duration)}
-                                                    $($("#debug_display .time")[v]).html(t.position);
                                                 }
                                             }
                                         });
@@ -379,7 +386,7 @@
             }
             
             function currentUserAcceptConnection() {
-                var json = { "streamKey" : "${sUserMeeting.getStreamKey()}"};  
+                var json = { "request" : "${sUserMeeting.getStreamKey()}"};  
 
               $.ajax({  
                   url: 'rest/meeting.json',  
@@ -398,12 +405,33 @@
             
             function newChatMessage(info) {
                 var str = "<p><b>"+info.username+":</b> "+info.message+"</p>";
-                $("#chatContainer").append(str);                
+                $("#chatContainer").append(str);  
+                var height = $("#chatContainer").get(0).scrollHeight;
+                $("#chatContainer").scrollTop(height);
+                if (info.userkey=="${sUser.getUsername()}") {
+                    $("#messageTxt").val("");
+                    var json = { "request" : message};  
+
+                    $.ajax({  
+                        url: 'rest/chat.json',  
+                        data: JSON.stringify(json),  
+                        type: "POST",  
+
+                        beforeSend: function(xhr) {  
+                            xhr.setRequestHeader("Accept", "application/json");  
+                            xhr.setRequestHeader("Content-Type", "application/json");  
+                        },  
+                        success: function(response) {  
+                            console.log(response);
+                        }  
+                    });      
+                }
             }
             
             function startedRecord() {
                 $('#button-record').hide();
-                var json = { "streamKey" : "${sUserMeeting.getStreamKey()}"};  
+                meeting_is_recorded = true;
+                var json = { "request" : "${sUserMeeting.getStreamKey()}"};  
 
                 $.ajax({  
                   url: 'rest/meeting.json',  
@@ -427,7 +455,7 @@
             }
             
             function stoppedRecordAjax() {
-                var json = { "streamKey" : "${sUserMeeting.getStreamKey()}"};  
+                var json = { "request" : "${sUserMeeting.getStreamKey()}"};  
 
                 $.ajax({  
                   url: 'rest/meeting.json',  
@@ -443,6 +471,75 @@
                   }  
               });
             }
+            
+            function closeSessionAjax() {
+                var json = { "request" : "${sUserMeeting.getStreamKey()}"};  
+
+                $.ajax({  
+                  url: 'rest/meeting.json',  
+                  data: JSON.stringify(json),  
+                  type: "DELETE",  
+
+                  beforeSend: function(xhr) {  
+                      xhr.setRequestHeader("Accept", "application/json");  
+                      xhr.setRequestHeader("Content-Type", "application/json");  
+                  },  
+                  success: function(response) {  
+                      console.log(response);
+                  }  
+              });
+            }
+            
+            function closedSession() {
+                meeting_is_closed = true;
+                $('#button-record-stop').hide();
+                $('#button-volume').hide();
+                $('#button-record').hide();
+                $('#button-archive').hide();
+                $('#button-sendMessage').hide();
+                bootbox.alert("The session has been closed", function() {
+                    location.href = "searchMeeting.htm";
+                });
+            }
+            
+            function removeByIndex(arr, index) {
+                arr.splice(index, 1);
+            }
+            function disconnectedUser(info) {
+                if (!meeting_is_closed) {
+                    var pos = returnPositionUser(info.userkey);
+                    if (pos>=0) {
+                       var array_streams_temp = array_streams;
+                       removeByIndex(array_streams_temp, pos);
+                       for( i=2; i<6; i++) {
+                          $("#nom-"+i).html(''); 
+                          $("#user-video-"+i).html('<img src="css/images/participant.png" alt="participant 4">'); 
+                       }
+                       array_streams = Array();
+                       for( i=0; i<array_streams_temp.length; i++) {
+                          registeredUser(array_streams_temp[i]);
+                       }
+                        var json = { "request" : info.userkey};  
+
+                        $.ajax({  
+                            url: 'rest/usermeeting.json',  
+                            data: JSON.stringify(json),  
+                            type: "POST",  
+
+                            beforeSend: function(xhr) {  
+                                xhr.setRequestHeader("Accept", "application/json");  
+                                xhr.setRequestHeader("Content-Type", "application/json");  
+                            },  
+                            success: function(response) {  
+                                console.log(response);
+                            }  
+                        });                     
+                    }
+                    bootbox.alert("User "+info.username+" has left the meeting", function() {});
+                }
+                
+            }
+
 		</script>
     </body>
 </html>

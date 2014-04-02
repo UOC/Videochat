@@ -68,7 +68,7 @@ public class MeetingController {
                 room.setReason_blocked(Constants.REASON_BLOCK_MAX_RECORDING);
                 this.roomDao.save(room);
                 meeting.setRecorded((byte)1);
-                meeting.setPath(meeting.getPath().replaceAll("_", "/"));
+                //meeting.setPath(meeting.getPath().replaceAll("_", "/"));
                 meeting.setStart_record(new Timestamp(new Date().getTime()));
                 this.meetingDao.save(meeting);
                 response.setOk(true);
@@ -93,8 +93,34 @@ public class MeetingController {
                 room.setReason_blocked(null);
                 this.roomDao.save(room);
                 meeting.setRecorded((byte)1);
-                meeting.setEnd_meeting(new Timestamp(new Date().getTime()));
                 meeting.setEnd_record(new Timestamp(new Date().getTime()));
+                meeting.setFinished((byte)0);
+                this.meetingDao.save(meeting);
+                response.setOk(true);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            
+        }
+        return response;
+    }
+    
+    
+    @RequestMapping(method = RequestMethod.DELETE)
+    public @ResponseBody JSONResponse closeSession(HttpSession session) {
+        JSONResponse response = new JSONResponse();
+        try {
+            Room room = (Room) session.getAttribute(Constants.ROOM_SESSION);
+            MeetingRoom meeting = (MeetingRoom) session.getAttribute(Constants.MEETING_SESSION);
+            User user = (User) session.getAttribute(Constants.USER_SESSION);
+            if (user!=null && meeting!=null) {
+                room.setIs_blocked(false);
+                room.setReason_blocked(null);
+                this.roomDao.save(room);
+                if (meeting.getRecorded() == (byte)1 && meeting.getEnd_record()==null) {
+                    meeting.setEnd_record(new Timestamp(new Date().getTime()));
+                }
+                meeting.setEnd_meeting(new Timestamp(new Date().getTime()));
                 meeting.setFinished((byte)1);
                 this.meetingDao.save(meeting);
                 response.setOk(true);

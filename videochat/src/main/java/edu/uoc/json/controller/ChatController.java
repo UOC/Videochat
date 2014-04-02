@@ -9,6 +9,7 @@ package edu.uoc.json.controller;
 import edu.uoc.dao.ChatDao;
 import edu.uoc.dao.UserMeetingDao;
 import edu.uoc.model.Chat;
+import edu.uoc.model.JSONRequest;
 import edu.uoc.model.JSONResponse;
 import edu.uoc.model.MeetingRoom;
 import edu.uoc.model.User;
@@ -34,7 +35,7 @@ public class ChatController {
     private ChatDao chatDao;
     
     @RequestMapping(method = RequestMethod.POST)
-    public @ResponseBody JSONResponse currentUserAcceptConnection(@RequestBody String message, HttpSession session) {
+    public @ResponseBody JSONResponse currentUserAcceptConnection(@RequestBody JSONRequest message, HttpSession session) {
         JSONResponse response = new JSONResponse();
         MeetingRoom meeting = (MeetingRoom) session.getAttribute(Constants.MEETING_SESSION);
         User user = (User) session.getAttribute(Constants.USER_SESSION);
@@ -42,7 +43,7 @@ public class ChatController {
             if (user!=null && meeting!=null) {
                 Chat chat = new Chat();
                 chat.setUser(user);
-                chat.setChat_message(message);
+                chat.setChat_message(message.getRequest());
                 chat.setMeeting_room(meeting);
                 
                 chatDao.save(chat);

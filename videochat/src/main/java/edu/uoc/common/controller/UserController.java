@@ -50,6 +50,7 @@ public class UserController {
             model.addObject("user", user);
             model.addObject("course", session.getAttribute(Constants.COURSE_SESSION));
             model.addObject("room", room);
+            model.addObject("wowza_stream_server", Constants.WOWZA_STREAM_SERVER);
             //get the list of current participants
             ApplicationContext context = ContextLoader.getCurrentWebApplicationContext();
             UserMeetingDao userMeetingDao = context.getBean(UserMeetingDao.class);
@@ -74,6 +75,8 @@ public class UserController {
             model.addObject("course", session.getAttribute(Constants.COURSE_SESSION));
             model.addObject("meeting", meeting);
             model.addObject("userMeeting", session.getAttribute(Constants.USER_METTING_SESSION));
+            model.addObject("wowza_stream_server", Constants.WOWZA_STREAM_SERVER);
+            model.addObject("is_recorded", meeting.getRecorded()==(byte)1);
             //get the list of current participants
             ApplicationContext context = ContextLoader.getCurrentWebApplicationContext();
             UserMeetingDao userMeetingDao = context.getBean(UserMeetingDao.class);
