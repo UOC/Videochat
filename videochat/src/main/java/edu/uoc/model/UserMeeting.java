@@ -6,6 +6,7 @@
 
 package edu.uoc.model;
 
+import edu.uoc.util.Constants;
 import java.sql.Timestamp;
 import javax.persistence.AssociationOverride;
 import javax.persistence.AssociationOverrides;
@@ -78,6 +79,10 @@ public class UserMeeting implements java.io.Serializable{
     
     public String getStreamKey() {
         return stream_key;
+    }
+
+    public String getStreamKeyRecorded() {
+        return Constants.WOWZA_RECORD_FOLDER+"/"+stream_key.replaceAll("_","/")+Constants.WOWZA_EXTENSION_FILE;
     }
 
     public void setStreamKey(String stream_key) {

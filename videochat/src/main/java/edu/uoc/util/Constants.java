@@ -31,6 +31,8 @@ public class Constants {
     
     //TODO put in propertiest
     public static final String WOWZA_STREAM_SERVER = "184.73.205.58";
+    public static final String WOWZA_RECORD_FOLDER = "record";
+    public static final String WOWZA_EXTENSION_FILE = ".mp4";
     
     public static final int FORMAT_DATETIME = 1;
     public static final int FORMAT_DATE = 2;
