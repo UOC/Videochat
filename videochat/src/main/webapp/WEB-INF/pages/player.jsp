@@ -140,10 +140,10 @@
                         <div class="row header_chat">
                             <h4 class="col-md-9">Chat</h4>
                             <div class="btn-group col-md-3">
-                                <button type="button" class="btn btn-warning"><span class="glyphicon glyphicon-print"></span></button>
+                                <button type="button" class="btn btn-warning" id="button-print"><span class="glyphicon glyphicon-print"></span></button>
                             </div>
                         </div>
-                        <div class="wrapper_chat">
+                        <div class="wrapper_chat" id="printable_chat">
                             <c:forEach items="${meeting.getChat()}" var="item">
                                 <p><b>${item.getChat_sent_time_txt()} - ${item.getUser().getFullname()}:</b> ${item.getChat_message()}</p>
                             </c:forEach>  
@@ -235,6 +235,10 @@
                 var participant = new StreamObject("${item.getPk().getUser().getUsername()}", "${item.getPk().getUser().getFullname()}", "${item.getStreamKeyRecorded()}");
                 registeredUser(participant);
                 </c:forEach> 
+                $("#button-print").on("click", function(){
+                    $("#printable_chat").print();
+                });
+                    
                 $("#play-rewind").on("click", function(){
                     $(array_streams).each(function(p){
                         jwplayer("user-video-"+(p+1)).seek(0);
