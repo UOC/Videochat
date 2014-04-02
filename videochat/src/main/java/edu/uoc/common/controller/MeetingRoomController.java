@@ -7,6 +7,7 @@
 package edu.uoc.common.controller;
 
 import edu.uoc.dao.MeetingRoomDao;
+import edu.uoc.dao.RoomDao;
 import edu.uoc.dao.UserMeetingDao;
 import edu.uoc.model.Course;
 import edu.uoc.model.MeetingRoom;
@@ -42,6 +43,8 @@ public class MeetingRoomController {
     private MeetingRoomDao meetingDao;
     @Autowired
     private UserMeetingDao userMeetingDao;
+    @Autowired
+    private RoomDao roomDao;
     
     @RequestMapping("/searchMeeting")
     public ModelAndView getMeetingRooms(HttpSession session){
@@ -60,8 +63,15 @@ public class MeetingRoomController {
             model.addObject("user", user);
             model.addObject("course", session.getAttribute(Constants.COURSE_SESSION));
             model.addObject("course", course);
+            List<Room> listRooms = roomDao.findByIdCourse(course.getId());
+            String idsRoom = "";
+            for (Room room : listRooms) {
+                idsRoom += (idsRoom.length()>0?",":"")+room.getId();
+            }
+            
+            model.addObject("listRooms", listRooms);
             //get the list of current participants
-            List<MeetingRoom> listMR = meetingDao.findByCourseId(course.getId(), true);
+            List<MeetingRoom> listMR = meetingDao.findByCourseId(idsRoom, true);
             List<MeetingRoomExtended> listMRE = new ArrayList<MeetingRoomExtended>();
             MeetingRoomExtended meeting_extended;
             MeetingRoom meeting;

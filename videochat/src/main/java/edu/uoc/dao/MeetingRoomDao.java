@@ -22,7 +22,7 @@ public interface MeetingRoomDao {
 
     List<MeetingRoom> findByRoomId(int meetingroomId, boolean onlyRecorded);
     
-    List<MeetingRoom> findByCourseId(int couseId, boolean onlyRecorded);
+    List<MeetingRoom> findByCourseId(String courseId, boolean onlyRecorded);
 
     MeetingRoom findByRoomIdNotFinished(int meetingroomId);
     

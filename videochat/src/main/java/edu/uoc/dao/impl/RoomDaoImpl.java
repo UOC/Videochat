@@ -62,5 +62,11 @@ public class RoomDaoImpl  extends CustomHibernateDaoSupport implements RoomDao {
         }
     }
         
+    @Override
+    public List<Room> findByIdCourse(int id) {
+        HibernateTemplate h = getHibernateTemplate();
+         return h.find(
+                "from Room where course_id=?", id);
+    }
     
 }
