@@ -51,10 +51,7 @@
                     <!-- TEST PLAY BUTTON -->
                     <button id="play-rewind" type="button" class="btn btn-warning" title="Rewind"><span class="glyphicon glyphicon-backward" ></button> ${item.getTotal_time_txt()}
                     <button id="play-pause" type="button" class="btn btn-warning" title="Play"><span class="glyphicon glyphicon-play" id="glyphicon-play"></button> ${item.getTotal_time_txt()}
-                    <section>   
-                            <span class="tooltip2"></span>   
-                            <div id="sliderPlay"></div>  
-                        </section> 
+                    <div id="sliderPlay"></div>  
                 </div></div>
                 <div class="col-md-4">
                         <section>   
@@ -232,7 +229,6 @@
                 jwplayer("user-video-"+i).setMute(false);
             }
 
-            var participants = new Array();
             $( document ).ready(function() {
                 hideButtons();
                 <c:forEach items="${meeting.getParticipants()}" var="item">
@@ -251,7 +247,9 @@
 
                 slider.slider({  
                     range: "min",  
-                    min: 1,  
+                    min: 0,  
+                    step: 5,  
+                    max: 100,  
                     value: currentVolume,  
 
                     start: function(event,ui) {  
@@ -262,8 +260,12 @@
 
                         var value = slider.slider('value'),  
                             volume = $('.volume');  
+                            if (value<=5) {
+                                value = 0;
+                            }
                             currentVolume = value;
                             $(array_streams).each(function(p){
+                                console.log(currentVolume);
                                 jwplayer("user-video-"+(p+1)).setVolume(currentVolume);    
                             });
 
@@ -288,42 +290,34 @@
                       tooltip.fadeOut('fast');  
                     },  
                 });  
-                /*var sliderPlay = $('#sliderPlay'),  
-                    tooltipPlay = $('.tooltipPlay');  
+                var sliderPlay = $('#sliderPlay');
+                    sliderPlay.slider({  
+                        range: "min",  
+                        min: 0,  
+                        max: 100,  
+                        value: 0,  
+                        slide: function(event, ui) {  
+                            if (all_streams_are_ready===array_streams.length) {
+                                if (!playing) {
+                                    playOrStopStreams();
+                                }
+                                var value = sliderPlay.slider('value');
+                                $(array_streams).each(function(p){
+                                    jwplayer("user-video-"+(p+1)).seek(duration_video*(value/100));    
+                                });
+                            } else {
+                                sliderPlay.slider('value', 0)
+                            }
+                        },  
 
-                tooltipPlay.hide();  
-
-                sliderPlay.slider({  
-                    range: "min",  
-                    min: 1,  
-                    value: 0,  
-
-                    start: function(event,ui) {  
-                      tooltipPlay.fadeIn('fast');  
-                    },  
-
-                    slide: function(event, ui) {  
-
-                        var value = sliderPlay.slider('value');
-                        $(array_streams).each(function(p){
-                            jwplayer("user-video-"+(p+1)).seek(duration_video*(value/100));    
-                        });
-
-                        tooltipPlay.css('left', value).text(ui.value);  
-
-
-                    },  
-
-                    stop: function(event,ui) {  
-                      tooltipPlay.fadeOut('fast');  
-                    },  
-                }); */ 
+                    });
                                
                 });
             var duration_video = 0;    
             var playing = false;
             var array_streams = Array();
-            var array_durations = Array();
+            var video_max_length = 0;
+            var all_streams_are_ready = 0;
             function registeredUser(info) {
                 var pos = returnPositionUser(info.userkey, array_streams);
                 streamObj = new StreamObject(info.userkey, info.username, info.publishName);
@@ -346,6 +340,7 @@
                                             width: 215,
                                             height: 138,
                                             controls: 'false',
+                                            preload: 'auto',
                                             icons: 'false',
                                             modes: [
                                                 { type: "html5" },
@@ -354,16 +349,27 @@
                                             //flashplayer: "./js/jwplayer/jwplayer.flash.swf",
                                             events:{
                                                 onReady: function(e){
-                                                    // Fires when player is ready, can disable Play button until this is fired for all videos i.e.
+                                                    all_streams_are_ready++;
                                                 },
                                                 onBuffer: function(t){
                                                     // Buffer not exposed in RMTP playback
-                                                    duration_video = this.getDuration();              
+                                                    var duration_video_temp = this.getDuration();            
+                                                    if (duration_video < duration_video_temp) {
+                                                        duration_video = duration_video_temp;
+                                                        video_max_length = pos;
+                                                    }
                                                 },
                                                 onPlay: function() {
-                                                    duration_video = this.getDuration();              
+                                                    var duration_video_temp = this.getDuration();            
+                                                    if (duration_video < duration_video_temp) {
+                                                        duration_video = duration_video_temp;
+                                                        video_max_length = pos;
+                                                    }                                                    
                                                 },
                                                 onTime: function(t) {
+                                                    if (duration_video>0 && pos == video_max_length) {
+                                                     $("#sliderPlay").slider( "value", (t.position/duration_video)*100 );
+                                                    }
                                                 }
                                             }
                                         });           
@@ -371,6 +377,10 @@
             }
 
                 $("#play-pause").on("click", function(){
+                    playOrStopStreams();
+                });
+                
+                function playOrStopStreams() {
                     if (playing){
                         $(array_streams).each(function(p){
                             jwplayer("user-video-"+(p+1)).pause();
@@ -384,11 +394,10 @@
                             jwplayer("user-video-"+(p+1)).play();
                             jwplayer("user-video-"+(p+1)).setVolume(currentVolume);
                         });
-                        playing = true;
                         $("#glyphicon-play").removeClass("glyphicon-play");
                         $("#glyphicon-play").addClass("glyphicon-pause");
                     }
-                });
+                }
 
         </script>
 

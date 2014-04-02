@@ -127,6 +127,7 @@ section {
 	margin: 10px auto 0;
 	position: relative;
 }
+
 #slider{
 	border-width: 1px;
 	border-style: solid;
@@ -204,6 +205,41 @@ section {
 	border-radius: 25px;
 }
 
+
+/*#sliderPlay .ui-slider-range { 
+	border: 0;
+	top: 0;
+	height: 100%;
+	width: 300px;
+        background: #333; 
+	
+}*/
+#sliderPlay{
+	border-width: 1px;
+	border-style: solid;
+	border-color: #333 #333 #777 #333;
+	border-radius: 25px;
+	width: 620px;
+	position: absolute;
+        top: 7px;
+	height: 13px;
+	background-color: #8e8d8d;
+	background: url('images/bg-track.png') repeat top left;
+    box-shadow: inset 0 1px 5px 0px rgba(0, 0, 0, .5), 
+    				  0 1px 0 0px rgba(250, 250, 250, .5);
+    margin-left: 100px;
+}
+#sliderPlay .ui-slider-handle {
+	z-index: 2;
+	width: 25px;
+	height: 25px;
+	cursor: pointer;
+	background: url('images/handle.png') no-repeat 50% 50%;
+	font-weight: bold;
+	color: #1C94C4;
+	outline: none;
+        width: 25px;
+}
 input.videochat-btn-secundary, a.videochat-btn-secundary {
     font-family: Arial, Helvetica, sans-serif;
     background: #fff;
