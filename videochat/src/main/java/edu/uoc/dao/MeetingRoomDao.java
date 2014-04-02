@@ -6,8 +6,6 @@
 package edu.uoc.dao;
 
 import edu.uoc.model.MeetingRoom;
-import edu.uoc.model.Room;
-import edu.uoc.model.UserCourse;
 import java.util.List;
 
 /**
@@ -23,6 +21,8 @@ public interface MeetingRoomDao {
     void delete(MeetingRoom meetingRoom);
 
     List<MeetingRoom> findByRoomId(int meetingroomId, boolean onlyRecorded);
+    
+    List<MeetingRoom> findByCourseId(int couseId, boolean onlyRecorded);
 
     MeetingRoom findByRoomIdNotFinished(int meetingroomId);
     

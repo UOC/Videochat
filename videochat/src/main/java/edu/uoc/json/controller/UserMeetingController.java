@@ -18,8 +18,6 @@ import edu.uoc.model.User;
 import edu.uoc.model.UserMeeting;
 import edu.uoc.model.UserMeetingId;
 import edu.uoc.util.Constants;
-import java.sql.Timestamp;
-import java.util.Date;
 import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -55,15 +53,18 @@ public class UserMeetingController {
             User user = (User) session.getAttribute(Constants.USER_SESSION);
             User userDeleted = userDao.findByUserName(username.getRequest());
             if (user!=null && meeting!=null) {
-                UserMeetingId mId = new UserMeetingId();
-                mId.setMeeting(meeting);
-                mId.setUser(userDeleted);
-                UserMeeting userMeetingDeleted = userMeetingDao.findUserMeetingByPK(mId);
-                
-                if (userMeetingDeleted.getPk()!=null && userMeetingDeleted.getPk().getUser()!=null) {
-                    userMeetingDao.delete(userMeetingDeleted);
-                    meeting.setNumber_participants(meeting.getNumber_participants()-1);
-                    meetingDao.save(meeting);
+                meeting = meetingDao.findById(meeting.getId());
+                if (meeting.getFinished()!=(byte)1 && meeting.getRecorded()!=(byte)1) {
+                    UserMeetingId mId = new UserMeetingId();
+                    mId.setMeeting(meeting);
+                    mId.setUser(userDeleted);
+                    UserMeeting userMeetingDeleted = userMeetingDao.findUserMeetingByPK(mId);
+
+                    if (userMeetingDeleted.getPk()!=null && userMeetingDeleted.getPk().getUser()!=null) {
+                        userMeetingDao.delete(userMeetingDeleted);
+                        meeting.setNumber_participants(meeting.getNumber_participants()-1);
+                        meetingDao.save(meeting);
+                    }
                 }
                 response.setOk(true);
             }

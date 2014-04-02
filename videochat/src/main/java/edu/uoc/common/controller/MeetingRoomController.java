@@ -8,6 +8,7 @@ package edu.uoc.common.controller;
 
 import edu.uoc.dao.MeetingRoomDao;
 import edu.uoc.dao.UserMeetingDao;
+import edu.uoc.model.Course;
 import edu.uoc.model.MeetingRoom;
 import edu.uoc.model.MeetingRoomExtended;
 import edu.uoc.model.Room;
@@ -52,14 +53,15 @@ public class MeetingRoomController {
         catch(IllegalStateException ISE){
              System.err.println("IllegalStateException: " + ISE.getMessage());
         }
-        Room room = (Room)session.getAttribute(Constants.ROOM_SESSION);
+        Course course = (Course)session.getAttribute(Constants.COURSE_SESSION);
+        //Room room = (Room)session.getAttribute(Constants.ROOM_SESSION);
         User user = (User) session.getAttribute(Constants.USER_SESSION);
-        if (user!=null && room!=null) {
+        if (user!=null && course!=null) {
             model.addObject("user", user);
             model.addObject("course", session.getAttribute(Constants.COURSE_SESSION));
-            model.addObject("room", room);
+            model.addObject("course", course);
             //get the list of current participants
-            List<MeetingRoom> listMR = meetingDao.findByRoomId(room.getId(), true);
+            List<MeetingRoom> listMR = meetingDao.findByCourseId(course.getId(), true);
             List<MeetingRoomExtended> listMRE = new ArrayList<MeetingRoomExtended>();
             MeetingRoomExtended meeting_extended;
             MeetingRoom meeting;
