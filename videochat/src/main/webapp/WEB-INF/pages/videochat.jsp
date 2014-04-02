@@ -83,7 +83,7 @@
                     </select>
                 </div>
                 <div id="close" class="col-md-1">
-                    <span class="glyphicon glyphicon-remove"></span>
+                    <span class="glyphicon glyphicon-remove" id="button-exit"></span>
                 </div>
             </header>
             <h3><c:out value="${sMeeting.getId_room().getLabel()}"/></h3>
@@ -270,6 +270,12 @@
                 $("#button-configuration").click(
                    function() {
                         bootbox.alert("Manage configuration is not available yet", function() {});
+                    }     
+                );
+                
+                $("#button-exit").click(
+                   function() {
+                        returnMeeting();
                     }     
                 );
             });
@@ -498,13 +504,37 @@
                 $('#button-archive').hide();
                 $('#button-sendMessage').hide();
                 bootbox.alert("The session has been closed", function() {
-                    location.href = "searchMeeting.htm";
+                    returnMeeting();
                 });
+            }
+            
+            function returnMeeting() {
+                disconnectedUserAjax("${sUser.getUsername()}");
+                location.href = "searchMeeting.htm";
             }
             
             function removeByIndex(arr, index) {
                 arr.splice(index, 1);
             }
+            
+            function disconnectedUserAjax(username) {
+                var json = { "request" : username};  
+
+                $.ajax({  
+                    url: 'rest/usermeeting.json',  
+                    data: JSON.stringify(json),  
+                    type: "POST",  
+
+                    beforeSend: function(xhr) {  
+                        xhr.setRequestHeader("Accept", "application/json");  
+                        xhr.setRequestHeader("Content-Type", "application/json");  
+                    },  
+                    success: function(response) {  
+                        console.log(response);
+                    }  
+                });  
+            }
+            
             function disconnectedUser(info) {
                 if (!meeting_is_closed) {
                     var pos = returnPositionUser(info.userkey);
@@ -519,21 +549,9 @@
                        for( i=0; i<array_streams_temp.length; i++) {
                           registeredUser(array_streams_temp[i]);
                        }
-                        var json = { "request" : info.userkey};  
-
-                        $.ajax({  
-                            url: 'rest/usermeeting.json',  
-                            data: JSON.stringify(json),  
-                            type: "POST",  
-
-                            beforeSend: function(xhr) {  
-                                xhr.setRequestHeader("Accept", "application/json");  
-                                xhr.setRequestHeader("Content-Type", "application/json");  
-                            },  
-                            success: function(response) {  
-                                console.log(response);
-                            }  
-                        });                     
+                       
+                       disconnectedUserAjax(info.userkey);
+                                           
                     }
                     bootbox.alert("User "+info.username+" has left the meeting", function() {});
                 }

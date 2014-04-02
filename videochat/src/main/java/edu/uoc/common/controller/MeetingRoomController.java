@@ -9,10 +9,12 @@ package edu.uoc.common.controller;
 import edu.uoc.dao.MeetingRoomDao;
 import edu.uoc.dao.UserMeetingDao;
 import edu.uoc.model.MeetingRoom;
+import edu.uoc.model.MeetingRoomExtended;
 import edu.uoc.model.Room;
 import edu.uoc.model.User;
 import edu.uoc.model.UserMeeting;
 import edu.uoc.util.Constants;
+import edu.uoc.util.Util;
 import java.util.ArrayList;
 import java.util.List;
 import javax.servlet.http.HttpSession;
@@ -58,13 +60,22 @@ public class MeetingRoomController {
             model.addObject("room", room);
             //get the list of current participants
             List<MeetingRoom> listMR = meetingDao.findByRoomId(room.getId());
-            model.addObject("listMR", listMR);
-            List<List<UserMeeting>> participants = new ArrayList<List<UserMeeting>>();
+            List<MeetingRoomExtended> listMRE = new ArrayList<MeetingRoomExtended>();
+            MeetingRoomExtended meeting_extended;
+            MeetingRoom meeting;
             for(int i=0;i<listMR.size(); i++){
-                participants.add(userMeetingDao.findUsersByMeetingId(listMR.get(i)));
+                meeting = listMR.get(i);
+                meeting_extended = new MeetingRoomExtended(meeting);
+                meeting_extended.setEnd_meeting_txt(Util.getTimestampFormatted(meeting_extended.getEnd_meeting(), Constants.FORMAT_DATETIME));
+                meeting_extended.setStart_meeting_txt(Util.getTimestampFormatted(meeting_extended.getStart_meeting(), Constants.FORMAT_DATETIME));
+                meeting_extended.setEnd_record_txt(Util.getTimestampFormatted(meeting_extended.getEnd_record(), Constants.FORMAT_DATETIME));
+                meeting_extended.setStart_record_txt(Util.getTimestampFormatted(meeting_extended.getStart_record(), Constants.FORMAT_DATETIME));
+                meeting_extended.setTotal_time_txt(Util.substractTimestamps(meeting_extended.getEnd_meeting(),meeting_extended.getStart_meeting()));
+                meeting_extended.setParticipants(userMeetingDao.findUsersByMeetingId(meeting));
+                listMRE.add(meeting_extended);
             }
+            model.addObject("listMR", listMRE);
             
-            model.addObject("AllParticipants", participants);
         } else {
             model.setViewName("errorSession");
         }

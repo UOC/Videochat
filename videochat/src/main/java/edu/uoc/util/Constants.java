@@ -31,5 +31,8 @@ public class Constants {
     
     //TODO put in propertiest
     public static final String WOWZA_STREAM_SERVER = "184.73.205.58";
+    
+    public static final int FORMAT_DATETIME = 1;
+    public static final int FORMAT_TIME = 2;
 
 }

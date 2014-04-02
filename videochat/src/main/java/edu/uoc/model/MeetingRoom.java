@@ -65,6 +65,7 @@ public class MeetingRoom implements java.io.Serializable {
 
     @Column(name = "meeting_room_end_record")
     private Timestamp end_record;
+    
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "pk.meeting")
     private List<UserMeeting> userMeeting;

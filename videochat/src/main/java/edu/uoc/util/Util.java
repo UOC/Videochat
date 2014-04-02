@@ -31,9 +31,9 @@ public class Util {
         Date dayte = new Date(ts.getTime());
             String pattern = "";
             switch(format){
-                case 0: pattern = "dd/MM/yyyy HH:mm:ss";
+                case Constants.FORMAT_DATETIME: pattern = "dd/MM/yyyy HH:mm:ss";
                     break;
-                case 1:
+                case Constants.FORMAT_TIME:
                     pattern = "HH:mm:ss";
                     break;
                 default:
@@ -47,13 +47,16 @@ public class Util {
 
     public static String substractTimestamps(Timestamp end, Timestamp start){
         SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
-        Date firstParsedDate = new Date(start.getTime());
-        Date secondParsedDate = new Date(end.getTime());
-        
-        long diff = secondParsedDate.getTime() - firstParsedDate.getTime();
-       
-        String s = dateFormat.format(new Date(diff));
-        return s;
+        String diffS="";
+        if (start!=null && end!=null) { 
+            Date firstParsedDate = new Date(start.getTime());
+            Date secondParsedDate = new Date(end.getTime());
+
+            long diff = secondParsedDate.getTime() - firstParsedDate.getTime();
+
+            diffS = dateFormat.format(new Date(diff));
+        }
+        return diffS;
     }
 
 }

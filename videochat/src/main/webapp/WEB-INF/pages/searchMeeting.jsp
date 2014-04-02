@@ -5,7 +5,6 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%@page import="edu.uoc.util.Util"  %>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
    "http://www.w3.org/TR/html4/loose.dtd">
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
@@ -41,7 +40,7 @@ function search() {
         <div class="txtInfo"><span><strong>Select a session to play.</strong>Use the following search options to find a session to play.</span>
     </div>
     
-    <form name="search_meeting_form" action="Front">
+    <form name="search_meeting_form" action="">
         <span><strong>Topic</strong></span><br>
 		<span><input type="text" name="topic" id="idtopic" value="" size="30"/></span><br>
       	<span><strong>Participants</strong></span><br>
@@ -80,10 +79,12 @@ function search() {
  <c:forEach var="item" items="${listMR}">
 <tr>
 <td><c:out value="${item.getDescription()}"/></td>
-<td>${item.getNumber_participants()}</td>
-<td>${Util.getTimestampFormatted(item.getStart_meeting(), 0)}</td>
-<td>${Util.getTimestampFormatted(item.getEnd_meeting(), 0)}</td>
-<td>${Util.substractTimestamps(item.getEnd_meeting(),item.getStart_meeting())}</td>
+<td><c:forEach items="${item.getParticipants()}" var="participant">
+        ${participant.getPk().getUser().getFullname()},  
+     </c:forEach></td>
+<td>${item.getStart_meeting_txt()}</td>
+<td>${item.getEnd_meeting_txt()}</td>
+<td>${item.getTotal_time_txt()}</td>
 <td></td>
     </tr>
 </c:forEach>  
