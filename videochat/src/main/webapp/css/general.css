@@ -256,3 +256,18 @@ input.videochat-btn-secundary, a.videochat-btn-secundary {
     font-size: 1em;
     text-decoration: none;
 }
+.lock{
+       background:url(images/glyphicons_203_lock.png) no-repeat;
+       width: 14px;
+       height: 20px;
+       margin: 0;
+       display: block;
+}
+       
+.unlock{
+       background:url(images/glyphicons_204_unlock.png) no-repeat;
+       width: 14px;
+       height: 20px;
+       margin: 0;
+       display: block;
+}
