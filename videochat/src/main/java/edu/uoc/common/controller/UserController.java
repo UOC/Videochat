@@ -245,7 +245,7 @@ public class UserController {
                                             meeting.setNumber_participants(mr.getNumber_participants() + 1);
                                         }
                                         //If the number of participants == 6 then the room is blocked
-                                        if (Integer.parseInt(mr.getNumber_participants()) == Constants.MAX_PARTICIPANTS) {
+                                        if (mr.getNumber_participants() == Constants.MAX_PARTICIPANTS) {
                                             room.setIs_blocked(true);
                                             room.setReason_blocked(Constants.REASON_BLOCK_MAX_PARTICIPANTS);
                                             can_access_to_meeting = false;
@@ -271,7 +271,7 @@ public class UserController {
                             if (is_new_meeting) {
                                 meeting = new MeetingRoom();
                                 meeting.setId_room(room);
-                                meeting.setNumber_participants("1");
+                                meeting.setNumber_participants(1);
                                 meeting.setPath(pathMeeting);
                                 meeting.setRecorded((byte) 0);
                                 meeting.setTopic(room.getLabel());

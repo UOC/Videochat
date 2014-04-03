@@ -49,7 +49,7 @@ public class MeetingRoom implements java.io.Serializable {
     private String path;
 
     @Column(name = "meeting_room_number_participants", length = 2)
-    private String number_participants;
+    private int number_participants;
 
     @Column(name = "meeting_room_finished")
     private byte finished;
@@ -76,7 +76,7 @@ public class MeetingRoom implements java.io.Serializable {
     public MeetingRoom() {
     }
 
-    public MeetingRoom(int id, Room id_room, int id_course, String topic, String description, String path, String number_participants, byte finished, Timestamp start_meeting, Timestamp end_meeting, byte recorded, Timestamp start_record, Timestamp end_record, List<UserMeeting> userMeeting) {
+    public MeetingRoom(int id, Room id_room, int id_course, String topic, String description, String path, int number_participants, byte finished, Timestamp start_meeting, Timestamp end_meeting, byte recorded, Timestamp start_record, Timestamp end_record, List<UserMeeting> userMeeting) {
         this.id = id;
         this.id_room = id_room;
         this.description = description;
@@ -131,11 +131,11 @@ public class MeetingRoom implements java.io.Serializable {
         this.path = path;
     }
 
-    public String getNumber_participants() {
+    public int getNumber_participants() {
         return number_participants;
     }
 
-    public void setNumber_participants(String number_participants) {
+    public void setNumber_participants(int number_participants) {
         this.number_participants = number_participants;
     }
 
