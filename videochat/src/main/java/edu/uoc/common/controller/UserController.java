@@ -130,10 +130,11 @@ public class UserController {
     public String loginLTI(HttpSession session, HttpServletRequest request) {
         String nextPage = "error";
         //ModelAndView model = new ModelAndView();
-        session.setAttribute("sUser", null);
-        session.setAttribute("sCourse", null);
-        session.setAttribute("sMeeting", null);
-        session.setAttribute("sUserMeeting", null);
+        session.setAttribute(Constants.USER_SESSION, null);
+        session.setAttribute(Constants.COURSE_SESSION, null);
+        session.setAttribute(Constants.MEETING_SESSION, null);
+        session.setAttribute(Constants.USER_METTING_SESSION, null);
+        session.setAttribute(Constants.USER_LANGUAGE,null);
 
         try {
             request.setCharacterEncoding("UTF-8");
@@ -304,6 +305,7 @@ public class UserController {
                     //8. Register user in course 
                     session.setAttribute(Constants.USER_SESSION, user);
                     session.setAttribute(Constants.COURSE_SESSION, course);
+                    session.setAttribute(Constants.USER_LANGUAGE,locale);
                     nextPage = redirectToPlayer ? "searchMeeting" : "videochat";
 
                 } else {

@@ -28,6 +28,7 @@ public class Constants {
     public static final String MEETING_SESSION = "sMeeting";
     public static final String ROOM_SESSION = "sRoom";
     public static final String USER_METTING_SESSION = "sUserMeeting";
+    public static final String USER_LANGUAGE = "sLang";
     //public static final String RECORD_FOLDER = "record";
     
     //TODO put in propertiest
