@@ -61,7 +61,7 @@
 <bean id="messageSource"
     class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
     <property name="basename">
-        <value>/WEB-INF/locale/videochat</value>
+        <value>/WEB-INF/locale/VCmessages</value>
         </property>
     <property name="defaultEncoding" value="UTF-8"/>
 </bean>
