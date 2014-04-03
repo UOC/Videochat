@@ -116,6 +116,7 @@ public class UserController {
             String error = "errorSession";
             if (user!=null && meeting==null && room!=null && room.isIs_blocked()) {
                 //nloquejada
+                model.addObject("reason", room.getReason_blocked());
                 error = "errorBlocked"; 
             }
             model.setViewName(error);

@@ -175,7 +175,7 @@
                                 <div class="participant_content">
                                     <div id="nom-1"><c:out value="${sUser.getFullname()}"/></div>
                                     <div id="videochat_stream">
-                                        <p>Alternative content</p>
+                                        <p><spring:message code="message.player.flash"/></p>
                                         <p><a href="http://www.adobe.com/go/getflashplayer"><img src="http://www.adobe.com/images/shared/download_buttons/get_flash_player.gif" alt="Get Adobe Flash player" /></a></p>
                                     </div>
                                 </div>

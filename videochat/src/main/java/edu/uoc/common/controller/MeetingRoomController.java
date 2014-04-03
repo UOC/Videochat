@@ -62,7 +62,7 @@ public class MeetingRoomController implements java.io.Serializable {
             model.addObject("course", session.getAttribute(Constants.COURSE_SESSION));
             model.addObject("course", course);
             List<Room> listRooms = roomDao.findByIdCourse(course.getId());
-            List<MeetingRoom> mRoom = meetingDao.findbyForm(new MeetingRoom());
+            // List<MeetingRoom> mRoom = meetingDao.findbyForm(new MeetingRoom());
             String idsRoom = "";
             for (Room room : listRooms) {
                 idsRoom += (idsRoom.length() > 0 ? "," : "") + room.getId();

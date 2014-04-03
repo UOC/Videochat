@@ -20,7 +20,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-1">
-                    <a href="searchMeeting.htm" class="videochat-btn-secundary"><span class="glyphicon glyphicon-arrow-left">&nbsp;Back</span></a>
+                    <a href="searchMeeting.htm" class="videochat-btn-secundary"><span class="glyphicon glyphicon-arrow-left">&nbsp;<spring:message code="message.player.back"/></span></a>
                 </div>
                 
             </div>
@@ -46,7 +46,7 @@
                 </div>
                 <div class="col-md-10" style="border-left:1px dashed #ccc;">
                     <div><label style="width:20%; font-weight:normal"><spring:message code="label.topic"/></label><strong>${meeting.getTopic()}</strong></div>
-                    <div><label style="width:20%; font-weight:normal">DESCRIPTION:</label><strong>${meeting.getDescription()}</strong></div>
+                    <div><label style="width:20%; font-weight:normal"><spring:message code="label.description"/></label><strong>${meeting.getDescription()}</strong></div>
                 </div>
             </div>
             <div class="row wrapper_recorder">
