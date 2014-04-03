@@ -83,10 +83,17 @@ public class UserMeetingController {
         try {
             Room room = (Room) session.getAttribute(Constants.ROOM_SESSION);
             User user = (User) session.getAttribute(Constants.USER_SESSION);
-            if (user!=null && room!=null) {
+            MeetingRoom meeting = (MeetingRoom) session.getAttribute(Constants.MEETING_SESSION);
+            
+            if (user!=null && room!=null && meeting!=null) {
                 room = roomDao.findByRoomCode(room.getId());
-                room.setIs_blocked(!room.isIs_blocked());
-                if (room.isIs_blocked()) {
+                boolean new_block = !room.isIs_blocked();
+                meeting = meetingDao.findById(meeting.getId());
+                if (meeting.getFinished()==(byte)1) {
+                    new_block = false;
+                }
+                room.setIs_blocked(new_block);
+                if (!new_block) {
                     room.setReason_blocked(null);
                 } else {
                     room.setReason_blocked(Constants.REASON_BLOCK_BY_USER);
