@@ -38,7 +38,7 @@
                     <div><strong>${meeting.getStart_meeting_time_txt()} - ${meeting.getEnd_meeting_time_txt()}</strong></div>
                 </div>
                 <div class="col-md-10" style="border-left:1px dashed #ccc;">
-                    <div><label style="width:20%; font-weight:normal">TOPIC:</label><strong>${meeting.getTopic()}</strong></div>
+                    <div><label style="width:20%; font-weight:normal"><spring:message code="label.topic"/></label><strong>${meeting.getTopic()}</strong></div>
                     <div><label style="width:20%; font-weight:normal">DESCRIPTION:</label><strong>${meeting.getDescription()}</strong></div>
                 </div>
             </div>

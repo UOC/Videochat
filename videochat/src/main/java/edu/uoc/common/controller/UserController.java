@@ -134,6 +134,7 @@ public class UserController {
         session.setAttribute("sCourse", null);
         session.setAttribute("sMeeting", null);
         session.setAttribute("sUserMeeting", null);
+        session.setAttribute("sLang",null);
 
         try {
             request.setCharacterEncoding("UTF-8");
@@ -304,6 +305,7 @@ public class UserController {
                     //8. Register user in course 
                     session.setAttribute(Constants.USER_SESSION, user);
                     session.setAttribute(Constants.COURSE_SESSION, course);
+                    session.setAttribute(Constants.USER_LANGUAGE,locale);
                     nextPage = redirectToPlayer ? "searchMeeting" : "videochat";
 
                 } else {

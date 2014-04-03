@@ -58,7 +58,30 @@
     <import resource="database/DataSource.xml"/>
     <import resource="database/Hibernate.xml"/>
     
-            
+<bean id="messageSource"
+    class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
+    <property name="basename">
+        <value>/WEB-INF/locale/videochat</value>
+        </property>
+    <property name="defaultEncoding" value="UTF-8"/>
+</bean>
+ 
+<bean id="localeChangeInterceptor"
+    class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor">
+    <property name="paramName" value="lang" />
+</bean>
+ 
+<bean id="localeResolver"
+    class="org.springframework.web.servlet.i18n.CookieLocaleResolver">
+    <property name="defaultLocale" value="en"/>
+</bean>
+ 
+<bean id="handlerMapping"
+    class="org.springframework.web.servlet.mvc.annotation.DefaultAnnotationHandlerMapping">
+    <property name="interceptors">
+        <ref bean="localeChangeInterceptor" />
+    </property>
+</bean>
     <!--
     The index controller.
     -->
@@ -100,10 +123,10 @@
     <!-- <bean id="transactionManager" class="org.springframework.orm.hibernate3.HibernateTransactionManager">
          <property name="sessionFactory" ref="mySessionFactory"/>
 
-     </bean> -->
+    </bean> -->
     
     <!-- Activates annotation based transaction management -->
-  <!--  <tx:annotation-driven transaction-manager="transactionManager"/> -->
+    <!--  <tx:annotation-driven transaction-manager="transactionManager"/> -->
 
 </beans>
 
