@@ -20,7 +20,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-1">
-                    <a href="searchMeeting.htm" class="videochat-btn-secundary"><span class="glyphicon glyphicon-arrow-left">&nbsp;Back to list</span></a>
+                    <a href="searchMeeting.htm" class="videochat-btn-secundary"><span class="glyphicon glyphicon-arrow-left">&nbsp;Back</span></a>
                 </div>
                 
             </div>

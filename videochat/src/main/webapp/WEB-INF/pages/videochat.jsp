@@ -165,7 +165,9 @@
                             <h4 class="col-md-10 col-xs-6">Participants</h4>
                             <div class="btn-group col-md-2 col-xs-6">
                                 <button type="button" class="btn btn-warning" id="button-reload"><span class="glyphicon glyphicon-repeat"></span></button>
-                                <button type="button" class="btn btn-warning" id="button-configuration"><span class="glyphicon glyphicon-cog"></span></button>
+                                <!--button type="button" class="btn btn-warning" id="button-configuration"><span class="glyphicon glyphicon-cog"></span></button-->
+                                <button type="button" class="btn btn-warning" id="button-lock"><span class="glyphicon glyphicon-lock" id="span-lock"></span></button>
+                                
                             </div>
                         </div>
                         <div class="row">
@@ -242,6 +244,7 @@
             var meeting_is_recorded = ${is_recorded};
             var meeting_is_closed = false;
             var micro_is_muted = false;
+            var meeting_is_locked = false;
             $( document ).ready(function() {
                 
                 $('#button-record-stop').hide();
@@ -249,6 +252,7 @@
                 $('#button-record').hide();
                 $('#button-archive').hide();
                 $('#button-sendMessage').hide();
+                $('#button-lock').hide();
                 
                 <c:forEach items="${participants}" var="item">
                     var participant = new StreamObject("${item.getPk().getUser().getUsername()}", "${item.getPk().getUser().getFullname()}", "${item.getStreamKey()}");
@@ -326,6 +330,7 @@
                 $('#button-record').show();
                 $('#button-archive').show();
                 $('#button-sendMessage').show();
+                $('#button-lock').show();
             }
 
             function stopRecordRequest(){
@@ -348,6 +353,16 @@
             function startRecordRequest(){
                 var flash = swfobject.getObjectById("videochat_stream_id");
                 flash.startRecordFromJS();
+            }
+            
+            
+            function lockMeetingRequest(){
+                if (!meeting_is_closed) {
+                    var flash = swfobject.getObjectById("videochat_stream_id");
+                    flash.lockMeetingFromJS();
+                } else {
+                    bootbox.alert("The meeting is closed");
+                }
             }
             var array_streams = Array();
            
@@ -522,6 +537,37 @@
                 bootbox.alert("The session has been closed", function() {
                     returnMeeting();
                 });
+            }
+            
+            function lockSessionAjax() {
+                var json = { "request" : "${sUserMeeting.getStreamKey()}"};  
+
+                $.ajax({  
+                  url: 'rest/usermeeting.json',  
+                  data: JSON.stringify(json),  
+                  type: "PUT",  
+
+                  beforeSend: function(xhr) {  
+                      xhr.setRequestHeader("Accept", "application/json");  
+                      xhr.setRequestHeader("Content-Type", "application/json");  
+                  },  
+                  success: function(response) {  
+                      console.log(response);
+                  }  
+              });
+            }
+            
+            function lockSession() {
+                if (meeting_is_locked) {
+                    $("#span-lock").removeClass("glyphicon-lock");
+                    $("#span-lock").addClass("glyphicon-icon");
+                    $("#span-lock").addClass("unlock");
+                } else {
+                    $("#span-lock").removeClass("glyphicon-icon");
+                    $("#span-lock").removeClass("unlock");
+                    $("#span-lock").addClass("glyphicon-volume-off");
+                }
+                meeting_is_locked = !meeting_is_locked;
             }
             
             function returnMeeting() {

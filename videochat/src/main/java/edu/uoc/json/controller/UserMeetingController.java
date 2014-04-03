@@ -75,4 +75,29 @@ public class UserMeetingController {
         return response;
     }
 
+    
+    
+    @RequestMapping(method = RequestMethod.PUT)
+    public @ResponseBody JSONResponse lockSession(HttpSession session) {
+        JSONResponse response = new JSONResponse();
+        try {
+            Room room = (Room) session.getAttribute(Constants.ROOM_SESSION);
+            User user = (User) session.getAttribute(Constants.USER_SESSION);
+            if (user!=null && room!=null) {
+                room = roomDao.findByRoomCode(room.getId());
+                room.setIs_blocked(!room.isIs_blocked());
+                if (room.isIs_blocked()) {
+                    room.setReason_blocked(null);
+                } else {
+                    room.setReason_blocked(Constants.REASON_BLOCK_BY_USER);
+                }
+                roomDao.save(room);
+                response.setOk(true);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            
+        }
+        return response;
+    }
 }
