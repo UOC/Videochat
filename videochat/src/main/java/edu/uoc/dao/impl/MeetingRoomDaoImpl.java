@@ -8,8 +8,16 @@ package edu.uoc.dao.impl;
 import edu.uoc.dao.MeetingRoomDao;
 import edu.uoc.model.MeetingRoom;
 import edu.uoc.util.CustomHibernateDaoSupport;
+import edu.uoc.util.Util;
+import java.sql.Timestamp;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -17,7 +25,7 @@ import org.springframework.stereotype.Repository;
  * @author Francesc Fernandez
  */
 @Repository("MeetingRoomDao")
-public class MeetingRoomDaoImpl extends CustomHibernateDaoSupport implements MeetingRoomDao {
+public class MeetingRoomDaoImpl extends CustomHibernateDaoSupport implements MeetingRoomDao,java.io.Serializable {
 
     @Override
     public void save(MeetingRoom meetingRoom) {
@@ -103,7 +111,49 @@ public class MeetingRoomDaoImpl extends CustomHibernateDaoSupport implements Mee
            
            return new MeetingRoom();
        }
-   
     }
+    
+       
+       @Override
+    public List<MeetingRoom> findbyForm(MeetingRoom meeting) {
+        /*String topic = meeting.getTopic();
+        int roomid = meeting.getId_room().getId();
+        Timestamp startDate = meeting.getStart_meeting();
+        Timestamp endDate = meeting.getEnd_meeting();*/
+       
+        DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        DateFormat form = new SimpleDateFormat("dd/MM/yyyy");
+       String fStart = "";
+       String fEnd="";
+       
+       //Convert TimeStamp to Date
+       Date fComienzo = meeting.getStart_meeting();
+       Date fFinal= meeting.getEnd_meeting();
+       
+       //Convert date to String in the selected Format
+       fStart = form.format(fComienzo);
+       fEnd = form.format(fFinal);
+       //Format the current String dates
+       fStart = Util.formatDateString(fStart);
+       fEnd = Util.formatDateString(fEnd);
+       
+       
+        
+        String topic = "Video 1";
+        int roomid = 13;
+        Timestamp startDate = Timestamp.valueOf(fStart);
+        Timestamp endDate = Timestamp.valueOf(fEnd);
+        
+        
+       
+       List list = getHibernateTemplate().find(
+                "from MeetingRoom where meeting_room_topic=? and meeting_room_start_meeting>=? and meeting_room_end_meeting<=? and room_id=?"
+                        ,topic,startDate,endDate,roomid);
+       
+       
+           return list;
+       }
+   
+    
     
 }

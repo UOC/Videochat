@@ -30,4 +30,5 @@ public interface MeetingRoomDao {
     
     MeetingRoom findbyPath(String path);
 
+    List<MeetingRoom> findbyForm(MeetingRoom meeting);
 }

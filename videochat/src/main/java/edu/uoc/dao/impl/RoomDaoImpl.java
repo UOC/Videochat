@@ -20,7 +20,7 @@ import org.springframework.stereotype.Repository;
  * @author Diego
  */
 @Repository("RoomDao")
-public class RoomDaoImpl  extends CustomHibernateDaoSupport implements RoomDao {
+public class RoomDaoImpl  extends CustomHibernateDaoSupport implements RoomDao,java.io.Serializable {
 
      
     @Override

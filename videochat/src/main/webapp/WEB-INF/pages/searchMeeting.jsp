@@ -27,7 +27,7 @@
         <h3>Player</h3>
         <p><strong>Select a session to play.</strong>Use the following search options to find a session to play.</p>
 
-            <form name="search_meeting_form" action="" method="POST">
+            <form:form name="search_meeting_form" action="searchMeetingForm" method="POST">
                 <div class="form-group">
                     <label for="topic" class="control-label">Topic</label>
                     <input type="text" class="form-control" id="topic">
@@ -56,7 +56,7 @@
                     </select>
                 </div>
                 <button type="submit" class="btn btn-warning">Search</button>
-                </form>
+                </form:form>
         <hr/>
         <p><strong>Results.</strong>Select the session you are interested to play.</p>
         <div class="table-responsive">

@@ -20,7 +20,7 @@ import org.springframework.stereotype.Repository;
  * @author Francesc Fernandez
  */
 @Repository("UserMeetingDao")
-public class UserMeetingDaoImpl extends CustomHibernateDaoSupport implements UserMeetingDao{
+public class UserMeetingDaoImpl extends CustomHibernateDaoSupport implements UserMeetingDao,java.io.Serializable{
     
     @Override
     public void save(UserMeeting userMeeting){

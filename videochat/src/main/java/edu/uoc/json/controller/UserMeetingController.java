@@ -62,7 +62,7 @@ public class UserMeetingController {
 
                     if (userMeetingDeleted.getPk()!=null && userMeetingDeleted.getPk().getUser()!=null) {
                         userMeetingDao.delete(userMeetingDeleted);
-                        meeting.setNumber_participants(meeting.getNumber_participants()-1);
+                        meeting.setNumber_participants(Integer.toString(Integer.parseInt(meeting.getNumber_participants())-1));
                         meetingDao.save(meeting);
                     }
                 }

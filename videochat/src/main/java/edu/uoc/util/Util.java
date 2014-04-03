@@ -60,5 +60,20 @@ public class Util {
         }
         return diffS;
     }
+    
+    
+    public static String formatDateString(String date ){
+        
+        String year;
+        String month;
+        String day;
+        
+        year= date.substring(6);
+        month=date.substring(3, 5);
+        day= date.substring(0,2);
+        
+        String fDate = year+"-"+month+"-"+day+" "+"00:00" ;
+        return fDate;
+    }
 
 }
