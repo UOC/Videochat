@@ -18,11 +18,14 @@
     </head> 
     <body>
         <div class="container">
-            <header class="row">
+            <div class="row">
                 <div class="col-md-1">
-                    <a href="searchMeeting.htm" class="videochat-btn-secundary"><span class="glyphicon glyphicon-arrow-left">&nbsp;back</span></a>
+                    <a href="searchMeeting.htm" class="videochat-btn-secundary"><span class="glyphicon glyphicon-arrow-left">&nbsp;Back to list</span></a>
                 </div>
-                <div class="col-md-3">
+                
+            </div>
+            <header class="row">
+                <div class="col-md-4">
                     <img src="css/images/logo.png" alt="videochat"/></div>
                 <div id="idiomes" class="col-md-3 col-md-offset-4">
                     <select class="form-control">
