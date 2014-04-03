@@ -115,6 +115,21 @@ public class Videochat extends ModuleBase {
 		getLogger().info("Videochat speakapps - closeSession "+room);
 		_appInstance.broadcastMsg("closeSessionClient", new AMFDataItem(username), new AMFDataItem(room));
 	}
+
+	/**
+	 * Lock
+	 * @param client
+	 * @param function
+	 * @param params
+	 */
+	public void lockMeeting(IClient client, RequestFunction function,
+			AMFDataList params) {
+		WMSProperties props = client.getProperties();
+		String username =  props.getPropertyStr("username");
+		String room =  props.getPropertyStr("room");
+		getLogger().info("Videochat speakapps - lockSession "+room);
+		_appInstance.broadcastMsg("lockSessionClient", new AMFDataItem(username), new AMFDataItem(room));
+	}
 	/**
 	 * Register a new user
 	 * @param client

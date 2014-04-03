@@ -92,11 +92,14 @@ public class UserMeetingController {
                 if (meeting.getFinished()==(byte)1) {
                     new_block = false;
                 }
-                room.setIs_blocked(new_block);
-                if (!new_block) {
-                    room.setReason_blocked(null);
-                } else {
-                    room.setReason_blocked(Constants.REASON_BLOCK_BY_USER);
+                if (meeting.getFinished()==(byte)1 ||
+                        !Constants.REASON_BLOCK_RECORDING.equals(room.getReason_blocked())) {
+                    room.setIs_blocked(new_block);
+                    if (!new_block) {
+                        room.setReason_blocked(null);
+                    } else {
+                        room.setReason_blocked(Constants.REASON_BLOCK_BY_USER);
+                    }
                 }
                 roomDao.save(room);
                 response.setOk(true);

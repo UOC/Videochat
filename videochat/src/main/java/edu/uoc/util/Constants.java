@@ -19,7 +19,7 @@ public class Constants {
     public static final String DEBUG_CUSTOM_LTI_PARAMETER = "debug";
 
     public static final String REASON_BLOCK_MAX_PARTICIPANTS = "REASON_MAX_PARTICIPANTS";
-    public static final String REASON_BLOCK_MAX_RECORDING = "REASON_ROOM_RECORDING";
+    public static final String REASON_BLOCK_RECORDING = "REASON_ROOM_RECORDING";
     public static final String REASON_BLOCK_BY_USER = "REASON_ROOM_BLOCK_BY_USER";
     
     /********* SESSION OBJS */

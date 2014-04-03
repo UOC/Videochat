@@ -65,7 +65,7 @@ public class MeetingController {
             User user = (User) session.getAttribute(Constants.USER_SESSION);
             if (user!=null && meeting!=null) {
                 room.setIs_blocked(true);
-                room.setReason_blocked(Constants.REASON_BLOCK_MAX_RECORDING);
+                room.setReason_blocked(Constants.REASON_BLOCK_RECORDING);
                 this.roomDao.save(room);
                 meeting.setRecorded((byte)1);
                 //meeting.setPath(meeting.getPath().replaceAll("_", "/"));

@@ -166,7 +166,7 @@
                             <div class="btn-group col-md-2 col-xs-6">
                                 <button type="button" class="btn btn-warning" id="button-reload"><span class="glyphicon glyphicon-repeat"></span></button>
                                 <!--button type="button" class="btn btn-warning" id="button-configuration"><span class="glyphicon glyphicon-cog"></span></button-->
-                                <button type="button" class="btn btn-warning" id="button-lock"><span class="glyphicon glyphicon-lock" id="span-lock"></span></button>
+                                <button type="button" class="btn btn-warning" id="button-lock"><i class="icon-unlock" id="span-lock"></i></button>
                                 
                             </div>
                         </div>
@@ -263,6 +263,11 @@
                         sendChatMessage();
                     }     
                 );
+                $("#button-lock").click(
+                   function() {
+                        lockMeetingRequest();
+                    }     
+                );        
                 $('#messageTxt').keydown(function (e){
                     if(e.keyCode == 13){
                         sendChatMessage();
@@ -565,7 +570,7 @@
                 } else {
                     $("#span-lock").removeClass("glyphicon-icon");
                     $("#span-lock").removeClass("unlock");
-                    $("#span-lock").addClass("glyphicon-volume-off");
+                    $("#span-lock").addClass("glyphicon-lock");
                 }
                 meeting_is_locked = !meeting_is_locked;
             }
