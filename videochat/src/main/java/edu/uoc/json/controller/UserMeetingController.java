@@ -44,7 +44,7 @@ public class UserMeetingController {
     
 
     
-    @RequestMapping(method = RequestMethod.POST)
+    @RequestMapping(method = RequestMethod.DELETE)
     public @ResponseBody JSONResponse deleteUser(@RequestBody JSONRequest username, HttpSession session) {
         JSONResponse response = new JSONResponse();
         try {
@@ -63,6 +63,15 @@ public class UserMeetingController {
                     if (userMeetingDeleted.getPk()!=null && userMeetingDeleted.getPk().getUser()!=null) {
                         userMeetingDao.delete(userMeetingDeleted);
                         meeting.setNumber_participants(meeting.getNumber_participants()-1);
+                        if (meeting.getNumber_participants()<=0) {
+                            meeting.setFinished((byte)1);
+                            room = roomDao.findByRoomCode(room.getId());
+                            if (room.isIs_blocked()){
+                                room.setIs_blocked(false);
+                                room.setReason_blocked(null);
+                                roomDao.save(room);
+                            }
+                        }
                         meetingDao.save(meeting);
                     }
                 }
@@ -75,6 +84,37 @@ public class UserMeetingController {
         return response;
     }
 
+    
+    @RequestMapping(method = RequestMethod.POST)
+    public @ResponseBody JSONResponse addUser(@RequestBody JSONRequest username, HttpSession session) {
+        JSONResponse response = new JSONResponse();
+        try {
+            Room room = (Room) session.getAttribute(Constants.ROOM_SESSION);
+            MeetingRoom meeting = (MeetingRoom) session.getAttribute(Constants.MEETING_SESSION);
+            User user = (User) session.getAttribute(Constants.USER_SESSION);
+            if (user!=null && meeting!=null) {
+                meeting = meetingDao.findById(meeting.getId());
+                if (meeting.getFinished()!=(byte)1 && meeting.getRecorded()!=(byte)1) {
+                    UserMeetingId mId = new UserMeetingId();
+                    mId.setMeeting(meeting);
+                    mId.setUser(user);
+                    UserMeeting userMeetingAdd = userMeetingDao.findUserMeetingByPK(mId);
+                    if (userMeetingAdd.getPk()==null || userMeetingAdd.getPk().getUser()==null) {
+                        UserMeeting userMeeting  = (UserMeeting) session.getAttribute(Constants.USER_METTING_SESSION);
+                        userMeetingDao.save(userMeeting);
+                        meeting.setNumber_participants(meeting.getNumber_participants()+1);
+                        meeting.setFinished((byte)0);
+                        meetingDao.save(meeting);
+                    }
+                }
+                response.setOk(true);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            
+        }
+        return response;
+    }
     
     
     @RequestMapping(method = RequestMethod.PUT)

@@ -165,12 +165,10 @@ public class UserController {
                     boolean is_course_autz = LTIEnvironment.isCourseAuthorized();
 
                     ApplicationContext context = ContextLoader.getCurrentWebApplicationContext();
-                    UserDao userDao = context.getBean(UserDao.class);
                     CourseDao courseDao = context.getBean(CourseDao.class);
                     UserCourseDao userCourseDao = context.getBean(UserCourseDao.class);
                     RoomDao roomDao = context.getBean(RoomDao.class);
-                    UserMeetingDao userMeetingDao = context.getBean(UserMeetingDao.class);
-
+                    
                     //4. Get course data
                     String course_key = Util.sanitizeString(LTIEnvironment.getCourseKey());
                     String course_label = LTIEnvironment.getCourseName();

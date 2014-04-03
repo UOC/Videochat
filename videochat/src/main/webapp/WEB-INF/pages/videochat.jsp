@@ -165,9 +165,7 @@
                             <h4 class="col-md-10 col-xs-6">Participants</h4>
                             <div class="btn-group col-md-2 col-xs-6">
                                 <button type="button" class="btn btn-warning" id="button-reload"><span class="glyphicon glyphicon-repeat"></span></button>
-                                <!--button type="button" class="btn btn-warning" id="button-configuration"><span class="glyphicon glyphicon-cog"></span></button-->
-                                <button type="button" class="btn btn-warning" id="button-lock"><i class="icon-unlock" id="span-lock"></i></button>
-                                
+                                <button type="button" class="btn btn-warning" title="Block session" id="button-lock" title="Lock session"><span class="unlock" id="span-lock"></span></button>
                             </div>
                         </div>
                         <div class="row">
@@ -241,11 +239,31 @@
         <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
         <script type="text/javascript" src="js/bootbox.min.js"></script>
         <script>
+            var array_messages = Array();
+            array_messages ['--vc-system-start-record--'] = "<spring:message code="system.start.record"/>";
+            array_messages ['--vc-system-stop-record--'] = "<spring:message code="system.stop.record"/>";
+            array_messages ['--vc-system-close-session--'] = "<spring:message code="system.close.session"/>";
+            array_messages ['--vc-system-lock-session--'] = "<spring:message code="system.lock.session"/>";
+            array_messages ['--vc-system-unlock-session--'] = "<spring:message code="system.unlock.session"/>";
             var meeting_is_recorded = ${is_recorded};
             var meeting_is_closed = false;
             var micro_is_muted = false;
             var meeting_is_locked = false;
+            var allowed_return = false;
             $( document ).ready(function() {
+                
+                $(window).bind('beforeunload', function() {
+                    if (!allowed_return) {
+                        disconnectedUserAjax("${sUser.getUsername()}");
+                        setTimeout(function() {
+                            setTimeout(function() {
+                                connectUserAjax("${sUser.getUsername()}");
+                            }, 1000);
+                        },1);
+                        
+                        return "Are you sure do you want to exit?"
+                    }
+                }); 
                 
                 $('#button-record-stop').hide();
                 $('#button-volume').hide();
@@ -289,7 +307,8 @@
                 );                
                 $("#button-reload").click(
                    function() {
-                        location.reload();
+                       allowed_return = true;
+                       location.reload();
                     }     
                 );
                 $("#button-configuration").click(
@@ -446,13 +465,20 @@
                 if (seconds<10) {
                     seconds = "0"+seconds;
                 }
+                var message = info.message;
+                if (message in array_messages) {
+                    if (message === '--vc-system-lock-session--' && !meeting_is_locked) {
+                        message ='--vc-system-unlock-session--';
+                    }
+                    message = array_messages[message];
+                }
                 var time = hours + ":" + minutes + ":" + seconds;
-                var str = "<p><b>"+time+" - "+info.username+":</b> "+info.message+"</p>";
+                var str = "<p><b>"+time+" - "+info.username+":</b> "+message+"</p>";
                 $("#chatContainer").append(str);  
                 var height = $("#chatContainer").get(0).scrollHeight;
                 $("#chatContainer").scrollTop(height);
                 if (info.userkey=="${sUser.getUsername()}") {
-                    var json = { "request" : info.message};  
+                    var json = { "request" : message};  
 
                     $.ajax({  
                         url: 'rest/chat.json',  
@@ -469,6 +495,7 @@
                     });      
                 }
             }
+            
             
             function startedRecord() {
                 $('#button-record').hide();
@@ -564,19 +591,18 @@
             
             function lockSession() {
                 if (meeting_is_locked) {
-                    $("#span-lock").removeClass("glyphicon-lock");
-                    $("#span-lock").addClass("glyphicon-icon");
+                    $("#span-lock").removeClass("lock");
                     $("#span-lock").addClass("unlock");
                 } else {
-                    $("#span-lock").removeClass("glyphicon-icon");
                     $("#span-lock").removeClass("unlock");
-                    $("#span-lock").addClass("glyphicon-lock");
+                    $("#span-lock").addClass("lock");
                 }
                 meeting_is_locked = !meeting_is_locked;
             }
             
             function returnMeeting() {
                 disconnectedUserAjax("${sUser.getUsername()}");
+                allowed_return = true;
                 location.href = "searchMeeting.htm";
             }
             
@@ -585,6 +611,25 @@
             }
             
             function disconnectedUserAjax(username) {
+                var json = { "request" : username};  
+
+                $.ajax({  
+                    url: 'rest/usermeeting.json',  
+                    data: JSON.stringify(json),  
+                    type: "DELETE",  
+
+                    beforeSend: function(xhr) {  
+                        xhr.setRequestHeader("Accept", "application/json");  
+                        xhr.setRequestHeader("Content-Type", "application/json");  
+                    },  
+                    success: function(response) {  
+                        console.log(response);
+                    }  
+                });  
+            }
+            
+            
+            function connectUserAjax(username) {
                 var json = { "request" : username};  
 
                 $.ajax({  
