@@ -132,7 +132,7 @@
                                 </div>
         						<!-- END modal del botó RECORD -->
                                                         
-                     <button type="button" id="button-volume" class="btn btn-warning"><span class="glyphicon glyphicon-volume-up"></span></button>
+                     <button type="button" id="button-volume" class="btn btn-warning"><span class="glyphicon glyphicon-volume-up" id="span-volume"></span></button>
                 </div>
                 <div class="col-md-2 col-md-offset-7 col-xs-5">
                 	<button type="button" class="btn btn-warning" data-toggle="modal" id="button-archive" data-target="#archive"><span class="glyphicon glyphicon-save"></span> ARCHIVE & CLOSE</button>
@@ -241,6 +241,7 @@
         <script>
             var meeting_is_recorded = ${is_recorded};
             var meeting_is_closed = false;
+            var micro_is_muted = false;
             $( document ).ready(function() {
                 
                 $('#button-record-stop').hide();
@@ -263,6 +264,20 @@
                         sendChatMessage();
                     }
                 });
+                $("#button-volume").click(
+                   function() {
+                        var flash = swfobject.getObjectById("videochat_stream_id");
+                        flash.muteUnMuteFromJS();
+                        if (micro_is_muted) {
+                            $("#span-volume").removeClass("glyphicon-volume-off");
+                            $("#span-volume").addClass("glyphicon-volume-up");
+                        } else {
+                            $("#span-volume").removeClass("glyphicon-volume-up");
+                            $("#span-volume").addClass("glyphicon-volume-off");
+                        }
+                        micro_is_muted = !micro_is_muted;
+                    }     
+                );                
                 $("#button-reload").click(
                    function() {
                         location.reload();
@@ -286,6 +301,7 @@
 
                     var flash = swfobject.getObjectById("videochat_stream_id");
                     flash.sendChatMessage(message);
+                    $("#messageTxt").val("");
                 }
             }
             var swf_is_ready = false;
@@ -398,14 +414,25 @@
             
             function newChatMessage(info) {
                 var dt = new Date();
-                var time = dt.getHours() + ":" + dt.getMinutes() + ":" + dt.getSeconds();
+                var hours = dt.getHours();
+                if (hours<10) {
+                    hours = "0"+hours;
+                }
+                var minutes = dt.getMinutes();
+                if (minutes<10) {
+                    minutes = "0"+minutes;
+                }
+                var seconds = dt.getSeconds();
+                if (seconds<10) {
+                    seconds = "0"+seconds;
+                }
+                var time = hours + ":" + minutes + ":" + seconds;
                 var str = "<p><b>"+time+" - "+info.username+":</b> "+info.message+"</p>";
                 $("#chatContainer").append(str);  
                 var height = $("#chatContainer").get(0).scrollHeight;
                 $("#chatContainer").scrollTop(height);
                 if (info.userkey=="${sUser.getUsername()}") {
-                    $("#messageTxt").val("");
-                    var json = { "request" : message};  
+                    var json = { "request" : info.message};  
 
                     $.ajax({  
                         url: 'rest/chat.json',  

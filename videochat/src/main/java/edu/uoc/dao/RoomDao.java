@@ -5,8 +5,8 @@
  */
 package edu.uoc.dao;
 
-import edu.uoc.model.Course;
 import edu.uoc.model.Room;
+import java.util.List;
 
 /**
  *
@@ -14,14 +14,16 @@ import edu.uoc.model.Room;
  */
 public interface RoomDao {
 
-    void save(Room room);
+    public void save(Room room);
 
     //void update(Room room);
 
-    void delete(Room room);
+    public void delete(Room room);
 
-    Room findByRoomCode(int roomId);
+    public Room findByRoomCode(int roomId);
 
     public Room findByRoomKey(String roomkey);
+
+    public List<Room> findByIdCourse(int id);
 
 }

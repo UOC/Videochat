@@ -22,5 +22,9 @@ public class NavigationController {
 	public ModelAndView homePage() {
 		return new ModelAndView("index");
 	}
+	@RequestMapping(value={"error"})
+	public ModelAndView errorPage() {
+		return new ModelAndView("error");
+	}
 	
 }

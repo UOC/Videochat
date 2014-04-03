@@ -19,7 +19,11 @@
     <body>
         <div class="container">
             <header class="row">
-                <div class="col-md-4"><img src="css/images/logo.png" alt="videochat"/></div>
+                <div class="col-md-1">
+                    <a href="searchMeeting.htm" class="videochat-btn-secundary"><span class="glyphicon glyphicon-arrow-left">&nbsp;back</span></a>
+                </div>
+                <div class="col-md-3">
+                    <img src="css/images/logo.png" alt="videochat"/></div>
                 <div id="idiomes" class="col-md-3 col-md-offset-4">
                     <select class="form-control">
                       <option>English</option>
@@ -45,6 +49,7 @@
             <div class="row wrapper_recorder">
                 <div class="col-md-8 player"><div class="my-inner">
                     <!-- TEST PLAY BUTTON -->
+                    <button id="play-rewind" type="button" class="btn btn-warning" title="Rewind"><span class="glyphicon glyphicon-backward" ></button> ${item.getTotal_time_txt()}
                     <button id="play-pause" type="button" class="btn btn-warning" title="Play"><span class="glyphicon glyphicon-play" id="glyphicon-play"></button> ${item.getTotal_time_txt()}
                     <section>   
                             <span class="tooltip2"></span>   
@@ -233,7 +238,12 @@
                 <c:forEach items="${meeting.getParticipants()}" var="item">
                 var participant = new StreamObject("${item.getPk().getUser().getUsername()}", "${item.getPk().getUser().getFullname()}", "${item.getStreamKeyRecorded()}");
                 registeredUser(participant);
-                </c:forEach>  
+                </c:forEach> 
+                $("#play-rewind").on("click", function(){
+                    $(array_streams).each(function(p){
+                        jwplayer("user-video-"+(p+1)).seek(0);
+                    });
+                });
                 var slider = $('#slider'),  
                     tooltip = $('.tooltip');  
 
@@ -278,7 +288,7 @@
                       tooltip.fadeOut('fast');  
                     },  
                 });  
-                var sliderPlay = $('#sliderPlay'),  
+                /*var sliderPlay = $('#sliderPlay'),  
                     tooltipPlay = $('.tooltipPlay');  
 
                 tooltipPlay.hide();  
@@ -307,7 +317,7 @@
                     stop: function(event,ui) {  
                       tooltipPlay.fadeOut('fast');  
                     },  
-                });  
+                }); */ 
                                
                 });
             var duration_video = 0;    

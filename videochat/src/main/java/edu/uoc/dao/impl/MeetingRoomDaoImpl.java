@@ -7,8 +7,6 @@ package edu.uoc.dao.impl;
 
 import edu.uoc.dao.MeetingRoomDao;
 import edu.uoc.model.MeetingRoom;
-import edu.uoc.model.Room;
-import edu.uoc.model.UserCourse;
 import edu.uoc.util.CustomHibernateDaoSupport;
 import java.util.ArrayList;
 import java.util.List;
@@ -45,6 +43,23 @@ public class MeetingRoomDaoImpl extends CustomHibernateDaoSupport implements Mee
         }
         List list = getHibernateTemplate().find(
                 "from MeetingRoom where room_id=?" + extraSQL, roomId);
+        if (list.size() > 0) {
+            return list;
+        } else {
+            return new ArrayList<MeetingRoom>();
+        }
+    }
+    
+    @Override
+    public List<MeetingRoom> findByCourseId(String courseId, boolean onlyRecorded) {
+
+        String extraSQL = "";
+        if (onlyRecorded) {
+            extraSQL = " meeting_room_recorded = 1 and ";
+        }
+        List list = getHibernateTemplate().find(
+                //"from MeetingRoom as meeting, Room as room where room.id_course=?" + extraSQL, courseId);
+                "from MeetingRoom  WHERE "+extraSQL+" room_id in ("+courseId+")" );
         if (list.size() > 0) {
             return list;
         } else {
