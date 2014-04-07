@@ -15,7 +15,7 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
             
-            <title>Videochat - Session Error</title>
+        <title>Videochat - Session Error</title>
         <!-- Latest compiled and minified CSS -->
         <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
         <!-- Optional theme -->
@@ -28,9 +28,18 @@
             <header class="row">
             	<div class="col-md-4"><img src="css/images/logo.png" alt="videochat"/></div>
             </header>
-            <h3><c:if test = "${reason == edu.uoc.util.Constants.REASON_BLOCK_RECORDING}">
-                <spring:message code="message.accessmeeting.blockedmeeting"/></h3>
-            </c:if>
+            <h3><c:choose>
+                <c:when test = "${reason_max_participants == reason}">
+                    <spring:message code="message.accessmeeting.blockedmeeting.marxparticipants"/>
+                </c:when>
+                 <c:when test = "${reason_recording == reason}">
+                     <spring:message code="message.accessmeeting.blockedmeeting.recording"/>
+                 </c:when>
+                 <c:otherwise>
+                     <spring:message code="message.accessmeeting.blockedmeeting.byuser"/>
+                 </c:otherwise>
+                </c:choose>
+           </h3>
         </div>
 
     </body>

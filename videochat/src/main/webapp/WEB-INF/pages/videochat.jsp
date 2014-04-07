@@ -45,31 +45,8 @@
             </div><!-- /.modal-dialog -->
         </div>
         <!-- /.modal -->*/%>
-        <!-- modal parar gravació-->
-    	<div class="modal fade" id="Recorded">
-            <div class="modal-dialog">
-            	<div class="modal-content">
-            		<div class="modal-header">
-            			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-            			<h4 class="modal-title"><spring:message code="label.important"/></h4>
-            		</div>
-            		<div class="modal-body">
-            			<p><strong><spring:message code="message.createmeeting.confirm_stop_what_do_you_to_do"/></strong></p>
-                                <div><strong><spring:message code="label.important"/></strong>: <spring:message code="message.createmeeting.cancel_stop_what_do_you_to_do"/><br/>
-                        	 <spring:message code="message.stop"/>: <spring:message code="message.createmeeting.stop_stop_what_do_you_to_do"/></div>
-                                 <div><strong><spring:message code="message.save"/></strong>: <spring:message code="message.createmeeting.save_and_close_stop_what_do_you_to_do"/></div>
-                        
-            		</div>
-            		<div class="modal-footer">
-            			<button type="button" class="btn btn-warning"><spring:message code="message.cancel"/></button>
-                        <button type="button" class="btn btn-warning" onclick="stopRecordRequest()"><spring:message code="message.stop"/></button>
-                        <button type="button" class="btn btn-warning" onclick="showFormCloseMeetingRequest()"><spring:message code="message.save_and_close"/></button>
-            		</div>
-            	</div><!-- /.modal-content -->
-            </div><!-- /.modal-dialog -->
-        </div>
-        <!-- /.modal -->
-        <!-- modal parar gravació-->
+
+        <!-- modal form gravació-->
     	<div class="modal fade" id="formModal">
             <div class="modal-dialog">
             	<div class="modal-content">
@@ -84,8 +61,8 @@
                         
             		</div>
             		<div class="modal-footer">
-            			<button type="button" class="btn btn-warning"><spring:message code="message.cancel"/></button>
-                        <button type="button" class="btn btn-warning" onclick="closeMeetingRequest()"><spring:message code="message.save_and_close"/></button>
+            			<button type="button" data-dismiss="modal" class="btn btn-warning"><spring:message code="message.cancel"/></button>
+                        <button type="button" class="btn btn-warning" data-dismiss="modal" onclick="closeMeetingRequest()"><spring:message code="message.save_and_close"/></button>
             		</div>
             	</div><!-- /.modal-content -->
             </div><!-- /.modal-dialog -->
@@ -126,33 +103,39 @@
                                                 <div><spring:message code="message.createmeeting.warning_new_recorder"/></div>
                                             </div>
                                             <div class="modal-footer">
-                                                <button type="button" data-dismiss="modal" class="btn btn-default"><spring:message code="message.cancel"/></button>
-                                                <button type="button" data-dismiss="modal" class="btn btn-warning" onclick="startRecordRequest()"><spring:message code="message.continue"/></button>
+                                                <button type="button" data-dismiss="modal" data-dismiss="modal" class="btn btn-default"><spring:message code="message.cancel"/></button>
+                                                <button type="button" data-dismiss="modal" data-dismiss="modal" class="btn btn-warning" onclick="startRecordRequest()"><spring:message code="message.continue"/></button>
                                             </div>
                                         </div><!-- /.modal-content -->
                                     </div><!-- /.modal-dialog -->
                                 </div>
         						<!-- END modal del botó RECORD -->
-                	<button type="button" id="button-record-stop" class="btn btn-warning" data-toggle="modal" data-target="#record-stop"><span class="glyphicon glyphicon-stop"></span> STOP</button>
+                	<button type="button" id="button-record-stop" class="btn btn-warning" data-toggle="modal" data-target="#Recorded"><span class="glyphicon glyphicon-stop"></span> STOP</button>
                     <!-- modal del botó RECORD -->
-                                <div class="modal fade" id="record-stop">
-                                    <div class="modal-dialog">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
+                        <div class="modal fade" id="Recorded">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                        <div class="modal-header">
                                                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                                                 <h4 class="modal-title"><spring:message code="label.important"/></h4>
-                                            </div>
-                                            <div class="modal-body">
-                                                <div><strong>Are you sure you want to stop a recorder?</strong></div>
-                                            </div>
-                                            <div class="modal-footer">
-                                                <button type="button" data-dismiss="modal" class="btn btn-default"><spring:message code="message.cancel"/></button>
-                                                <button type="button" data-dismiss="modal" class="btn btn-warning" onclick="stopRecordRequest()"><spring:message code="message.continue"/></button>
-                                            </div>
-                                        </div><!-- /.modal-content -->
-                                    </div><!-- /.modal-dialog -->
-                                </div>
-        						<!-- END modal del botó RECORD -->
+                                        </div>
+                                        <div class="modal-body">
+                                                <p><strong><spring:message code="message.createmeeting.confirm_stop_what_do_you_to_do"/></strong></p>
+                                                <div><strong><spring:message code="label.important"/></strong>: <spring:message code="message.createmeeting.cancel_stop_what_do_you_to_do"/><br/>
+                                                 <spring:message code="message.stop"/>: <spring:message code="message.createmeeting.stop_stop_what_do_you_to_do"/></div>
+                                                 <div><strong><spring:message code="message.save"/></strong>: <spring:message code="message.createmeeting.save_and_close_stop_what_do_you_to_do"/></div>
+
+                                        </div>
+                                        <div class="modal-footer">
+                                                <button type="button" class="btn btn-warning" data-dismiss="modal"><spring:message code="message.cancel"/></button>
+                                        <button type="button" class="btn btn-warning" data-dismiss="modal" onclick="stopRecordRequest()"><spring:message code="message.stop"/></button>
+                                        <button type="button" class="btn btn-warning" data-dismiss="modal" onclick="showFormCloseMeetingRequest()"><spring:message code="message.save_and_close"/></button>
+                                        </div>
+                                </div><!-- /.modal-content -->
+                            </div><!-- /.modal-dialog -->
+                        </div>
+                        <!-- /.modal -->
+                        <!-- END modal del botó RECORD -->
                                                         
                      <button type="button" id="button-volume" class="btn btn-warning"><span class="glyphicon glyphicon-volume-up" id="span-volume"></span></button>
                 </div>
@@ -171,8 +154,8 @@
                                     <div><spring:message code="message.createmeeting.warning_save_close"/></div>
                                 </div>
                                 <div class="modal-footer">
-                                    <button type="button" class="btn btn-default" data-dismiss="modal"><spring:message code="message.cancel"/></button>
-                                    <button type="button" class="btn btn-warning" onclick="showFormCloseMeetingRequest()"><spring:message code="message.continue"/></button>
+                                    <button type="button" class="btn btn-default" data-dismiss="modal" data-dismiss="modal"><spring:message code="message.cancel"/></button>
+                                    <button type="button" class="btn btn-warning" data-dismiss="modal" onclick="showFormCloseMeetingRequest()"><spring:message code="message.continue"/></button>
                                 </div>
                             </div><!-- /.modal-content -->
                         </div><!-- /.modal-dialog -->
@@ -397,7 +380,7 @@
                     var topic = $('#topic_meeting').val();
                     var description = $('#description_meeting').val();
                     if (topic.length>0) {
-                        saveTopicDescription();
+                        saveTopicDescription(topic, description);
                         var flash = swfobject.getObjectById("videochat_stream_id");
                         flash.closeMeetingFromJS();
                     } else {
@@ -484,7 +467,7 @@
             }
             
             var saveTopicDescription = function(topic, description) {
-                var json = { "topic" : topic, "description": decription};  
+                var json = { "request" : topic, "extraParam": description};  
 
               $.ajax({  
                   url: 'rest/usermeeting.json',  

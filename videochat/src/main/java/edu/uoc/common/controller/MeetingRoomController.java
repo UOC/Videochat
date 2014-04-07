@@ -56,11 +56,6 @@ public class MeetingRoomController implements java.io.Serializable {
             System.err.println("IllegalStateException: " + ISE.getMessage());
         }
 
-        System.out.println("MeetingTopic: " + meetingRoom.getTopic());
-        System.out.println("MeetingNP: " + meetingRoom.getNumber_participants());
-        System.out.println("MeetingSM: " + meetingRoom.getStart_meeting());
-        System.out.println("MeetingEM: " + meetingRoom.getEnd_meeting());
-
         Course course = (Course) session.getAttribute(Constants.COURSE_SESSION);
         //Room room = (Room)session.getAttribute(Constants.ROOM_SESSION);
         User user = (User) session.getAttribute(Constants.USER_SESSION);

@@ -11,6 +11,7 @@ import edu.uoc.dao.RoomDao;
 import edu.uoc.dao.UserDao;
 import edu.uoc.dao.UserMeetingDao;
 import edu.uoc.model.JSONRequest;
+import edu.uoc.model.JSONRequestExtraParam;
 import edu.uoc.model.JSONResponse;
 import edu.uoc.model.MeetingRoom;
 import edu.uoc.model.Room;
@@ -19,6 +20,7 @@ import edu.uoc.model.UserMeeting;
 import edu.uoc.model.UserMeetingId;
 import edu.uoc.util.Constants;
 import javax.servlet.http.HttpSession;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -32,7 +34,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @Controller
 @RequestMapping("/usermeeting")
 public class UserMeetingController {
-    
+    //get log4j handler
+    private static final Logger logger = Logger.getLogger(UserMeetingController.class);
+
     @Autowired
     private UserMeetingDao userMeetingDao;
     @Autowired
@@ -69,7 +73,7 @@ public class UserMeetingController {
                 response.setOk(true);
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error("Deleting user ", e);
             
         }
         return response;
@@ -105,7 +109,7 @@ public class UserMeetingController {
                 response.setOk(true);
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error("Deleting lock session ", e);
             
         }
         return response;
@@ -114,20 +118,22 @@ public class UserMeetingController {
     
     
     @RequestMapping(method = RequestMethod.POST)
-    public @ResponseBody JSONResponse saveSession(@RequestBody JSONRequest topic, @RequestBody JSONRequest description, HttpSession session) {
+    public @ResponseBody JSONResponse saveSession(@RequestBody JSONRequestExtraParam request, HttpSession session) {
         JSONResponse response = new JSONResponse();
         try {
             User user = (User) session.getAttribute(Constants.USER_SESSION);
             MeetingRoom meeting = (MeetingRoom) session.getAttribute(Constants.MEETING_SESSION);
-            
-            if (user!=null && meeting!=null && topic!=null && topic.getRequest().length()>0) {
+            logger.info("topic "+request.getRequest()+" desc "+request.getExtraParam());
+            if (user!=null && meeting!=null && request!=null && request.getRequest()!=null && request.getRequest().length()>0 ) {
                 meeting = meetingDao.findById(meeting.getId());
-                meeting.setTopic(topic.getRequest());
-                meeting.setDescription(description.getRequest());
+                meeting.setTopic(request.getRequest());
+                meeting.setDescription(request.getExtraParam());
+                logger.info("Meeting Saved topic "+request.getRequest()+" desc "+request.getExtraParam());
+                meetingDao.save(meeting);
                 response.setOk(true);
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error("Save session name ", e);
             
         }
         return response;

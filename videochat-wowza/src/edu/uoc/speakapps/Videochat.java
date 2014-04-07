@@ -1,5 +1,8 @@
 package edu.uoc.speakapps;
 
+import java.io.File;
+import java.io.IOException;
+
 import com.wowza.wms.application.*;
 import com.wowza.wms.amf.*;
 import com.wowza.wms.client.*;
@@ -84,8 +87,42 @@ public class Videochat extends ModuleBase {
 		WMSProperties props = client.getProperties();
 		String username =  props.getPropertyStr("username");
 		String room =  props.getPropertyStr("room");
-		getLogger().info("Videochat speakapps - startRecordClient "+room);
+		//Delete the folder 
+		String publishName =  props.getPropertyStr("publishName");
+		int pos = publishName.lastIndexOf("_");
+		if (pos>0) {
+			String folder_to_delete = publishName.substring(0, pos);
+			folder_to_delete = "record/"+folder_to_delete.replaceAll("_", "/");
+			getLogger().info("Videochat speakapps - startRecordClient "+room+" deleting folder "+folder_to_delete);
+			
+			File folder = new File(folder_to_delete);
+			boolean deletedFolder = deleteFolder(folder);
+			
+			getLogger().info("Videochat speakapps - startRecordClient "+room+" deleted folder "+deletedFolder);
+		} 
 		_appInstance.broadcastMsg("startRecordClient", new AMFDataItem(username), new AMFDataItem(room));
+	}
+	
+	private static boolean deleteFolder(File folder) {
+		boolean success = false; 
+		try {
+			if (folder.exists()) {
+			    File[] files = folder.listFiles();
+			    if(files!=null) { //some JVMs return null for empty dirs
+			        for(File f: files) {
+			            if(f.isDirectory()) {
+			            	success = deleteFolder(f);
+			            } else {
+			            	success = f.delete();
+			            }
+			        }
+			    }
+			    success = folder.delete();
+			}
+		} catch (Exception ioe) {
+			getLogger().error("Videochat speakapps Deleting folder- "+folder.getAbsolutePath(), ioe);
+		}
+	    return success;
 	}
 	/**
 	 * Stop Record
