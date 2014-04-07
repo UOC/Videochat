@@ -5,19 +5,23 @@
  */
 package edu.uoc.dao.impl;
 
+import edu.uoc.model.SearchMeeting;
 import edu.uoc.dao.MeetingRoomDao;
 import edu.uoc.model.MeetingRoom;
+import edu.uoc.model.Room;
+import edu.uoc.model.User;
+import edu.uoc.model.UserMeeting;
 import edu.uoc.util.CustomHibernateDaoSupport;
 import edu.uoc.util.Util;
 import java.sql.Timestamp;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import org.apache.log4j.Logger;
+import org.hibernate.Criteria;
+import org.hibernate.FetchMode;
+import org.hibernate.criterion.DetachedCriteria;
+import org.hibernate.criterion.Restrictions;
+import org.hibernate.criterion.Subqueries;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -26,6 +30,8 @@ import org.springframework.stereotype.Repository;
  */
 @Repository("MeetingRoomDao")
 public class MeetingRoomDaoImpl extends CustomHibernateDaoSupport implements MeetingRoomDao,java.io.Serializable {
+     //get log4j handler
+    private static final Logger logger = Logger.getLogger(MeetingRoomDaoImpl.class);
 
     @Override
     public void save(MeetingRoom meetingRoom) {
@@ -58,7 +64,7 @@ public class MeetingRoomDaoImpl extends CustomHibernateDaoSupport implements Mee
         }
     }
     
-    @Override
+    /*@Override
     public List<MeetingRoom> findByCourseId(String courseId, boolean onlyRecorded) {
 
         String extraSQL = "";
@@ -73,7 +79,7 @@ public class MeetingRoomDaoImpl extends CustomHibernateDaoSupport implements Mee
         } else {
             return new ArrayList<MeetingRoom>();
         }
-    }
+    }*/
     
     @Override
     public MeetingRoom findByRoomIdNotFinished(int roomId) {
@@ -115,37 +121,44 @@ public class MeetingRoomDaoImpl extends CustomHibernateDaoSupport implements Mee
     
        
    @Override
-    public List<MeetingRoom> findbyForm(MeetingRoom meeting) {
+    public List<MeetingRoom> findbyForm(SearchMeeting searchMeeting, List<Room> ids_room) {
        
-       DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-       DateFormat form = new SimpleDateFormat("dd/MM/yyyy");
-       String fStart = "";
-       String fEnd="";
-       String topic = meeting.getTopic();
-       int roomid = meeting.getId_room().getId();
+       String topic = searchMeeting.getTopic();
+       Room room = searchMeeting.getRoom();
        
        //Convert TimeStamp to Date
-       Date fComienzo = meeting.getStart_meeting();
-       Date fFinal= meeting.getEnd_meeting();
+       Timestamp tsStart = Util.converToTimestamp(searchMeeting.getStart_meeting(), logger);
+       Timestamp tsEnd = Util.converToTimestamp(searchMeeting.getEnd_meeting(), logger);
        
-       //Convert date to String in the selected Format
-       fStart = form.format(fComienzo);
-       fEnd = form.format(fFinal);
-       //Format the current String dates
-       fStart = Util.formatDateString(fStart);
-       fEnd = Util.formatDateString(fEnd);
-       
-        Timestamp startDate = Timestamp.valueOf(fStart);
-        Timestamp endDate = Timestamp.valueOf(fEnd);
         
-        
+        Criteria criteria;
+        criteria = this.getSession().createCriteria(MeetingRoom.class, "meeting");
+        criteria.add(Restrictions.eq("meeting.recorded",(byte)1));
+        if(tsStart!=null){
+            criteria.add(Restrictions.ge("meeting.start_meeting",tsStart));
+	}
+        if(tsEnd!=null){
+            criteria.add(Restrictions.le("meeting.end_meeting",tsEnd));
+	}
+	if(topic!=null && topic.length()>0){
+            criteria.add(Restrictions.like("meeting.topic","%"+topic+"%"));
+	}
+	if(room!=null && room.getId()>0){
+            criteria.add(Restrictions.eq("meeting.id_room",room));
+	} else {
+            criteria.add(Restrictions.in("meeting.id_room", ids_room));
+        }
+        if (false && searchMeeting.getParticipants()!=null && searchMeeting.getParticipants().length()>0) {
+            DetachedCriteria subCriteria = DetachedCriteria.forClass(UserMeeting.class, "userMeeting");
+                subCriteria.createAlias("userMeeting.pk.meeting", "meeting_id");
+                subCriteria.setFetchMode("User", FetchMode.JOIN);
+                subCriteria.add(Restrictions.like("user.fullname", "%"+searchMeeting.getParticipants()+"%"));
+                //subCriteria.add(Restrictions.eqProperty("userMeeting.meeting_id",""));
+            criteria.add(Subqueries.in("meeting.id", subCriteria));
+        }
+        logger.info("Criteria "+criteria.toString());
        
-       List list = getHibernateTemplate().find(
-                "from MeetingRoom where meeting_room_topic=? and meeting_room_start_meeting>=? and meeting_room_end_meeting<=? and room_id=?"
-                        ,topic,startDate,endDate,roomid);
-       
-       
-           return list;
+           return criteria.list();
        }
    
     

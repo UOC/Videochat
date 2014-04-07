@@ -5,7 +5,10 @@
  */
 package edu.uoc.dao;
 
+import edu.uoc.model.SearchMeeting;
 import edu.uoc.model.MeetingRoom;
+import edu.uoc.model.Room;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -22,7 +25,7 @@ public interface MeetingRoomDao {
 
     List<MeetingRoom> findByRoomId(int meetingroomId, boolean onlyRecorded);
     
-    List<MeetingRoom> findByCourseId(String courseId, boolean onlyRecorded);
+   // List<MeetingRoom> findByCourseId(String courseId, boolean onlyRecorded);
 
     MeetingRoom findByRoomIdNotFinished(int meetingroomId);
     
@@ -30,5 +33,5 @@ public interface MeetingRoomDao {
     
     MeetingRoom findbyPath(String path);
 
-    List<MeetingRoom> findbyForm(MeetingRoom meeting);
+    List<MeetingRoom> findbyForm(SearchMeeting searchMeeting, List<Room> ids_room);
 }

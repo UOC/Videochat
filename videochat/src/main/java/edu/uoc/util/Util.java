@@ -7,8 +7,10 @@
 package edu.uoc.util;
 
 import java.sql.Timestamp;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import org.apache.log4j.Logger;
 
 /**
  *
@@ -74,6 +76,21 @@ public class Util {
         
         String fDate = year+"-"+month+"-"+day+" "+"00:00" ;
         return fDate;
+    }
+    
+    public static Timestamp converToTimestamp(String s, Logger log) {
+        Timestamp ts = null;
+        try {
+            if (s!=null && s.length()>0) {
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd"); 
+                java.util.Date date = sdf.parse(s); 
+                ts = new java.sql.Timestamp(date.getTime()); 
+            }
+        }
+         catch (ParseException e) {
+             log.error("Error formatting to timestamp ", e);
+         }
+        return ts;
     }
 
 }

@@ -28,14 +28,14 @@
         <h3>Player</h3>
         <p><strong>Select a session to play.</strong>Use the following search options to find a session to play.</p>
 
-        <form:form name="search_meeting_form" commandName="searchMeetingForm" modelAttribute="meeting" method="POST">
+        <form:form name="search_meeting_form" action="searchMeeting.htm" commandName="searchMeetingForm" modelAttribute="searchMeeting" method="POST">
                 <div class="form-group">
                     <label for="topic" class="control-label">Topic</label>
                     <form:input type="text" path="topic" class="form-control" id="topic"/>
                 </div>
                 <div class="form-group">
                     <label for="participants" class="control-label">Participants</label>
-                    <form:input type="text" path="number_participants" class="form-control" id="participants"/>
+                    <form:input type="text" path="participants" class="form-control" id="participants"/>
                 </div>
                 <div class="row">
                     <div class="form-group col-xs-6">
@@ -52,7 +52,7 @@
                     <select name="room_id" class="form-control">
                         <option value="-1">All</option>
                          <c:forEach var="item" items="${listRooms}">
-                             <option value="<c:out value="${item.getId()}"/>"><c:out value="${item.getLabel()}"/></option>
+                             <option value="<c:out value="${item.getId()}"/>" <c:if test="${item.getId()==searchMeeting.getRoom_Id()}"> selected </c:if>><c:out value="${item.getLabel()}"/></option>
                          </c:forEach>
                     </select>
                 </div>
