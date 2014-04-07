@@ -47,18 +47,23 @@ public class UserController {
     private UserMeetingDao userMeetingDao;
     @Autowired
     private ChatDao chatMeetingDao;
-                    
+    @Autowired
+    private CourseDao courseDao;
+    @Autowired
+    private UserCourseDao userCourseDao;
+    @Autowired
+    private RoomDao roomDao;
 
     @RequestMapping("/player")
     public ModelAndView handleRequestInternal(@RequestParam(value = "id") int id,
             HttpSession session) {
 
         ModelAndView model = new ModelAndView("player");
-        Room room = (Room)session.getAttribute(Constants.ROOM_SESSION);
+        Room room = (Room) session.getAttribute(Constants.ROOM_SESSION);
         User user = (User) session.getAttribute(Constants.USER_SESSION);
-        if (user!=null && room!=null) {
+        if (user != null && room != null) {
             MeetingRoom meeting = meetingroomDao.findById(id);
-            if (meeting.getId()>0) {
+            if (meeting.getId() > 0) {
                 model.addObject("user", user);
                 MeetingRoomExtended meeting_extended = new MeetingRoomExtended(meeting);
                 meeting_extended.setParticipants(userMeetingDao.findUsersByMeetingId(meeting, -1, true));
@@ -66,7 +71,7 @@ public class UserController {
                 meeting_extended.setStart_meeting_txt(Util.getTimestampFormatted(meeting_extended.getStart_meeting(), Constants.FORMAT_DATETIME));
                 meeting_extended.setEnd_record_txt(Util.getTimestampFormatted(meeting_extended.getEnd_record(), Constants.FORMAT_DATETIME));
                 meeting_extended.setStart_record_txt(Util.getTimestampFormatted(meeting_extended.getStart_record(), Constants.FORMAT_DATETIME));
-                
+
                 meeting_extended.setEnd_meeting_date_txt(Util.getTimestampFormatted(meeting_extended.getEnd_meeting(), Constants.FORMAT_DATE));
                 meeting_extended.setStart_meeting_date_txt(Util.getTimestampFormatted(meeting_extended.getStart_meeting(), Constants.FORMAT_DATE));
                 meeting_extended.setEnd_record_date_txt(Util.getTimestampFormatted(meeting_extended.getEnd_record(), Constants.FORMAT_DATE));
@@ -77,7 +82,7 @@ public class UserController {
                 meeting_extended.setEnd_record_time_txt(Util.getTimestampFormatted(meeting_extended.getEnd_record(), Constants.FORMAT_TIME));
                 meeting_extended.setStart_record_time_txt(Util.getTimestampFormatted(meeting_extended.getStart_record(), Constants.FORMAT_TIME));
 
-                meeting_extended.setTotal_time_txt(Util.substractTimestamps(meeting_extended.getEnd_meeting(),meeting_extended.getStart_meeting()));
+                meeting_extended.setTotal_time_txt(Util.substractTimestamps(meeting_extended.getEnd_meeting(), meeting_extended.getStart_meeting()));
                 meeting_extended.setChat(chatMeetingDao.findByMeetingId(meeting));
                 model.addObject("course", session.getAttribute(Constants.COURSE_SESSION));
                 model.addObject("room", room);
@@ -85,11 +90,11 @@ public class UserController {
                 model.addObject("wowza_stream_server", Constants.WOWZA_STREAM_SERVER);
             } else {
                 model.setViewName("errorMeetingNotFound");
-            } 
+            }
         } else {
             model.setViewName("errorSession");
         }
-        
+
         return model;
     }
 
@@ -97,31 +102,85 @@ public class UserController {
     public ModelAndView showVideochat(HttpSession session) {
 
         ModelAndView model = new ModelAndView("videochat");
-        MeetingRoom meeting = (MeetingRoom)session.getAttribute(Constants.MEETING_SESSION);
-        Room room = (Room)session.getAttribute(Constants.ROOM_SESSION);
+        Room room = (Room) session.getAttribute(Constants.ROOM_SESSION);
         User user = (User) session.getAttribute(Constants.USER_SESSION);
-        if (user!=null && meeting!=null) {
+        Course course = (Course) session.getAttribute(Constants.COURSE_SESSION);
+        boolean can_access_to_meeting = true;
+        if (user != null && room != null) {
+            String pathMeeting = course.getCoursekey() + "_" + room.getKey() + "_" + room.getId();
+            boolean is_new_meeting = true;
+            MeetingRoom meeting = null;
+            UserMeeting userMeeting;
+            if (!room.isIs_blocked()) {
+
+                //Find the room and the meeting room associate to this room
+                MeetingRoom mr = meetingroomDao.findByRoomIdNotFinished(room.getId());
+                //If we find it, set +1 to participants and update
+                if (mr != null && mr.getId() != 0) {
+                    meeting = mr;
+                    UserMeeting aux = userMeetingDao.findUserMeetingByPK(new UserMeetingId(user, meeting));
+                    if (aux.getPk() == null) {
+                        meeting.setNumber_participants(mr.getNumber_participants() + 1);
+                    }
+                    //If the number of participants == 6 then the room is blocked
+                    if (meeting.getNumber_participants() > Constants.MAX_PARTICIPANTS) {
+                        room.setIs_blocked(true);
+                        room.setReason_blocked(Constants.REASON_BLOCK_MAX_PARTICIPANTS);
+                        can_access_to_meeting = false;
+                    }
+                    roomDao.save(room);
+                    is_new_meeting = false;
+                    //if there is no meeting to this rooom, create a new meeting room
+                }
+
+                if (can_access_to_meeting) {
+                    java.util.Date date = new java.util.Date();
+
+                    if (is_new_meeting) {
+                        meeting = new MeetingRoom();
+                        meeting.setId_room(room);
+                        meeting.setNumber_participants(1);
+                        meeting.setPath(pathMeeting);
+                        meeting.setRecorded((byte) 0);
+                        meeting.setTopic(room.getLabel());
+                        meeting.setDescription(null);
+                        meeting.setStart_meeting(new Timestamp(date.getTime()));
+                        meeting.setStart_record(null);
+                        meeting.setEnd_record(null);
+                        meeting.setEnd_meeting(null);
+                    }
+                    meetingroomDao.save(meeting);
+                    String meetingIdPath = course.getCoursekey() + "_" + room.getKey() + "_" + meeting.getId();
+
+                    UserMeetingId umId = new UserMeetingId(user, meeting);
+                    userMeeting = new UserMeeting(umId, new Timestamp(date.getTime()), meetingIdPath + "_" + user.getUsername());
+                    userMeetingDao.save(userMeeting);
+                    session.setAttribute(Constants.USER_METTING_SESSION, userMeeting);
+                }
+                session.setAttribute(Constants.MEETING_SESSION, meeting);
+            }
+
             model.addObject("user", user);
-            model.addObject("course", session.getAttribute(Constants.COURSE_SESSION));
+            model.addObject("course", course);
             model.addObject("meeting", meeting);
             model.addObject("userMeeting", session.getAttribute(Constants.USER_METTING_SESSION));
             model.addObject("wowza_stream_server", Constants.WOWZA_STREAM_SERVER);
-            model.addObject("is_recorded", meeting.getRecorded()==(byte)1);
+            model.addObject("is_recorded", meeting.getRecorded() == (byte) 1);
             //get the list of current participants
             ApplicationContext context = ContextLoader.getCurrentWebApplicationContext();
             UserMeetingDao userMeetingDao = context.getBean(UserMeetingDao.class);
             List<UserMeeting> participants = userMeetingDao.findUsersByMeetingId(meeting, user.getId(), true);
             model.addObject("participants", participants);
-        } else {
+        }
+        if (!can_access_to_meeting ) {
             String error = "errorSession";
-            if (user!=null && meeting==null && room!=null && room.isIs_blocked()) {
+            if (user != null && room != null && room.isIs_blocked()) {
                 //nloquejada
                 model.addObject("reason", room.getReason_blocked());
-                error = "errorBlocked"; 
+                error = "errorBlocked";
             }
             model.setViewName(error);
         }
-        
 
         return model;
 
@@ -135,7 +194,7 @@ public class UserController {
         session.setAttribute(Constants.COURSE_SESSION, null);
         session.setAttribute(Constants.MEETING_SESSION, null);
         session.setAttribute(Constants.USER_METTING_SESSION, null);
-        session.setAttribute(Constants.USER_LANGUAGE,null);
+        session.setAttribute(Constants.USER_LANGUAGE, null);
 
         try {
             request.setCharacterEncoding("UTF-8");
@@ -149,7 +208,7 @@ public class UserController {
 
                     //2. Get the values of user and course  	 
                     String username = Util.sanitizeString(LTIEnvironment.getUserName());
-                //TODO mirar si cal posar
+                    //TODO mirar si cal posar
 				/*if (username.startsWith(LTIEnvironment.getResourcekey()+":")) {
                      username = username.substring((LTIEnvironment.getResourcekey()+":").length());
                      }*/
@@ -165,20 +224,13 @@ public class UserController {
                     boolean is_instructor = LTIEnvironment.isInstructor();
                     boolean is_course_autz = LTIEnvironment.isCourseAuthorized();
 
-                    ApplicationContext context = ContextLoader.getCurrentWebApplicationContext();
-                    UserDao userDao = context.getBean(UserDao.class);
-                    CourseDao courseDao = context.getBean(CourseDao.class);
-                    UserCourseDao userCourseDao = context.getBean(UserCourseDao.class);
-                    RoomDao roomDao = context.getBean(RoomDao.class);
-                    UserMeetingDao userMeetingDao = context.getBean(UserMeetingDao.class);
-
                     //4. Get course data
                     String course_key = Util.sanitizeString(LTIEnvironment.getCourseKey());
                     String course_label = LTIEnvironment.getCourseName();
                     String resource_key = Util.sanitizeString(LTIEnvironment.getResourceKey());
                     String resource_label = LTIEnvironment.getResourceTitle();
 
-                //LTIEnvironment.getParameter(lis_person_name_given);
+                    //LTIEnvironment.getParameter(lis_person_name_given);
                     //5. Get the locale
                     String locale = LTIEnvironment.getLocale();
 
@@ -218,7 +270,6 @@ public class UserController {
 
                     userCourseDao.save(userCourse);
 
-
                     Course courseRoom = courseDao.findByCourseKey(course_key);
 
                     Room room = roomDao.findByRoomKey(resource_key);
@@ -227,72 +278,16 @@ public class UserController {
                     }
                     room.setId_course(courseRoom);
                     room.setLabel(resource_label);
-                    String pathMeeting = course_key + "_" + room.getKey() +"_"+ room.getId();
-                        boolean can_access_to_meeting = true;
-                        boolean is_new_meeting = true;
-                        MeetingRoom meeting = null;
-                        UserMeeting userMeeting;
-                        if (room.getId() > 0) {
-                            if (!redirectToPlayer) {
-                                if (!room.isIs_blocked()) {
+                    if (room.getId() <= 0) {
+                        //if there is no room, create a new room and meeting room
+                        room.setIs_blocked(false);
+                        room.setKey(resource_key);
+                        room.setReason_blocked(null);
+                        roomDao.save(room);
+                    }
 
-                                    //Find the room and the meeting room associate to this room
-                                    MeetingRoom mr = meetingroomDao.findByRoomIdNotFinished(room.getId());
-                                    //If we find it, set +1 to participants and update
-                                    if (mr!=null && mr.getId() != 0) {
-                                        meeting = mr;
-                                        UserMeeting aux = userMeetingDao.findUserMeetingByPK(new UserMeetingId(user, meeting));
-                                        if (aux.getPk() == null) {
-                                            meeting.setNumber_participants(mr.getNumber_participants() + 1);
-                                        }
-                                        //If the number of participants == 6 then the room is blocked
-                                        if (mr.getNumber_participants() == Constants.MAX_PARTICIPANTS) {
-                                            room.setIs_blocked(true);
-                                            room.setReason_blocked(Constants.REASON_BLOCK_MAX_PARTICIPANTS);
-                                            can_access_to_meeting = false;
-                                        }
-                                        roomDao.save(room);
-                                        is_new_meeting = false;
-                                        //if there is no meeting to this rooom, create a new meeting room
-                                    }
-                                } else {
-                                    can_access_to_meeting = false;
-                                }
-                            }
-
-                        } else {
-                            //if there is no room, create a new room and meeting room
-                            room.setIs_blocked(false);
-                            room.setKey(resource_key);
-                            room.setReason_blocked(null);
-                            roomDao.save(room);
-                        }
-
-                        if (!redirectToPlayer && can_access_to_meeting) {
-                            if (is_new_meeting) {
-                                meeting = new MeetingRoom();
-                                meeting.setId_room(room);
-                                meeting.setNumber_participants(1);
-                                meeting.setPath(pathMeeting);
-                                meeting.setRecorded((byte) 0);
-                                meeting.setTopic(room.getLabel());
-                                meeting.setDescription(null);
-                                meeting.setStart_meeting(new Timestamp(date.getTime()));
-                                meeting.setStart_record(null);
-                                meeting.setEnd_record(null);
-                                meeting.setEnd_meeting(null);
-                            }
-                            meetingroomDao.save(meeting);
-                            String meetingIdPath = course_key + "_" + room.getKey() + "_" + meeting.getId();
-                                
-                            UserMeetingId umId = new UserMeetingId(user, meeting);
-                            userMeeting = new UserMeeting(umId, new Timestamp(date.getTime()), meetingIdPath + "_" + user.getUsername());
-                            userMeetingDao.save(userMeeting);
-                            session.setAttribute(Constants.USER_METTING_SESSION, userMeeting);
-                        }
-                        session.setAttribute(Constants.MEETING_SESSION, meeting);
-                        session.setAttribute(Constants.ROOM_SESSION, room);
-                //Steps to integrate with your applicationa
+                    session.setAttribute(Constants.ROOM_SESSION, room);
+                    //Steps to integrate with your applicationa
                     //6. Check if username exists in system
                     //6.1 If doesn't exist you have to create user using Tool Api
                     //TODO create_user
@@ -306,7 +301,7 @@ public class UserController {
                     //8. Register user in course 
                     session.setAttribute(Constants.USER_SESSION, user);
                     session.setAttribute(Constants.COURSE_SESSION, course);
-                    session.setAttribute(Constants.USER_LANGUAGE,locale);
+                    session.setAttribute(Constants.USER_LANGUAGE, locale);
                     nextPage = redirectToPlayer ? "searchMeeting" : "videochat";
 
                 } else {

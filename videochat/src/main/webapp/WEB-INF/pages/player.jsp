@@ -12,8 +12,8 @@
         <!-- Latest compiled and minified CSS -->
         <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
         <!-- Optional theme -->
-        <script type="text/javascript" src="js/videochat.js" ></script>
         <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap-theme.min.css">
+        <script type="text/javascript" src="js/videochat.js" ></script>
         <link rel="stylesheet" href="css/general.css">
     </head> 
     <body>
@@ -175,6 +175,7 @@
         <!-- jQuery -->
         <script src="http://code.jquery.com/jquery-latest.min.js" type="text/javascript"></script> 
         <script src="//code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+        <script type="text/javascript" src="js/print.jquery.js" ></script>
 
         <script>
             var currentVolume = 50;

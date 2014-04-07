@@ -59,7 +59,6 @@ public class MeetingRoomController implements java.io.Serializable {
         User user = (User) session.getAttribute(Constants.USER_SESSION);
         if (user != null && course != null) {
             model.addObject("user", user);
-            model.addObject("course", session.getAttribute(Constants.COURSE_SESSION));
             model.addObject("course", course);
             List<Room> listRooms = roomDao.findByIdCourse(course.getId());
             // List<MeetingRoom> mRoom = meetingDao.findbyForm(new MeetingRoom());

@@ -44,7 +44,7 @@ public class UserMeetingController {
     
 
     
-    @RequestMapping(method = RequestMethod.POST)
+    @RequestMapping(method = RequestMethod.DELETE)
     public @ResponseBody JSONResponse deleteUser(@RequestBody JSONRequest username, HttpSession session) {
         JSONResponse response = new JSONResponse();
         try {
@@ -102,6 +102,28 @@ public class UserMeetingController {
                     }
                 }
                 roomDao.save(room);
+                response.setOk(true);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            
+        }
+        return response;
+    }
+    
+    
+    
+    @RequestMapping(method = RequestMethod.POST)
+    public @ResponseBody JSONResponse saveSession(@RequestBody JSONRequest topic, @RequestBody JSONRequest description, HttpSession session) {
+        JSONResponse response = new JSONResponse();
+        try {
+            User user = (User) session.getAttribute(Constants.USER_SESSION);
+            MeetingRoom meeting = (MeetingRoom) session.getAttribute(Constants.MEETING_SESSION);
+            
+            if (user!=null && meeting!=null && topic!=null && topic.getRequest().length()>0) {
+                meeting = meetingDao.findById(meeting.getId());
+                meeting.setTopic(topic.getRequest());
+                meeting.setDescription(description.getRequest());
                 response.setOk(true);
             }
         } catch (Exception e) {

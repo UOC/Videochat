@@ -26,6 +26,7 @@
         <script type="text/javascript" src="js/jwplayer/jwplayer.js"></script>
 	</head>	
     <body>
+        <% /*
     	<!-- modal que apareix al carregar la pàgina-->
     	<div class="modal fade" id="camera">
             <div class="modal-dialog">
@@ -43,32 +44,53 @@
             	</div><!-- /.modal-content -->
             </div><!-- /.modal-dialog -->
         </div>
-        <!-- /.modal -->
+        <!-- /.modal -->*/%>
         <!-- modal parar gravació-->
     	<div class="modal fade" id="Recorded">
             <div class="modal-dialog">
             	<div class="modal-content">
             		<div class="modal-header">
             			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-            			<h4 class="modal-title">Important</h4>
+            			<h4 class="modal-title"><spring:message code="label.important"/></h4>
             		</div>
             		<div class="modal-body">
-            			<p><strong>This session is being recorded, what do you want to do?</strong></p>
-                        <div>Cancel: This session continues recording<br/>
-                        	 Stop: Stop this recording and reconnect to decide what to do, save or repeat</div>
-                             <div>Save: Archive and close this session, it will be published on videochat</div>
+            			<p><strong><spring:message code="message.createmeeting.confirm_stop_what_do_you_to_do"/></strong></p>
+                                <div><strong><spring:message code="label.important"/></strong>: <spring:message code="message.createmeeting.cancel_stop_what_do_you_to_do"/><br/>
+                        	 <spring:message code="message.stop"/>: <spring:message code="message.createmeeting.stop_stop_what_do_you_to_do"/></div>
+                                 <div><strong><spring:message code="message.save"/></strong>: <spring:message code="message.createmeeting.save_and_close_stop_what_do_you_to_do"/></div>
                         
             		</div>
             		<div class="modal-footer">
-            			<button type="button" class="btn btn-warning">Cancel</button>
-                        <button type="button" class="btn btn-warning" onclick="stopRecordRequest()">Stop</button>
-                        <button type="button" class="btn btn-warning" onclick="closeMeetingRequest()">Save and close</button>
+            			<button type="button" class="btn btn-warning"><spring:message code="message.cancel"/></button>
+                        <button type="button" class="btn btn-warning" onclick="stopRecordRequest()"><spring:message code="message.stop"/></button>
+                        <button type="button" class="btn btn-warning" onclick="showFormCloseMeetingRequest()"><spring:message code="message.save_and_close"/></button>
             		</div>
             	</div><!-- /.modal-content -->
             </div><!-- /.modal-dialog -->
         </div>
         <!-- /.modal -->
-        
+        <!-- modal parar gravació-->
+    	<div class="modal fade" id="formModal">
+            <div class="modal-dialog">
+            	<div class="modal-content">
+            		<div class="modal-header">
+            			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            			<h4 class="modal-title"><spring:message code="label.important"/></h4>
+            		</div>
+            		<div class="modal-body">
+            			<p><strong><spring:message code="message.createmeeting.please_add_topic_description"/></strong></p>
+                                <div><strong><spring:message code="label.topic"/></strong>:<input type="text" name="topic_meeting" id="topic_meeting" value="" /></div>
+                                <div><strong><spring:message code="label.description"/></strong>:<input type="text" name="description_meeting" id="description_meeting" value="" /></div>
+                        
+            		</div>
+            		<div class="modal-footer">
+            			<button type="button" class="btn btn-warning"><spring:message code="message.cancel"/></button>
+                        <button type="button" class="btn btn-warning" onclick="closeMeetingRequest()"><spring:message code="message.save_and_close"/></button>
+            		</div>
+            	</div><!-- /.modal-content -->
+            </div><!-- /.modal-dialog -->
+        </div>
+        <!-- /.modal -->
     	<div class="container">
         	<header class="row">
             	<div class="col-md-4"><img src="css/images/logo.png" alt="videochat"/></div>
@@ -97,15 +119,15 @@
                                         <div class="modal-content">
                                             <div class="modal-header">
                                                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                                                <h4 class="modal-title">Important</h4>
+                                                <h4 class="modal-title"><spring:message code="label.important"/></h4>
                                             </div>
                                             <div class="modal-body">
-                                                <div><strong>Are you sure you want to start a new recorder?</strong></div>
-                                                <div>If you continue the previously made recording will be deleted.</div>
+                                                <div><strong><spring:message code="message.createmeeting.confirm_new_recorder"/></strong></div>
+                                                <div><spring:message code="message.createmeeting.warning_new_recorder"/></div>
                                             </div>
                                             <div class="modal-footer">
-                                                <button type="button" data-dismiss="modal" class="btn btn-default">Cancel</button>
-                                                <button type="button" data-dismiss="modal" class="btn btn-warning" onclick="startRecordRequest()">Continue</button>
+                                                <button type="button" data-dismiss="modal" class="btn btn-default"><spring:message code="message.cancel"/></button>
+                                                <button type="button" data-dismiss="modal" class="btn btn-warning" onclick="startRecordRequest()"><spring:message code="message.continue"/></button>
                                             </div>
                                         </div><!-- /.modal-content -->
                                     </div><!-- /.modal-dialog -->
@@ -118,14 +140,14 @@
                                         <div class="modal-content">
                                             <div class="modal-header">
                                                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                                                <h4 class="modal-title">Important</h4>
+                                                <h4 class="modal-title"><spring:message code="label.important"/></h4>
                                             </div>
                                             <div class="modal-body">
                                                 <div><strong>Are you sure you want to stop a recorder?</strong></div>
                                             </div>
                                             <div class="modal-footer">
-                                                <button type="button" data-dismiss="modal" class="btn btn-default">Cancel</button>
-                                                <button type="button" data-dismiss="modal" class="btn btn-warning" onclick="stopRecordRequest()">Continue</button>
+                                                <button type="button" data-dismiss="modal" class="btn btn-default"><spring:message code="message.cancel"/></button>
+                                                <button type="button" data-dismiss="modal" class="btn btn-warning" onclick="stopRecordRequest()"><spring:message code="message.continue"/></button>
                                             </div>
                                         </div><!-- /.modal-content -->
                                     </div><!-- /.modal-dialog -->
@@ -135,22 +157,22 @@
                      <button type="button" id="button-volume" class="btn btn-warning"><span class="glyphicon glyphicon-volume-up" id="span-volume"></span></button>
                 </div>
                 <div class="col-md-2 col-md-offset-7 col-xs-5">
-                	<button type="button" class="btn btn-warning" data-toggle="modal" id="button-archive" data-target="#archive"><span class="glyphicon glyphicon-save"></span> ARCHIVE & CLOSE</button>
+                    <button type="button" class="btn btn-warning" data-toggle="modal" id="button-archive" data-target="#archive" disabled="true"><span class="glyphicon glyphicon-save"></span> ARCHIVE & CLOSE</button>
                     <!-- modal del botó RECORD -->
                     <div class="modal fade" id="archive">
                         <div class="modal-dialog">
                             <div class="modal-content">
                                 <div class="modal-header">
                                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                                    <h4 class="modal-title">Important</h4>
+                                    <h4 class="modal-title"><spring:message code="label.important"/></h4>
                                 </div>
                                 <div class="modal-body">
-                                    <div><strong>Are you sure you want to archive and close the last recording made?</strong></div>
-                                    <div>If you want to continue you will not be able to make more recordings within this session.</div>
+                                    <div><strong><spring:message code="message.createmeeting.confirm_save_close"/></strong></div>
+                                    <div><spring:message code="message.createmeeting.warning_save_close"/></div>
                                 </div>
                                 <div class="modal-footer">
-                                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-                                    <button type="button" class="btn btn-warning" onclick="closeMeetingRequest()">Continue</button>
+                                    <button type="button" class="btn btn-default" data-dismiss="modal"><spring:message code="message.cancel"/></button>
+                                    <button type="button" class="btn btn-warning" onclick="showFormCloseMeetingRequest()"><spring:message code="message.continue"/></button>
                                 </div>
                             </div><!-- /.modal-content -->
                         </div><!-- /.modal-dialog -->
@@ -162,12 +184,10 @@
             	<div class="col-md-8 participants">
                 	<div class="my-inner">
                         <div class="row header_participants">
-                            <h4 class="col-md-10 col-xs-6">Participants</h4>
+                            <h4 class="col-md-10 col-xs-6"><spring:message code="message.participants"/></h4>
                             <div class="btn-group col-md-2 col-xs-6">
                                 <button type="button" class="btn btn-warning" id="button-reload"><span class="glyphicon glyphicon-repeat"></span></button>
-                                <!--button type="button" class="btn btn-warning" id="button-configuration"><span class="glyphicon glyphicon-cog"></span></button-->
-                                <button type="button" class="btn btn-warning" id="button-lock"><i class="icon-unlock" id="span-lock"></i></button>
-                                
+                                <button type="button" class="btn btn-warning" title="Block session" id="button-lock" title="Lock session"><span class="unlock" id="span-lock"></span></button>
                             </div>
                         </div>
                         <div class="row">
@@ -183,13 +203,13 @@
                             <div class="col-md-4 participant" id="user-2">
                                 <div class="participant_content">
                                     <div id="nom-2">&nbsp;</div>
-                                    <div id="user-video-2"><img src="css/images/participant.png" alt="participant 4"></div>
+                                    <div id="main-user-video-2"><div id="user-video-2"><img src="css/images/participant.png" alt="participant 4"></div></div>
                                 </div>
                             </div>
                             <div class="col-md-4 participant" id="user-3">
                                 <div class="participant_content">
                                     <div id="nom-3">&nbsp;</div>
-                                    <div id="user-video-3"><img src="css/images/participant.png" alt="participant 4"></div>
+                                    <div id="main-user-video-3"><div id="user-video-3"><img src="css/images/participant.png" alt="participant 4"></div></div>
                                 </div>
                             </div>
                         </div>
@@ -197,19 +217,19 @@
                             <div class="col-md-4 participant" id="user-4">
                             	<div class="participant_content">
                                     <div id="nom-4">&nbsp;</div>
-                                    <div id="user-video-4"><img src="css/images/participant.png" alt="participant 4"></div>
+                                    <div id="main-user-video-4"><div id="user-video-4"><img src="css/images/participant.png" alt="participant 4"></div></div>
                                 </div>
                             </div>
                             <div class="col-md-4 participant" id="user-5">
                             	<div class="participant_content">
                                     <div id="nom-5">&nbsp;</div>
-                                    <div id="user-video-5"><img src="css/images/participant.png" alt="participant 5"></div>
+                                    <div id="main-user-video-5"><div id="user-video-5"><img src="css/images/participant.png" alt="participant 5"></div></div>
                                 </div>
                             </div>
                             <div class="col-md-4 participant" id="user-6">
                             	<div class="participant_content">
                                     <div id="nom-6">&nbsp;</div>
-                                    <div id="user-video-6"><img src="css/images/participant.png" alt="participant 6"></div>
+                                    <div id="main-user-video-6"><div id="user-video-6"><img src="css/images/participant.png" alt="participant 6"></div></div>
                                 </div>
                             </div>
                         </div>
@@ -241,11 +261,31 @@
         <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
         <script type="text/javascript" src="js/bootbox.min.js"></script>
         <script>
+            var array_messages = Array();
+            array_messages ['--vc-system-start-record--'] = "<spring:message code="system.start.record"/>";
+            array_messages ['--vc-system-stop-record--'] = "<spring:message code="system.stop.record"/>";
+            array_messages ['--vc-system-close-session--'] = "<spring:message code="system.close.session"/>";
+            array_messages ['--vc-system-lock-session--'] = "<spring:message code="system.lock.session"/>";
+            array_messages ['--vc-system-unlock-session--'] = "<spring:message code="system.unlock.session"/>";
             var meeting_is_recorded = ${is_recorded};
             var meeting_is_closed = false;
             var micro_is_muted = false;
             var meeting_is_locked = false;
+            var allowed_return = false;
             $( document ).ready(function() {
+                
+                $(window).bind('beforeunload', function() {
+                    if (!allowed_return) {
+                        disconnectedUserAjax("${sUser.getUsername()}", false);
+                        setTimeout(function() {
+                            setTimeout(function() {
+                                connectUserAjax("${sUser.getUsername()}");
+                            }, 1000);
+                        },1);
+                        
+                        return "Are you sure do you want to exit?"
+                    }
+                }); 
                 
                 $('#button-record-stop').hide();
                 $('#button-volume').hide();
@@ -289,7 +329,8 @@
                 );                
                 $("#button-reload").click(
                    function() {
-                        location.reload();
+                       allowed_return = true;
+                       location.reload();
                     }     
                 );
                 $("#button-configuration").click(
@@ -304,7 +345,7 @@
                     }     
                 );
             });
-            function sendChatMessage() {
+            var sendChatMessage = function() {
                 var message = $("#messageTxt").val();
                 if (message.length>0) {
 
@@ -329,7 +370,7 @@
             };
             swfobject.embedSWF("FlashRTMPPlayer/recorder.swf", "videochat_stream", "215", "138", "9.0.0", "expressInstall.swf", flashvars, params, attributes);
         
-            function setSWFIsReady() {
+            var setSWFIsReady = function () {
                 swf_is_ready= true;
                 $('#button-volume').show();
                 $('#button-record').show();
@@ -338,30 +379,42 @@
                 $('#button-lock').show();
             }
 
-            function stopRecordRequest(){
+            var stopRecordRequest = function(){
                 var flash = swfobject.getObjectById("videochat_stream_id");
                 flash.stopRecordFromJS();
             }
             
-            function closeMeetingRequest(){
+            var showFormCloseMeetingRequest = function(){
+                $('#formModal').modal('show');
+            }
+            
+            var closeMeetingRequest = function(){
                 if (meeting_is_recorded) {
                     if ($('#button-record-stop').is(":visible") ) {
                         stopRecordRequest();
                     }
-                    var flash = swfobject.getObjectById("videochat_stream_id");
-                    flash.closeMeetingFromJS();
+                    //Save the topic and description
+                    var topic = $('#topic_meeting').val();
+                    var description = $('#description_meeting').val();
+                    if (topic.length>0) {
+                        saveTopicDescription();
+                        var flash = swfobject.getObjectById("videochat_stream_id");
+                        flash.closeMeetingFromJS();
+                    } else {
+                        bootbox.alert("You have to indicate a topic");
+                    }
                 } else {
                     bootbox.alert("The meeting has to be recorded to close it");
                 }
             }
             
-            function startRecordRequest(){
+            var startRecordRequest = function(){
                 var flash = swfobject.getObjectById("videochat_stream_id");
                 flash.startRecordFromJS();
             }
             
             
-            function lockMeetingRequest(){
+            var lockMeetingRequest = function(){
                 if (!meeting_is_closed) {
                     var flash = swfobject.getObjectById("videochat_stream_id");
                     flash.lockMeetingFromJS();
@@ -371,7 +424,7 @@
             }
             var array_streams = Array();
            
-            function registeredUser(info) {
+            var registeredUser = function(info) {
                 var pos = returnPositionUser(info.userkey, array_streams);
                 streamObj = new StreamObject(info.userkey, info.username, info.publishName);
                 if (array_streams.length<6 || pos>=0) {
@@ -385,6 +438,7 @@
                         array_streams = array_streams_temp;
                     }
                     $("#nom-"+pos).html(info.username);
+                    <% /*
                     jwplayer("user-video-"+(pos)).setup({
                                             file: "rtmp://${wowza_stream_server}:1935/videochat/"+info.publishName,
                                             image: "",
@@ -410,11 +464,44 @@
                                                 }
                                             }
                                         });
-                           jwplayer("user-video-"+(pos)).play();             
+                           jwplayer("user-video-"+(pos)).play();    */ %> 
+                            var flashvars = {
+                              debug: "0",
+                              publishName: info.publishName,
+                              rmtpServer: "rtmp://${wowza_stream_server}/videochat",
+                              userkey: info.userkey,
+                              username: info.username,
+
+                            };
+                            var params = {
+                            };
+                            var attributes = {
+                                id : "play_stream_id_"+(pos)
+                            };                                       
+                           swfobject.embedSWF("FlashRTMPPlayer/player.swf", "user-video-"+(pos), "215", "138", "9.0.0", "expressInstall.swf", flashvars, params, attributes);
+        
                   }
             }
             
-            function currentUserAcceptConnection() {
+            var saveTopicDescription = function(topic, description) {
+                var json = { "topic" : topic, "description": decription};  
+
+              $.ajax({  
+                  url: 'rest/usermeeting.json',  
+                  data: JSON.stringify(json),  
+                  type: "POST",  
+
+                  beforeSend: function(xhr) {  
+                      xhr.setRequestHeader("Accept", "application/json");  
+                      xhr.setRequestHeader("Content-Type", "application/json");  
+                  },  
+                  success: function(response) {  
+                      console.log(response);
+                  }  
+              });  
+            }
+
+            var currentUserAcceptConnection = function() {
                 var json = { "request" : "${sUserMeeting.getStreamKey()}"};  
 
               $.ajax({  
@@ -432,7 +519,7 @@
               });  
             }
             
-            function newChatMessage(info) {
+            var newChatMessage = function(info) {
                 var dt = new Date();
                 var hours = dt.getHours();
                 if (hours<10) {
@@ -446,13 +533,20 @@
                 if (seconds<10) {
                     seconds = "0"+seconds;
                 }
+                var message = info.message;
+                if (message in array_messages) {
+                    if (message === '--vc-system-lock-session--' && !meeting_is_locked) {
+                        message ='--vc-system-unlock-session--';
+                    }
+                    message = array_messages[message];
+                }
                 var time = hours + ":" + minutes + ":" + seconds;
-                var str = "<p><b>"+time+" - "+info.username+":</b> "+info.message+"</p>";
+                var str = "<p><b>"+time+" - "+info.username+":</b> "+message+"</p>";
                 $("#chatContainer").append(str);  
                 var height = $("#chatContainer").get(0).scrollHeight;
                 $("#chatContainer").scrollTop(height);
                 if (info.userkey=="${sUser.getUsername()}") {
-                    var json = { "request" : info.message};  
+                    var json = { "request" : message};  
 
                     $.ajax({  
                         url: 'rest/chat.json',  
@@ -470,9 +564,11 @@
                 }
             }
             
-            function startedRecord() {
+            var startedRecord = function() {
                 $('#button-record').hide();
                 meeting_is_recorded = true;
+                $('#button-archive').attr('disabled', false);
+                
                 var json = { "request" : "${sUserMeeting.getStreamKey()}"};  
 
                 $.ajax({  
@@ -491,12 +587,12 @@
                 $('#button-record-stop').show();
             }
             
-            function stoppedRecord() {
+            var stoppedRecord = function () {
                 $('#button-record').show();
                 $('#button-record-stop').hide();
             }
             
-            function stoppedRecordAjax() {
+            var stoppedRecordAjax = function () {
                 var json = { "request" : "${sUserMeeting.getStreamKey()}"};  
 
                 $.ajax({  
@@ -514,7 +610,7 @@
               });
             }
             
-            function closeSessionAjax() {
+            var closeSessionAjax = function () {
                 var json = { "request" : "${sUserMeeting.getStreamKey()}"};  
 
                 $.ajax({  
@@ -532,7 +628,7 @@
               });
             }
             
-            function closedSession() {
+            var closedSession = function () {
                 meeting_is_closed = true;
                 $('#button-record-stop').hide();
                 $('#button-volume').hide();
@@ -544,7 +640,7 @@
                 });
             }
             
-            function lockSessionAjax() {
+            var lockSessionAjax = function () {
                 var json = { "request" : "${sUserMeeting.getStreamKey()}"};  
 
                 $.ajax({  
@@ -562,21 +658,24 @@
               });
             }
             
-            function lockSession() {
+            var lockSession = function () {
                 if (meeting_is_locked) {
-                    $("#span-lock").removeClass("glyphicon-lock");
-                    $("#span-lock").addClass("glyphicon-icon");
+                    $("#span-lock").removeClass("lock");
                     $("#span-lock").addClass("unlock");
                 } else {
-                    $("#span-lock").removeClass("glyphicon-icon");
                     $("#span-lock").removeClass("unlock");
-                    $("#span-lock").addClass("glyphicon-lock");
+                    $("#span-lock").addClass("lock");
                 }
                 meeting_is_locked = !meeting_is_locked;
             }
             
-            function returnMeeting() {
-                disconnectedUserAjax("${sUser.getUsername()}");
+            var returnMeeting = function () {
+                disconnectedUserAjax("${sUser.getUsername()}", goToSearchMeeting);
+                
+            }
+            
+            var goToSearchMeeting = function () {
+                allowed_return = true;
                 location.href = "searchMeeting.htm";
             }
             
@@ -584,7 +683,31 @@
                 arr.splice(index, 1);
             }
             
-            function disconnectedUserAjax(username) {
+            function disconnectedUserAjax(username, callback) {
+                var json = { "request" : username};  
+
+                $.ajax({  
+                    url: 'rest/usermeeting.json',  
+                    data: JSON.stringify(json),  
+                    type: "DELETE",  
+
+                    beforeSend: function(xhr) {  
+                        xhr.setRequestHeader("Accept", "application/json");  
+                        xhr.setRequestHeader("Content-Type", "application/json");  
+                    },  
+                    success: function(response) {  
+                        console.log(response);
+                    },  
+                    complete: function() {  
+                        if (callback) {
+                            callback();
+                        }
+                    }    
+                });  
+            }
+            
+            
+            function connectUserAjax(username) {
                 var json = { "request" : username};  
 
                 $.ajax({  
@@ -602,22 +725,22 @@
                 });  
             }
             
-            function disconnectedUser(info) {
+            var disconnectedUser = function (info) {
                 if (!meeting_is_closed) {
                     var pos = returnPositionUser(info.userkey, array_streams);
                     if (pos>=0) {
                        var array_streams_temp = array_streams;
                        removeByIndex(array_streams_temp, pos);
                        for( i=2; i<6; i++) {
-                          $("#nom-"+i).html(''); 
-                          $("#user-video-"+i).html('<img src="css/images/participant.png" alt="participant 4">'); 
+                          $("#nom-"+i).html('&nbsp;'); 
+                          $("#main-user-video-"+i).html('<div id="user-video-'+i+'"><img src="css/images/participant.png" alt="participant '+i+'"></div>'); 
                        }
                        array_streams = Array();
                        for( i=0; i<array_streams_temp.length; i++) {
                           registeredUser(array_streams_temp[i]);
                        }
                        
-                       disconnectedUserAjax(info.userkey);
+                       disconnectedUserAjax(info.userkey, false);
                                            
                     }
                     bootbox.alert("User "+info.username+" has left the meeting", function() {});
