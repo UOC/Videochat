@@ -23,6 +23,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -46,7 +47,7 @@ public class MeetingRoomController implements java.io.Serializable {
     private RoomDao roomDao;
 
     @RequestMapping("/searchMeeting")
-    public ModelAndView getMeetingRooms(HttpSession session) {
+    public ModelAndView getMeetingRooms(@ModelAttribute("meeting") MeetingRoom meetingRoom, BindingResult bindingResult, HttpSession session) {
         ModelAndView model = new ModelAndView("searchMeeting");
         try {
             Room room = (Room) session.getAttribute(Constants.ROOM_SESSION);
@@ -54,6 +55,12 @@ public class MeetingRoomController implements java.io.Serializable {
         } catch (IllegalStateException ISE) {
             System.err.println("IllegalStateException: " + ISE.getMessage());
         }
+
+        System.out.println("MeetingTopic: " + meetingRoom.getTopic());
+        System.out.println("MeetingNP: " + meetingRoom.getNumber_participants());
+        System.out.println("MeetingSM: " + meetingRoom.getStart_meeting());
+        System.out.println("MeetingEM: " + meetingRoom.getEnd_meeting());
+
         Course course = (Course) session.getAttribute(Constants.COURSE_SESSION);
         //Room room = (Room)session.getAttribute(Constants.ROOM_SESSION);
         User user = (User) session.getAttribute(Constants.USER_SESSION);
@@ -68,8 +75,17 @@ public class MeetingRoomController implements java.io.Serializable {
             }
 
             model.addObject("listRooms", listRooms);
-            //get the list of current participants
-            List<MeetingRoom> listMR = meetingDao.findByCourseId(idsRoom, true);
+
+            List<MeetingRoom> listMR = new ArrayList<MeetingRoom>();
+            //If the form is filled then search by form, otherwise default search
+            if ((meetingRoom.getTopic() != null) && (meetingRoom.getStart_meeting() != null) && (meetingRoom.getEnd_meeting() != null)) {
+
+                listMR = meetingDao.findbyForm(meetingRoom);
+            } else {
+                //get the list of current participants
+                listMR = meetingDao.findByCourseId(idsRoom, true);
+            }
+
             List<MeetingRoomExtended> listMRE = new ArrayList<MeetingRoomExtended>();
             MeetingRoomExtended meeting_extended;
             MeetingRoom meeting;
@@ -85,6 +101,7 @@ public class MeetingRoomController implements java.io.Serializable {
                 listMRE.add(meeting_extended);
             }
             model.addObject("listMR", listMRE);
+            model.addObject("meeting", new MeetingRoom());
 
         } else {
             model.setViewName("errorSession");
@@ -94,7 +111,7 @@ public class MeetingRoomController implements java.io.Serializable {
     }
 
     @RequestMapping(value = "/searchMeetingForm", method = RequestMethod.POST)
-    public ModelAndView getMeetingRoomsForm(@ModelAttribute("meeting") MeetingRoom meetingRoom, HttpSession session) {
+    public ModelAndView getMeetingRoomsForm(@ModelAttribute("meeting") MeetingRoom meetingRoom, BindingResult bindingResult, HttpSession session) {
         ModelAndView model = new ModelAndView("searchMeetingform");
         try {
             Room room = (Room) session.getAttribute(Constants.ROOM_SESSION);
@@ -109,9 +126,9 @@ public class MeetingRoomController implements java.io.Serializable {
             model.addObject("user", user);
             model.addObject("course", session.getAttribute(Constants.COURSE_SESSION));
             model.addObject("course", course);
+
             List<MeetingRoom> meetingRooms = meetingDao.findbyForm(meetingRoom);
-           
-            
+
             List<MeetingRoomExtended> listMRE = new ArrayList<MeetingRoomExtended>();
             MeetingRoomExtended meeting_extended;
             MeetingRoom meeting;
@@ -127,6 +144,7 @@ public class MeetingRoomController implements java.io.Serializable {
                 listMRE.add(meeting_extended);
             }
             model.addObject("listMR", listMRE);
+            model.addObject("meeting", new MeetingRoom());
 
         } else {
             model.setViewName("errorSession");

@@ -8,6 +8,7 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
    "http://www.w3.org/TR/html4/loose.dtd">
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <html>
     <head>
        
@@ -27,23 +28,23 @@
         <h3>Player</h3>
         <p><strong>Select a session to play.</strong>Use the following search options to find a session to play.</p>
 
-            <form:form name="search_meeting_form" action="searchMeetingForm" method="POST">
+        <form:form name="search_meeting_form" commandName="searchMeetingForm" modelAttribute="meeting" method="POST">
                 <div class="form-group">
                     <label for="topic" class="control-label">Topic</label>
-                    <input type="text" class="form-control" id="topic">
+                    <form:input type="text" path="topic" class="form-control" id="topic"/>
                 </div>
                 <div class="form-group">
                     <label for="participants" class="control-label">Participants</label>
-                    <input type="text" class="form-control" id="participants">
+                    <form:input type="text" path="number_participants" class="form-control" id="participants"/>
                 </div>
                 <div class="row">
                     <div class="form-group col-xs-6">
                         <label for="from" class="control-label">From</label>
-                        <input type="date" class="form-control" id="from" placeholder="dd/mm/yyyy">
+                        <form:input type="date" path="start_meeting" class="form-control" id="from" placeholder="dd/mm/yyyy" />
                     </div>
                     <div class="form-group col-xs-6">
                         <label for="to" class="control-label">To</label>
-                        <input type="date" class="form-control" id="to" placeholder="dd/mm/yyyy">
+                        <form:input type="date" path="end_meeting" class="form-control" id="to" placeholder="dd/mm/yyyy"/>
                     </div>
                 </div>
                 <div class="form-group">

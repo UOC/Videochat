@@ -114,17 +114,15 @@ public class MeetingRoomDaoImpl extends CustomHibernateDaoSupport implements Mee
     }
     
        
-       @Override
+   @Override
     public List<MeetingRoom> findbyForm(MeetingRoom meeting) {
-        /*String topic = meeting.getTopic();
-        int roomid = meeting.getId_room().getId();
-        Timestamp startDate = meeting.getStart_meeting();
-        Timestamp endDate = meeting.getEnd_meeting();*/
        
-        DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        DateFormat form = new SimpleDateFormat("dd/MM/yyyy");
+       DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+       DateFormat form = new SimpleDateFormat("dd/MM/yyyy");
        String fStart = "";
        String fEnd="";
+       String topic = meeting.getTopic();
+       int roomid = meeting.getId_room().getId();
        
        //Convert TimeStamp to Date
        Date fComienzo = meeting.getStart_meeting();
@@ -137,10 +135,6 @@ public class MeetingRoomDaoImpl extends CustomHibernateDaoSupport implements Mee
        fStart = Util.formatDateString(fStart);
        fEnd = Util.formatDateString(fEnd);
        
-       
-        
-        String topic = "Video 1";
-        int roomid = 13;
         Timestamp startDate = Timestamp.valueOf(fStart);
         Timestamp endDate = Timestamp.valueOf(fEnd);
         
