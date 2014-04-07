@@ -18,6 +18,7 @@ import edu.uoc.util.Constants;
 import java.sql.Timestamp;
 import java.util.Date;
 import javax.servlet.http.HttpSession;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -30,6 +31,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @Controller
 @RequestMapping("/meeting")
 public class MeetingController {
+    //get log4j handler
+    private static final Logger logger = Logger.getLogger(MeetingController.class);
+
     
     @Autowired
     private UserMeetingDao userMeetingDao;
@@ -50,7 +54,7 @@ public class MeetingController {
                 response.setOk(true);
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error("Error accepting current connection ", e);
             
         }
         return response;
@@ -64,6 +68,7 @@ public class MeetingController {
             MeetingRoom meeting = (MeetingRoom) session.getAttribute(Constants.MEETING_SESSION);
             User user = (User) session.getAttribute(Constants.USER_SESSION);
             if (user!=null && meeting!=null) {
+                meeting = meetingDao.findById(meeting.getId());
                 room.setIs_blocked(true);
                 room.setReason_blocked(Constants.REASON_BLOCK_RECORDING);
                 this.roomDao.save(room);
@@ -74,7 +79,7 @@ public class MeetingController {
                 response.setOk(true);
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error("Error starting record ", e);
             
         }
         return response;
@@ -89,6 +94,7 @@ public class MeetingController {
             MeetingRoom meeting = (MeetingRoom) session.getAttribute(Constants.MEETING_SESSION);
             User user = (User) session.getAttribute(Constants.USER_SESSION);
             if (user!=null && meeting!=null) {
+                meeting = meetingDao.findById(meeting.getId());
                 room.setIs_blocked(false);
                 room.setReason_blocked(null);
                 this.roomDao.save(room);
@@ -99,7 +105,7 @@ public class MeetingController {
                 response.setOk(true);
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error("Error stoping record ", e);
             
         }
         return response;
@@ -117,6 +123,7 @@ public class MeetingController {
                 room.setIs_blocked(false);
                 room.setReason_blocked(null);
                 this.roomDao.save(room);
+                meeting = meetingDao.findById(meeting.getId());
                 if (meeting.getRecorded() == (byte)1 && meeting.getEnd_record()==null) {
                     meeting.setEnd_record(new Timestamp(new Date().getTime()));
                 }
@@ -126,7 +133,7 @@ public class MeetingController {
                 response.setOk(true);
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error("Error closing record ", e);
             
         }
         return response;

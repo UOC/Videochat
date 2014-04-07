@@ -16,6 +16,7 @@ import edu.uoc.model.User;
 import edu.uoc.model.UserMeeting;
 import edu.uoc.util.Constants;
 import javax.servlet.http.HttpSession;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -31,6 +32,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @Controller
 @RequestMapping("/chat")
 public class ChatController {
+    //get log4j handler
+    private static final Logger logger = Logger.getLogger(ChatController.class);
+
     @Autowired
     private ChatDao chatDao;
     
@@ -43,6 +47,7 @@ public class ChatController {
             if (user!=null && meeting!=null) {
                 Chat chat = new Chat();
                 chat.setUser(user);
+                logger.debug("Chat message from "+user.getFullname()+" to "+message.getRequest());
                 chat.setChat_message(message.getRequest());
                 chat.setMeeting_room(meeting);
                 
@@ -51,7 +56,7 @@ public class ChatController {
                 response.setOk(true);
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error("Error registering chat", e);
             response.setErrorMessage(e.getMessage());
         }
         return response;
