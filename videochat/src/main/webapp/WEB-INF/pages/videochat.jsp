@@ -14,7 +14,7 @@
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-		<title>Videochat - Recorder</title>
+		<title><spring:message code="header.videochat.recorder"/></title>
         <!-- Latest compiled and minified CSS -->
         <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
         <!-- Optional theme -->
@@ -73,13 +73,13 @@
             	<div class="col-md-4"><img src="css/images/logo.png" alt="videochat"/></div>
                 <div id="idiomes" class="col-md-3 col-md-offset-4">
                     <select class="form-control">
-                      <option>English</option>
-                      <option>Catalan</option>
-                      <option>Spanish</option>
-                      <option>Polish</option>
-                      <option>Dutch</option>
-                      <option>Swedish</option>
-                      <option>Irish</option>
+                      <option><spring:message code="message.lang.english"/></option>
+                      <option><spring:message code="message.lang.catalan"/></option>
+                      <option><spring:message code="message.lang.spanish"/></option>
+                      <option><spring:message code="message.lang.polish"/></option>
+                      <option><spring:message code="message.lang.dutch"/></option>
+                      <option><spring:message code="message.lang.swedish"/></option>
+                      <option><spring:message code="message.lang.irish"/></option>
                     </select>
                 </div>
                 <div id="close" class="col-md-1">
@@ -178,7 +178,7 @@
                                 <div class="participant_content">
                                     <div id="nom-1"><c:out value="${sUser.getFullname()}"/></div>
                                     <div id="videochat_stream">
-                                        <p><spring:message code="message.player.flash"/></p>
+                                        <p><spring:message code="message.grabavideoconferencia.flash"/></p>
                                         <p><a href="http://www.adobe.com/go/getflashplayer"><img src="http://www.adobe.com/images/shared/download_buttons/get_flash_player.gif" alt="Get Adobe Flash player" /></a></p>
                                     </div>
                                 </div>
@@ -221,15 +221,15 @@
                 <div class="col-md-4 aside">
                 	<div class="my-inner">
                     	<div class="header_chat row">
-                			<h4>Chat</h4>
+                			<h4><spring:message code="txt.chat.title"/></h4>
                     	</div>
                         <div class="wrapper_chat" id="chatContainer">
                         	
                         </div> 
-                        <p>Enter your text here:</p>
+                        <p><spring:message code="txt.chat.message1"/></p>
                             <div class="row">
                                 <div class="col-xs-10 col-md-9"><input type="text" class="form-control" id="messageTxt" maxlength="100" /></div>
-                                <div class="col-xs-2 col-md-3"><button class="btn btn-warning" name="button-sendMessage" id="button-sendMessage">Send</button></div>
+                                <div class="col-xs-2 col-md-3"><button class="btn btn-warning" name="button-sendMessage" id="button-sendMessage"><spring:message code="txt.chat.send"/></button></div>
                             </div>
                     </div>
                 </div>
@@ -245,9 +245,9 @@
         <script type="text/javascript" src="js/bootbox.min.js"></script>
         <script>
             var array_messages = Array();
-            array_messages ['--vc-system-start-record--'] = "<spring:message code="system.start.record"/>";
-            array_messages ['--vc-system-stop-record--'] = "<spring:message code="system.stop.record"/>";
-            array_messages ['--vc-system-close-session--'] = "<spring:message code="system.close.session"/>";
+            array_messages ['--vc-system-start-record--'] = "<spring:message code="system_chat_message_1"/>";
+            array_messages ['--vc-system-stop-record--'] = "<spring:message code="system_chat_message_2"/>";
+            array_messages ['--vc-system-close-session--'] = "<spring:message code="system_chat_message_3"/>";
             array_messages ['--vc-system-lock-session--'] = "<spring:message code="system.lock.session"/>";
             array_messages ['--vc-system-unlock-session--'] = "<spring:message code="system.unlock.session"/>";
             var meeting_is_recorded = ${is_recorded};
@@ -266,7 +266,7 @@
                             }, 1000);
                         },1);
                         
-                        return "Are you sure do you want to exit?"
+                        return "<spring:message code="message.exit"/>"
                     }
                 }); 
                 
@@ -318,7 +318,7 @@
                 );
                 $("#button-configuration").click(
                    function() {
-                        bootbox.alert("Manage configuration is not available yet", function() {});
+                        bootbox.alert("<spring:message code="message.configuration.manage"/>", function() {});
                     }     
                 );
                 
@@ -384,10 +384,10 @@
                         var flash = swfobject.getObjectById("videochat_stream_id");
                         flash.closeMeetingFromJS();
                     } else {
-                        bootbox.alert("You have to indicate a topic");
+                        bootbox.alert("<spring:message code="message.createmeeting.please_add_topic_description"/>");
                     }
                 } else {
-                    bootbox.alert("The meeting has to be recorded to close it");
+                    bootbox.alert("<spring:message code="message.recorded.close"/>");
                 }
             }
             
@@ -402,7 +402,7 @@
                     var flash = swfobject.getObjectById("videochat_stream_id");
                     flash.lockMeetingFromJS();
                 } else {
-                    bootbox.alert("The meeting is closed");
+                    bootbox.alert("<spring:message code="message.meeting.closed"/>");
                 }
             }
             var array_streams = Array();
@@ -618,7 +618,7 @@
                 $('#button-record').hide();
                 $('#button-archive').hide();
                 $('#button-sendMessage').hide();
-                bootbox.alert("The session has been closed", function() {
+                bootbox.alert("<spring:message code="message.recorded.close"/>", function() {
                     returnMeeting();
                 });
             }
@@ -726,7 +726,9 @@
                        disconnectedUserAjax(info.userkey, false);
                                            
                     }
-                    bootbox.alert("User "+info.username+" has left the meeting", function() {});
+                    var message = "<spring:message code="message.user.left"/>";
+                    message = message.replace("%1", info.username);
+                    bootbox.alert(message, function() {});
                 }
                 
             }

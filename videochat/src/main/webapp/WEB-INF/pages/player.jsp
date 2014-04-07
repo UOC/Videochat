@@ -8,7 +8,7 @@
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>Videochat - Recorder</title>
+        <title><spring:message code="header.videochat.player"/></title>
         <!-- Latest compiled and minified CSS -->
         <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
         <!-- Optional theme -->
@@ -29,13 +29,13 @@
                     <img src="css/images/logo.png" alt="videochat"/></div>
                 <div id="idiomes" class="col-md-3 col-md-offset-4">
                     <select class="form-control">
-                      <option>English</option>
-                      <option>Catalan</option>
-                      <option>Spanish</option>
-                      <option>Polish</option>
-                      <option>Dutch</option>
-                      <option>Swedish</option>
-                      <option>Irish</option>
+                      <option><spring:message code="message.lang.english"/></option>
+                      <option><spring:message code="message.lang.catalan"/></option>
+                      <option><spring:message code="message.lang.spanish"/></option>
+                      <option><spring:message code="message.lang.polish"/></option>
+                      <option><spring:message code="message.lang.dutch"/></option>
+                      <option><spring:message code="message.lang.swedish"/></option>
+                      <option><spring:message code="message.lang.irish"/></option>
                     </select>
                 </div> 
             </header>
@@ -68,7 +68,7 @@
                 <div class="col-md-8 participants">
                     <div class="my-inner">
                         <div class="row header_participants">
-                            <h4 class="col-md-10 col-xs-6">Participants</h4>
+                            <h4 class="col-md-10 col-xs-6"><spring:message code="message.participants"/></h4>
                         </div>
                         <div class="row">
                             <div class="col-md-4 participant" id="user-1">
@@ -141,7 +141,7 @@
                 <div class="col-md-4 aside">
                     <div class="my-inner">
                         <div class="row header_chat">
-                            <h4 class="col-md-9">Chat</h4>
+                            <h4 class="col-md-9"><spring:message code="txt.chat.title"/></h4>
                             <div class="btn-group col-md-3">
                                 <button type="button" class="btn btn-warning" id="button-print"><span class="glyphicon glyphicon-print"></span></button>
                             </div>

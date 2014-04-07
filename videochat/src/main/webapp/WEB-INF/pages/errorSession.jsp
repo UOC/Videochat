@@ -14,7 +14,7 @@
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-		<title>Videochat - Session Error</title>
+		<title><spring:message code="message.user.autoritzacio"/></title>
         <!-- Latest compiled and minified CSS -->
         <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
         <!-- Optional theme -->
@@ -27,7 +27,7 @@
             <header class="row">
             	<div class="col-md-4"><img src="css/images/logo.png" alt="videochat"/></div>
             </header>
-            <h3>Error not authenticated</h3>
+            <h3><spring:message code="message.notauthenticated"/></h3>
         </div>
 
     </body>
