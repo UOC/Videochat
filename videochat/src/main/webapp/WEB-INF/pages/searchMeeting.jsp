@@ -9,6 +9,7 @@
    "http://www.w3.org/TR/html4/loose.dtd">
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@taglib uri="http://www.springframework.org/tags" prefix="spring"%>
 <html>
     <head>
        
@@ -20,10 +21,27 @@
     <!-- Optional theme -->
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap-theme.min.css">
     <link rel="stylesheet" href="css/general.css">
+    <script type="text/javascript" src="js/videochat.js" ></script>
     <title><spring:message code="message.selectoption.search"/></title>
     </head>
     <body>
-    <header id="search"><div class="container"><img src="css/images/logo_invers.png" alt="videochat"/></div></header>
+    <header id="search"><div class="container"><img src="css/images/logo_invers.png" alt="videochat"/></div>
+    
+              <div id="idiomes" class="col-md-3 col-md-offset-4">
+                    <form:form  name="lang_form" action="searchMeeting.htm" commandName="searchMeetingForm" modelAttribute="course" method="POST">
+                        <form:select onchange="changeLanguage(this.value)" path="lang" class="form-control">
+                            <form:option value="en"><spring:message code="message.lang.english"/></form:option>
+                            <form:option value="ca"><spring:message code="message.lang.catalan"/></form:option>
+                            <form:option value="es"><spring:message code="message.lang.spanish"/></form:option>
+                            <form:option value="en"><spring:message code="message.lang.polish"/></form:option>
+                            <form:option value="en"><spring:message code="message.lang.dutch"/></form:option>
+                            <form:option value="en"><spring:message code="message.lang.swedish"/></form:option>
+                            <form:option value="en"><spring:message code="message.lang.irish"/></form:option>
+                        </form:select>
+                    </form:form>
+              </div>
+    
+    </header>
     <div class="container">
         <h3><spring:message code="message.meetinglist.player"/></h3>
         <p><strong><spring:message code="message.meetinglist.text1"/></strong><spring:message code="message.meetinglist.text2"/></p>
@@ -82,7 +100,7 @@
                        <td>${item.getStart_meeting_txt()}</td>
                        <td>${item.getEnd_meeting_txt()}</td>
                        <td>${item.getTotal_time_txt()}</td>
-                       <td><a target="_blank" href="player.htm?id=${item.getId()}">View</a></td>
+                       <td><a href="player.htm?id=${item.getId()}">View</a></td>
                     </tr>
                 </c:forEach>  
             </tbody>
