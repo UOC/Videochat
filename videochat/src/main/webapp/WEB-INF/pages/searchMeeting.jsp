@@ -20,56 +20,56 @@
     <!-- Optional theme -->
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap-theme.min.css">
     <link rel="stylesheet" href="css/general.css">
-    <title>Search session</title>
+    <title><spring:message code="message.selectoption.search"/></title>
     </head>
     <body>
     <header id="search"><div class="container"><img src="css/images/logo_invers.png" alt="videochat"/></div></header>
     <div class="container">
-        <h3>Player</h3>
-        <p><strong>Select a session to play.</strong>Use the following search options to find a session to play.</p>
+        <h3><spring:message code="message.meetinglist.player"/></h3>
+        <p><strong><spring:message code="message.meetinglist.text1"/></strong><spring:message code="message.meetinglist.text2"/></p>
 
         <form:form name="search_meeting_form" action="searchMeeting.htm" commandName="searchMeetingForm" modelAttribute="searchMeeting" method="POST">
                 <div class="form-group">
-                    <label for="topic" class="control-label">Topic</label>
+                    <label for="topic" class="control-label"><spring:message code="message.meetinglist.topic"/></label>
                     <form:input type="text" path="topic" class="form-control" id="topic"/>
                 </div>
                 <div class="form-group">
-                    <label for="participants" class="control-label">Participants</label>
+                    <label for="participants" class="control-label"><spring:message code="message.participants"/></label>
                     <form:input type="text" path="participants" class="form-control" id="participants"/>
                 </div>
                 <div class="row">
                     <div class="form-group col-xs-6">
-                        <label for="from" class="control-label">From</label>
+                        <label for="from" class="control-label"><spring:message code="message.meetinglist.from"/></label>
                         <form:input type="date" path="start_meeting" class="form-control" id="from" placeholder="dd/mm/yyyy" />
                     </div>
                     <div class="form-group col-xs-6">
-                        <label for="to" class="control-label">To</label>
+                        <label for="to" class="control-label"><spring:message code="message.meetinglist.to"/></label>
                         <form:input type="date" path="end_meeting" class="form-control" id="to" placeholder="dd/mm/yyyy"/>
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="room_id" class="control-label">Select room</label>
+                    <label for="room_id" class="control-label"><spring:message code="message.select.room"/></label>
                     <select name="room_id" class="form-control">
-                        <option value="-1">All</option>
+                        <option value="-1"><spring:message code="message.all"/></option>
                          <c:forEach var="item" items="${listRooms}">
                              <option value="<c:out value="${item.getId()}"/>" <c:if test="${item.getId()==searchMeeting.getRoom_Id()}"> selected </c:if>><c:out value="${item.getLabel()}"/></option>
                          </c:forEach>
                     </select>
                 </div>
-                <button type="submit" class="btn btn-warning">Search</button>
+                <button type="submit" class="btn btn-warning"><spring:message code="message.meetinglist.button"/></button>
                 </form:form>
         <hr/>
-        <p><strong>Results.</strong>Select the session you are interested to play.</p>
+        <p><strong><spring:message code="message.meetinglist.text3"/></strong><spring:message code="message.meetinglist.text4"/></p>
         <div class="table-responsive">
             <table class="table table-striped table-condensed table-hover">
                 <thead >
                     <tr>
-                        <th class="borderW selec col1" scope="col">Topic</th>
-                        <th class="borderW mida  col2" scope="col">Participants</th>
-                        <th class="borderW modif col3" scope="col">From (date)</th>
-                        <th class="borderW modif col4" scope="col">To (date)</th>
-                        <th class="borderW modif col5" scope="col">Length</th>
-                        <th class="borderW modif col5" scope="col">View</th>
+                        <th class="borderW selec col1" scope="col"><spring:message code="label.topic"/></th>
+                        <th class="borderW mida  col2" scope="col"><spring:message code="message.participants"/></th>
+                        <th class="borderW modif col3" scope="col"><spring:message code="message.meetinglist.from"/></th>
+                        <th class="borderW modif col4" scope="col"><spring:message code="message.meetinglist.to"/></th>
+                        <th class="borderW modif col5" scope="col"><spring:message code="message.meetinglist.length"/></th>
+                        <th class="borderW modif col5" scope="col"><spring:message code="message.meetinglist.view"/></th>
                     </tr>
                 </thead>
                 <tbody>
