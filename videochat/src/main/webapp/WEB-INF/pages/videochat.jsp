@@ -72,16 +72,18 @@
         	<header class="row">
             	<div class="col-md-4"><img src="css/images/logo.png" alt="videochat"/></div>
                 <div id="idiomes" class="col-md-3 col-md-offset-4">
-                    <select class="form-control">
-                      <option><spring:message code="message.lang.english"/></option>
-                      <option><spring:message code="message.lang.catalan"/></option>
-                      <option><spring:message code="message.lang.spanish"/></option>
-                      <option><spring:message code="message.lang.polish"/></option>
-                      <option><spring:message code="message.lang.dutch"/></option>
-                      <option><spring:message code="message.lang.swedish"/></option>
-                      <option><spring:message code="message.lang.irish"/></option>
-                    </select>
-                </div>
+                    <form:form  name="lang_form" action="searchMeeting.htm" commandName="searchMeetingForm" modelAttribute="course" method="POST">
+                        <form:select onchange="changeLanguage(this.value)" path="lang" class="form-control">
+                            <form:option value="en"><spring:message code="message.lang.english"/></form:option>
+                            <form:option value="ca"><spring:message code="message.lang.catalan"/></form:option>
+                            <form:option value="es"><spring:message code="message.lang.spanish"/></form:option>
+                            <form:option value="pl"><spring:message code="message.lang.polish"/></form:option>
+                            <form:option value="nl"><spring:message code="message.lang.dutch"/></form:option>
+                            <form:option value="sw"><spring:message code="message.lang.swedish"/></form:option>
+                            <form:option value="ir"><spring:message code="message.lang.irish"/></form:option>
+                        </form:select>
+                    </form:form>
+              </div>
                 <div id="close" class="col-md-1">
                     <span class="glyphicon glyphicon-remove" id="button-exit"></span>
                 </div>

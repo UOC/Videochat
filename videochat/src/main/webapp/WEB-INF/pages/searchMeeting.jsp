@@ -33,10 +33,10 @@
                             <form:option value="en"><spring:message code="message.lang.english"/></form:option>
                             <form:option value="ca"><spring:message code="message.lang.catalan"/></form:option>
                             <form:option value="es"><spring:message code="message.lang.spanish"/></form:option>
-                            <form:option value="en"><spring:message code="message.lang.polish"/></form:option>
-                            <form:option value="en"><spring:message code="message.lang.dutch"/></form:option>
-                            <form:option value="en"><spring:message code="message.lang.swedish"/></form:option>
-                            <form:option value="en"><spring:message code="message.lang.irish"/></form:option>
+                            <form:option value="pl"><spring:message code="message.lang.polish"/></form:option>
+                            <form:option value="nl"><spring:message code="message.lang.dutch"/></form:option>
+                            <form:option value="sw"><spring:message code="message.lang.swedish"/></form:option>
+                            <form:option value="ir"><spring:message code="message.lang.irish"/></form:option>
                         </form:select>
                     </form:form>
               </div>
@@ -44,7 +44,7 @@
     </header>
     <div class="container">
         <h3><spring:message code="message.meetinglist.player"/></h3>
-        <p><strong><spring:message code="message.meetinglist.text1"/></strong><spring:message code="message.meetinglist.text2"/></p>
+        <p><strong><spring:message code="message.meetinglist.text1"/></strong> <spring:message code="message.meetinglist.text2"/></p>
 
         <form:form name="search_meeting_form" action="searchMeeting.htm" commandName="searchMeetingForm" modelAttribute="searchMeeting" method="POST">
                 <div class="form-group">

@@ -28,5 +28,8 @@ function returnPositionUser(userkey, array){
          url = url.substring(0, pos-1);
      }
      var concat = url.indexOf("?")>=0?"&":"?";
+     if (typeof allowed_return !== "undefined") {
+         allowed_return = true;
+     }
      document.location.href=url+concat+"lang="+lang;
  }
