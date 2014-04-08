@@ -18,8 +18,8 @@ import java.util.ArrayList;
 import java.util.List;
 import org.apache.log4j.Logger;
 import org.hibernate.Criteria;
-import org.hibernate.FetchMode;
 import org.hibernate.criterion.DetachedCriteria;
+import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.criterion.Subqueries;
 import org.springframework.stereotype.Repository;
@@ -148,13 +148,18 @@ public class MeetingRoomDaoImpl extends CustomHibernateDaoSupport implements Mee
 	} else {
             criteria.add(Restrictions.in("meeting.id_room", ids_room));
         }
-        if (false && searchMeeting.getParticipants()!=null && searchMeeting.getParticipants().length()>0) {
+        if (searchMeeting.getParticipants()!=null && searchMeeting.getParticipants().length()>0) {
             DetachedCriteria subCriteria = DetachedCriteria.forClass(UserMeeting.class, "userMeeting");
-                subCriteria.createAlias("userMeeting.pk.meeting", "meeting_id");
-                subCriteria.setFetchMode("User", FetchMode.JOIN);
-                subCriteria.add(Restrictions.like("user.fullname", "%"+searchMeeting.getParticipants()+"%"));
-                //subCriteria.add(Restrictions.eqProperty("userMeeting.meeting_id",""));
-            criteria.add(Subqueries.in("meeting.id", subCriteria));
+            subCriteria.createAlias("userMeeting.pk.meeting", "userMeeting.id");
+            subCriteria.setProjection(Projections.projectionList().add(Projections.property("userMeeting.id")));
+            subCriteria.add(Restrictions.eqProperty("meeting.id","userMeeting.id"));
+                
+            DetachedCriteria subCriteriaUser = DetachedCriteria.forClass(User.class, "user");
+                subCriteriaUser.setProjection(Projections.projectionList().add(Projections.property("user.id")));
+                subCriteriaUser.add(Restrictions.like("user.fullname", "%"+searchMeeting.getParticipants()+"%"));
+                subCriteriaUser.add(Restrictions.eqProperty("user.id","userMeeting.pk.user.id"));
+                subCriteria.add(Subqueries.exists(subCriteriaUser));
+            criteria.add(Subqueries.exists(subCriteria));
         }
         logger.info("Criteria "+criteria.toString());
        

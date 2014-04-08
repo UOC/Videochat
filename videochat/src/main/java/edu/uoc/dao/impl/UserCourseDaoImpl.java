@@ -7,7 +7,6 @@
 package edu.uoc.dao.impl;
 
 import edu.uoc.dao.UserCourseDao;
-import edu.uoc.model.User;
 import edu.uoc.model.UserCourse;
 import edu.uoc.util.CustomHibernateDaoSupport;
 import java.util.List;
