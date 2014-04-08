@@ -20,3 +20,13 @@ function returnPositionUser(userkey, array){
     }
     return pos;
 }
+
+ var changeLanguage = function(lang) {
+     var url = document.location.href;
+     var pos = url.indexOf("lang");
+     if (pos>=0) {
+         url = url.substring(0, pos-1);
+     }
+     var concat = url.indexOf("?")>=0?"&":"?";
+     document.location.href=url+concat+"lang="+lang;
+ }

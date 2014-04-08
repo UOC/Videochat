@@ -63,6 +63,8 @@ public class UserController {
 
             Room room = (Room) session.getAttribute(Constants.ROOM_SESSION);
             User user = (User) session.getAttribute(Constants.USER_SESSION);
+            Course course = (Course) session.getAttribute(Constants.COURSE_SESSION);
+            
             if (user != null && room != null) {
                 MeetingRoom meeting = meetingroomDao.findById(id);
                 if (meeting.getId() > 0) {
@@ -90,6 +92,7 @@ public class UserController {
                     model.addObject("room", room);
                     model.addObject("meeting", meeting_extended);
                     model.addObject("wowza_stream_server", Constants.WOWZA_STREAM_SERVER);
+                    
                 } else {
                     model.setViewName("errorMeetingNotFound");
                 }
