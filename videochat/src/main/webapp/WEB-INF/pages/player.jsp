@@ -31,14 +31,14 @@
                     <img src="css/images/logo.png" alt="videochat"/></div>
                 <div id="idiomes" class="col-md-3 col-md-offset-4">
                     <form:form  name="lang_form" action="player.htm" commandName="player" modelAttribute="course" method="POST">
-                        <form:select onchange="changeLanguage(this.value)" path="lang" class="form-control">
+                        <form:select onchange="changeLanguage(this.value)" path="lang" itemValue="path" itemLabel="path" class="form-control">
                             <form:option value="en"><spring:message code="message.lang.english"/></form:option>
                             <form:option value="ca"><spring:message code="message.lang.catalan"/></form:option>
                             <form:option value="es"><spring:message code="message.lang.spanish"/></form:option>
-                            <form:option value="en"><spring:message code="message.lang.polish"/></form:option>
-                            <form:option value="en"><spring:message code="message.lang.dutch"/></form:option>
-                            <form:option value="en"><spring:message code="message.lang.swedish"/></form:option>
-                            <form:option value="en"><spring:message code="message.lang.irish"/></form:option>
+                            <form:option value=""><spring:message code="message.lang.polish"/></form:option>
+                            <form:option value=""><spring:message code="message.lang.dutch"/></form:option>
+                            <form:option value=""><spring:message code="message.lang.swedish"/></form:option>
+                            <form:option value=""><spring:message code="message.lang.irish"/></form:option>
                         </form:select>
                     </form:form>
 
