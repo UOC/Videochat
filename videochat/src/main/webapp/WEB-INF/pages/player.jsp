@@ -22,8 +22,11 @@
                 <div class="col-md-1">
                     <a href="searchMeeting.htm" class="videochat-btn-secundary"><span class="glyphicon glyphicon-arrow-left">&nbsp;<spring:message code="message.player.back"/></span></a>
                 </div>
+                <% String locale = request.getParameter("lang"); %>
 
-               
+                <%String cat = "ca";%>       
+                <%String es = "es";%> 
+                <%String en = "en";%> 
 
             </div>
             <header class="row"> 
@@ -32,13 +35,37 @@
                 <div id="idiomes" class="col-md-3 col-md-offset-4">
                     <form:form  name="lang_form" action="player.htm" commandName="player" modelAttribute="course" method="POST">
                         <form:select onchange="changeLanguage(this.value)" path="lang" itemValue="path" itemLabel="path" class="form-control">
-                            <form:option value="en"><spring:message code="message.lang.english"/></form:option>
-                            <form:option value="ca"><spring:message code="message.lang.catalan"/></form:option>
-                            <form:option value="es"><spring:message code="message.lang.spanish"/></form:option>
-                            <form:option value=""><spring:message code="message.lang.polish"/></form:option>
-                            <form:option value=""><spring:message code="message.lang.dutch"/></form:option>
-                            <form:option value=""><spring:message code="message.lang.swedish"/></form:option>
-                            <form:option value=""><spring:message code="message.lang.irish"/></form:option>
+                            <c:choose>                        
+                                <c:when test="<%=en.equalsIgnoreCase(locale)%>" >
+                                    <form:option value="en" selected="true"><spring:message code="message.lang.english"/></form:option>
+                                </c:when>
+                                <c:otherwise>
+                                    <form:option value="en" ><spring:message code="message.lang.english"/></form:option>
+                                </c:otherwise>
+                            </c:choose>
+
+                            <c:choose>
+                                <c:when test="<%=cat.equalsIgnoreCase(locale)%>" >
+                                    <form:option value="ca" selected="true"><spring:message code="message.lang.catalan"/></form:option>                            
+                                </c:when>
+                                <c:otherwise>
+                                    <form:option value="ca" ><spring:message code="message.lang.catalan"/></form:option>                            
+                                </c:otherwise>
+                            </c:choose> 
+
+                            <c:choose>
+                                <c:when test="<%=es.equalsIgnoreCase(locale)%>" >
+                                    <form:option value="es" selected="true"><spring:message code="message.lang.spanish"/></form:option>
+                                </c:when>
+                                <c:otherwise>
+                                    <form:option value="es"><spring:message code="message.lang.spanish"/></form:option>
+                                </c:otherwise>
+                            </c:choose>
+
+                            <form:option value="po"><spring:message code="message.lang.polish"/></form:option>
+                            <form:option value="de"><spring:message code="message.lang.dutch"/></form:option>
+                            <form:option value="se"><spring:message code="message.lang.swedish"/></form:option>
+                            <form:option value="ir"><spring:message code="message.lang.irish"/></form:option>
                         </form:select>
                     </form:form>
 
