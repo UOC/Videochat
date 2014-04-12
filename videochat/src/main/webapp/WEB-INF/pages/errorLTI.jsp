@@ -27,7 +27,7 @@
             <header class="row">
             	<div class="col-md-4"><img src="css/images/logo.png" alt="videochat"/></div>
             </header>
-            <h3><spring:message code="message.notauthenticated"/></h3>
+            <h3><spring:message code="message.user.no.loginlti"/></h3>
         </div>
 
     </body>
