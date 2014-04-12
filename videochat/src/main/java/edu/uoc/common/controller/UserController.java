@@ -220,7 +220,8 @@ public class UserController {
 
     }
 
-    @RequestMapping(value = "/login", method = RequestMethod.POST)
+    //Codification problems with Accents ans ntilde
+   /* @RequestMapping(value = "/login", method = RequestMethod.POST)
     public String loginLTI(HttpSession session, HttpServletRequest request) {
         String nextPage = "error";
         //ModelAndView model = new ModelAndView();
@@ -245,7 +246,7 @@ public class UserController {
                     //TODO mirar si cal posar
 				/*if (username.startsWith(LTIEnvironment.getResourcekey()+":")) {
                      username = username.substring((LTIEnvironment.getResourcekey()+":").length());
-                     }*/
+                     }* /
                     String full_name = LTIEnvironment.getFullName();
 
                     String first_name = LTIEnvironment.getParameter(Constants.FIRST_NAME_LTI_PARAMETER);
@@ -354,7 +355,7 @@ public class UserController {
 
         }
         return "redirect:" + nextPage + ".htm";
-    }
+    }*/
 
     @RequestMapping("/getUsers")
     public ModelAndView getAllUsers(HttpServletRequest request,
