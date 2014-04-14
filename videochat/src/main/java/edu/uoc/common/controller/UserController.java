@@ -7,14 +7,12 @@ import edu.uoc.dao.RoomDao;
 import edu.uoc.dao.UserCourseDao;
 import edu.uoc.dao.UserDao;
 import edu.uoc.dao.UserMeetingDao;
-import edu.uoc.lti.LTIEnvironment;
+//import edu.uoc.lti.LTIEnvironment;
 import edu.uoc.model.Course;
 import edu.uoc.model.MeetingRoom;
 import edu.uoc.model.MeetingRoomExtended;
 import edu.uoc.model.Room;
 import edu.uoc.model.User;
-import edu.uoc.model.UserCourse;
-import edu.uoc.model.UserCourseId;
 import edu.uoc.model.UserMeeting;
 import edu.uoc.model.UserMeetingId;
 import edu.uoc.util.Constants;
@@ -27,11 +25,11 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.bind.support.SessionStatus;
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Value;
 
 @Controller
 //@Scope("session")
@@ -54,6 +52,8 @@ public class UserController {
     private UserCourseDao userCourseDao;
     @Autowired
     private RoomDao roomDao;
+    @Value( "${wowza.url.server}" )
+    private String wowzaUrl;
 
     @RequestMapping("/player")
     public ModelAndView handleRequestInternal(@RequestParam(value = "id") int id,
@@ -91,7 +91,7 @@ public class UserController {
                     model.addObject("course", session.getAttribute(Constants.COURSE_SESSION));
                     model.addObject("room", room);
                     model.addObject("meeting", meeting_extended);
-                    model.addObject("wowza_stream_server", Constants.WOWZA_STREAM_SERVER);
+                    model.addObject("wowza_stream_server", wowzaUrl);
                     
                 } else {
                     model.setViewName("errorMeetingNotFound");
@@ -192,7 +192,7 @@ public class UserController {
                 model.addObject("course", course);
                 model.addObject("meeting", meeting);
                 model.addObject("userMeeting", session.getAttribute(Constants.USER_METTING_SESSION));
-                model.addObject("wowza_stream_server", Constants.WOWZA_STREAM_SERVER);
+                model.addObject("wowza_stream_server", wowzaUrl);
                 if (meeting!=null) {
                     model.addObject("is_recorded", meeting.getRecorded() == (byte) 1);
                     //get the list of current participants

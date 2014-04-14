@@ -45,6 +45,12 @@
 
     </bean> -->
 
+    <bean 
+    class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+            <property name="location">
+                    <value>classpath:videochat.properties</value>
+            </property>
+    </bean>
 
     <bean id="viewResolver"
           class="org.springframework.web.servlet.view.InternalResourceViewResolver">
