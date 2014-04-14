@@ -127,8 +127,8 @@
                             <td><c:forEach items="${item.getParticipants()}" var="participant">
                                     ${participant.getPk().getUser().getFullname()},  
                                 </c:forEach></td>
-                            <td>${item.getStart_meeting_txt()}</td>
-                            <td>${item.getEnd_meeting_txt()}</td>
+                            <td>${item.getStart_record_meeting_txt()}</td>
+                            <td>${item.getEnd_record_meeting_txt()}</td>
                             <td>${item.getTotal_time_txt()}</td>
                             <td><a href="player.htm?id=${item.getId()}">View</a></td>
                         </tr>
