@@ -31,6 +31,7 @@
         <%String cat = "ca";%>       
         <%String es = "es";%> 
         <%String en = "en";%> 
+        <%String pl = "pl";%> 
         <div id="idiomes" class="col-md-3 col-md-offset-4">
             <form:form  name="lang_form" action="searchMeeting.htm" commandName="searchMeetingForm" modelAttribute="course" method="POST">
                 <form:select onchange="changeLanguage(this.value)" path="lang" class="form-control">
@@ -62,7 +63,17 @@
                         </c:otherwise>
                     </c:choose>
                     
-                        <form:option value="po"><spring:message code="message.lang.polish"/></form:option>
+                    
+                    <c:choose>
+                        <c:when test="<%=pl.equalsIgnoreCase(locale)%>" >
+                            <form:option value="pl" selected="true"><spring:message code="message.lang.polish"/></form:option>
+                        </c:when>
+                        <c:otherwise>
+                            <form:option value="pl"><spring:message code="message.lang.polish"/></form:option>
+                        </c:otherwise>
+                    </c:choose>
+
+                        
                         <form:option value="de"><spring:message code="message.lang.dutch"/></form:option>
                         <form:option value="se"><spring:message code="message.lang.swedish"/></form:option>
                         <form:option value="ir"><spring:message code="message.lang.irish"/></form:option>

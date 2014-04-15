@@ -20,7 +20,7 @@ function returnPositionUser(userkey, array){
     }
     return pos;
 }
-
+ var allowed_return = false;
  var changeLanguage = function(lang) {
      var url = document.location.href;
      var pos = url.indexOf("lang");
@@ -28,5 +28,6 @@ function returnPositionUser(userkey, array){
          url = url.substring(0, pos-1);
      }
      var concat = url.indexOf("?")>=0?"&":"?";
+     allowed_return  = true;
      document.location.href=url+concat+"lang="+lang;
  }

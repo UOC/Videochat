@@ -31,6 +31,7 @@
         <%String cat = "ca";%>       
         <%String es = "es";%> 
         <%String en = "en";%> 
+        <%String pl = "pl";%> 
         <% /*
              <!-- modal que apareix al carregar la pàgina-->
              <div class="modal fade" id="camera">
@@ -107,7 +108,15 @@
                                 </c:otherwise>
                             </c:choose>
 
-                            <form:option value="po"><spring:message code="message.lang.polish"/></form:option>
+                            <c:choose>
+                                <c:when test="<%=pl.equalsIgnoreCase(locale)%>" >
+                                    <form:option value="pl" selected="true"><spring:message code="message.lang.polish"/></form:option>
+                                </c:when>
+                                <c:otherwise>
+                                    <form:option value="pl"><spring:message code="message.lang.polish"/></form:option>
+                                </c:otherwise>
+                            </c:choose>
+
                             <form:option value="de"><spring:message code="message.lang.dutch"/></form:option>
                             <form:option value="se"><spring:message code="message.lang.swedish"/></form:option>
                             <form:option value="ir"><spring:message code="message.lang.irish"/></form:option>
@@ -287,7 +296,7 @@
                                         var meeting_is_closed = false;
                                         var micro_is_muted = false;
                                         var meeting_is_locked = false;
-                                        var allowed_return = false;
+                                        
                                         $(document).ready(function() {
 
                                             $(window).bind('beforeunload', function() {
@@ -634,6 +643,7 @@
                                                     xhr.setRequestHeader("Content-Type", "application/json");
                                                 },
                                                 success: function(response) {
+                                                    closedSession();
                                                     console.log(response);
                                                 }
                                             });
@@ -646,7 +656,7 @@
                                             $('#button-record').hide();
                                             $('#button-archive').hide();
                                             $('#button-sendMessage').hide();
-                                            bootbox.alert("<spring:message code="message.recorded.close"/>", function() {
+                                            bootbox.alert("<spring:message code="message.meeting.closed"/>", function() {
                                                 returnMeeting();
                                             });
                                         }

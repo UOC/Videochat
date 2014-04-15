@@ -27,7 +27,7 @@
                 <%String cat = "ca";%>       
                 <%String es = "es";%> 
                 <%String en = "en";%> 
-
+                <%String pl = "pl";%> 
             </div>
             <header class="row"> 
                 <div class="col-md-4">
@@ -61,8 +61,16 @@
                                     <form:option value="es"><spring:message code="message.lang.spanish"/></form:option>
                                 </c:otherwise>
                             </c:choose>
+                            
+                            <c:choose>
+                                <c:when test="<%=pl.equalsIgnoreCase(locale)%>" >
+                                    <form:option value="pl" selected="true"><spring:message code="message.lang.polish"/></form:option>
+                                </c:when>
+                                <c:otherwise>
+                                    <form:option value="pl"><spring:message code="message.lang.polish"/></form:option>
+                                </c:otherwise>
+                            </c:choose>
 
-                            <form:option value="po"><spring:message code="message.lang.polish"/></form:option>
                             <form:option value="de"><spring:message code="message.lang.dutch"/></form:option>
                             <form:option value="se"><spring:message code="message.lang.swedish"/></form:option>
                             <form:option value="ir"><spring:message code="message.lang.irish"/></form:option>
