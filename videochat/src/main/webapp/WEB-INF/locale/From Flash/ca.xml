@@ -1,0 +1,53 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+
+<lang>
+	<item id="1" key="txt_topic" val="Tema:" cap="u" style="b" />
+	<item id="2" key="txt_description" val="Descripció:" cap="u" style="b" />
+	<item id="3" key="txt_participants" val="participants" cap="u"/>
+	<item id="4" key="txt_activate_1" val="Esta es la senyal de cámara Web privada." cap="f"/>
+	<item id="5" key="txt_activate_2" val="Fes clic a ACTIVA LA CÀMERA" cap="f"/>
+	<item id="6" key="txt_activate_3" val="quan estiguis a punt d''enviar-la a aquesta sessió" cap="n"/>
+	
+	<item id="7" key="txt_m1_important" val="importante" cap="f"/>
+	<item id="8" key="txt_m1_confirm" val="Está seguro que desea iniciar una nueva grabación?" cap="f"/>
+	<item id="9" key="txt_m1_warning" val="Si continúa la grabación anteriores serán eliminados." cap="f"/>
+
+	<item id="8" key="txt_m2_confirm" val="Estàs segur de que vols guardar i tancar l'última gravació que has fet?" cap="f"/>
+	<item id="9" key="txt_m2_warning" val="Si continues, no podràs fer més gravacions en aquesta sessió." cap="f"/>
+	<item id="8" key="txt_m3_confirm" val="Aquesta sessió s'està gravant, què vols fer?" cap="f"/>
+	<item id="9" key="txt_m3_warning1_1" val="Cancel·la:" cap="f"/>
+	<item id="9" key="txt_m3_warning1_2" val="aquesta sessió continua gravant." cap="f"/>
+	
+	<item id="9" key="txt_m3_warning2_1" val="Atura:" cap="f"/>
+	<item id="9" key="txt_m3_warning2_2" val="Atura aquesta gravació i reconnecta per decidir què vols fer, si desar o repetir." cap="f"/>
+	
+	<item id="9" key="txt_m3_warning3_1" val="Desa:" cap="f"/>
+	<item id="9" key="txt_m3_warning3_2" val="guarda i tanca aquesta sessió. Es publicarà al Videoxat." cap="f"/>
+	
+	<item id="8" key="txt_m4_confirm" val="Si us plau, afegeix el tema i la descripció per a aquesta sessió." cap="f"/>
+	<item id="8" key="txt_m5_confirm" val="La sala s'està tancant. Espera si us plau." cap="f"/>
+	<item id="8" key="txt_m6_warning1" val="L'eina de videoxat en l'actualitat no funciona." cap="f"/>
+	<item id="8" key="txt_m6_warning2" val="Si us plau, informe a aquest problema." cap="f"/>
+	<item id="8" key="txt_m7_warning1" val="Ho sentim però aquesta sala de videoxat està complet." cap="f"/>
+	<item id="8" key="txt_m7_warning2" val="Torneu-ho a provar més tard." cap="f"/>
+	<item id="8" key="txt_m8_warning" val="Un participant ha deixat aquesta sessió." cap="f"/>
+	
+	<item id="10" key="txt_chat_title" val="xat" cap="u"/>
+	<item id="10" key="txt_chat1" val="Introdueix el text aquí:" cap="f"/>
+	<item id="10" key="txt_chat2" val="Prem per netejar el xat" cap="f"/>
+	
+	<item id="10" key="btn_canceltxt" val="cancelar" cap="f" style="b" />
+	<item id="11" key="btn_continue" val="continuar" cap="f" style="b" /> 
+	<item id="11" key="btn_stop" val="atura" cap="u" style="b" /> 
+	<item id="11" key="btn_stop_main" cap="u" style="b" val="atura"/> 
+	<item id="11" key="btn_closed_session" val="sessió tancada" cap="u"/> 
+	<item id="11" key="btn_saveclose" val="desa i tanca" cap="f"/> 	
+	<item id="12" key="btn_record" val="gravar" cap="u"/> 
+	<item id="12" key="btn_arch_close" val="guarda i tanca" cap="u"/> 
+	<item id="12" key="btn_view_session" val="veure la sessio" cap="f"/> 
+	<item id="11" key="btn_exit" val="sortir" cap="f"/> 
+	
+	<item id="11" key="btn_solo" val="solo" cap="u"/> 
+	<item id="11" key="btn_mute" val="silenci" cap="u"/> 
+	
+</lang>

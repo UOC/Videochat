@@ -1,0 +1,49 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+
+<lang>
+	<item id="1" key="txt_topic" val="Tema:" cap="u"/>
+	<item id="2" key="txt_description" val="DESCRIPCIÓN:" cap="u"/>
+	<item id="3" key="txt_participants" val="PARTICIPANTES" cap="u"/>
+	<item id="4" key="txt_activate_1" val="Esta es la señal de tu webcam privada." cap="f"/>
+	<item id="5" key="txt_activate_2" val="Haz click en ACTIVAR CÁMARA" cap="f"/>
+	<item id="6" key="txt_activate_3" val="cuando estés listo para enviarla a esta sesión." cap="n"/>
+	
+	<item id="7" key="txt_m1_important" val="importante" cap="f"/>
+	<item id="8" key="txt_m1_confirm" val="¿Estás seguro de que quieres iniciar una nueva sesión?" cap="f"/>
+	<item id="9" key="txt_m1_warning" val="Si sigues se eliminará la grabación realizada anteriormente." cap="f"/>
+	<item id="8" key="txt_m2_confirm" val="¿Estás seguro de que quieres guardar y cerrar la última grabación que has hecho?" cap="f"/>
+	<item id="9" key="txt_m2_warning" val="Si sigues no podrás hacer más grabaciones en esta sesión." cap="f"/>
+	<item id="8" key="txt_m3_confirm" val="Esta sesión se está grabando. ¿Qué quieres hacer?" cap="f"/>
+	<item id="9" key="txt_m3_warning1_1" val="CANCELAR:" cap="f"/>
+	<item id="9" key="txt_m3_warning1_2" val="esta sesión sigue grabando." cap="f"/>
+	<item id="9" key="txt_m3_warning2_1" val="DETENER:" cap="f"/>
+	<item id="9" key="txt_m3_warning2_2" val="Detén esta grabación y reconecta para decidir qué hacer, guardar o repetir" cap="f"/>
+	<item id="9" key="txt_m3_warning3_1" val="Guardar:" cap="f"/>
+	<item id="9" key="txt_m3_warning3_2" val=" Archiva y cierra esta sesión. Se publicará en el Videochat." cap="f"/>
+	<item id="8" key="txt_m4_confirm" val="Por favor, añade un tema y una descripción para esta sesión." cap="f"/>
+	<item id="8" key="txt_m5_confirm" val="La sala se está cerrando. Por favor espera." cap="f"/>
+	<item id="8" key="txt_m6_warning1" val="La herramienta de Videochat temporalmente no funciona." cap="f"/>
+	<item id="8" key="txt_m6_warning2" val="Por favor, reporta este problema." cap="f"/>
+	<item id="8" key="txt_m7_warning1" val="Lo sentimos, esta sala de videochat actualmente está llena." cap="f"/>
+	<item id="8" key="txt_m7_warning2" val="Por favor, inténtalo más tarde." cap="f"/>
+	<item id="8" key="txt_m8_warning" val="Un participante ha abandonado esta sesión." cap="f"/>
+	
+	<item id="10" key="txt_chat_title" val="Chat" cap="u"/>
+	<item id="10" key="txt_chat1" val="Escribe el texto aquí:" cap="f"/>
+	<item id="10" key="txt_chat2" val="Pulsa para limpiar el chat" cap="f"/>
+	
+	<item id="10" key="btn_canceltxt" val="CANCELAR" cap="f"/>
+	<item id="11" key="btn_continue" val="CONTINÚA" cap="f"/> 
+	<item id="11" key="btn_stop" val="DETENER" cap="f"/> 
+	<item id="11" key="btn_stop_main" cap="u" style="b" val="DETENER"/> 
+	<item id="11" key="btn_closed_session" val="Sesión Cerrada" cap="u"/> 
+	<item id="11" key="btn_saveclose" val="GUARDAR Y CERRAR" cap="f"/> 	
+	<item id="12" key="btn_record" val="Grabar" cap="u"/> 
+	<item id="12" key="btn_arch_close" val="GUARDA Y CIERRA" cap="u"/> 
+	<item id="12" key="btn_view_session" val="VER LA SESIÓN" cap="f"/> 
+	<item id="11" key="btn_exit" val="Salida" cap="f"/> 
+	
+	<item id="11" key="btn_solo" val="solo" cap="u"/> 
+	<item id="11" key="btn_mute" val="SILENCIO" cap="u"/> 
+	
+</lang>

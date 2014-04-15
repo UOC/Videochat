@@ -1,0 +1,49 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+
+<lang>
+	<item id="1" key="txt_topic" val="Ämne:" cap="u"/>
+	<item id="2" key="txt_description" val="BESKRIVNING:" cap="u"/>
+	<item id="3" key="txt_participants" val="DELTAGARE" cap="u"/>
+	<item id="4" key="txt_activate_1" val="Det här är din privata webbkamerasignal." cap="f"/>
+	<item id="5" key="txt_activate_2" val="Tryck på AKTIVERA KAMERAN" cap="f"/>
+	<item id="6" key="txt_activate_3" val="när du är färdig att börja." cap="n"/>
+	
+	<item id="7" key="txt_m1_important" val="VIKTIGT" cap="f"/>
+	<item id="8" key="txt_m1_confirm" val="Är du säker på att du vill börja en ny inspelning?" cap="f"/>
+	<item id="9" key="txt_m1_warning" val="Om du fortsätter, kommer den föregående inspelningen att raderas." cap="f"/>
+	<item id="8" key="txt_m2_confirm" val="Är du säker på att du vill avsluta och arkivera den senaste inspelningen?" cap="f"/>
+	<item id="9" key="txt_m2_warning" val="Om du fortsätter, är det inte längre möjligt att göra nya inspelningar inom denna session." cap="f"/>
+	<item id="8" key="txt_m3_confirm" val="Den här sessionen spelas in, vad vill du göra?" cap="f"/>
+	<item id="9" key="txt_m3_warning1_1" val="AVBRYT:" cap="f"/>
+	<item id="9" key="txt_m3_warning1_2" val="inspelningen av den här sessionen kommer att fortsätta" cap="f"/>
+	<item id="9" key="txt_m3_warning2_1" val="STOPPA:" cap="f"/>
+	<item id="9" key="txt_m3_warning2_2" val="Stoppa den här inspelningen och återkoppla för att spara eller upprepa." cap="f"/>
+	<item id="9" key="txt_m3_warning3_1" val="Spara:" cap="f"/>
+	<item id="9" key="txt_m3_warning3_2" val="Avsluta och arkivera den här sessionen, den publiceras på Videochatt." cap="f"/>
+	<item id="8" key="txt_m4_confirm" val="Lägg till ämne och beskrivning för den här sessionen." cap="f"/>
+	<item id="8" key="txt_m5_confirm" val="Rummet stängs, var god och vänta." cap="f"/>
+	<item id="8" key="txt_m6_warning1" val="Videochat fungerar inte just nu." cap="f"/>
+	<item id="8" key="txt_m6_warning2" val="Rapportera problemet." cap="f"/>
+	<item id="8" key="txt_m7_warning1" val="Detta rum är nu fullt." cap="f"/>
+	<item id="8" key="txt_m7_warning2" val="Försök igen senare." cap="f"/>
+	<item id="8" key="txt_m8_warning" val="En deltagare har lämnat sessionen." cap="f"/>
+	
+	<item id="10" key="txt_chat_title" val="Chat" cap="u"/>
+	<item id="10" key="txt_chat1" val="Skriv in din text här:" cap="f"/>
+	<item id="10" key="txt_chat2" val="Tryck för att rensa chatten" cap="f"/>
+	
+	<item id="10" key="btn_canceltxt" val="AVBRYT" cap="f"/>
+	<item id="11" key="btn_continue" val="FORTSÄTT" cap="f"/> 
+	<item id="11" key="btn_stop" val="STOPPA" cap="f"/> 
+	<item id="11" key="btn_stop_main" cap="u" style="b" val="STOPPA"/> 
+	<item id="11" key="btn_closed_session" val="Sessionen är avslutad" cap="u"/> 
+	<item id="11" key="btn_saveclose" val="Spara och stäng" cap="f"/> 	
+	<item id="12" key="btn_record" val="Spela in" cap="u"/> 
+	<item id="12" key="btn_arch_close" val="ARKIVERA OCH STÄNG" cap="u"/> 
+	<item id="12" key="btn_view_session" val="VISA SESSIONEN" cap="f"/> 
+	<item id="11" key="btn_exit" val="Stäng" cap="f"/> 
+	
+	<item id="11" key="btn_solo" val="ENSAM" cap="u"/> 
+	<item id="11" key="btn_mute" val="STÄNG AV" cap="u"/> 
+	
+</lang>
