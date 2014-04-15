@@ -402,14 +402,15 @@
                                         }
 
                                         var showFormCloseMeetingRequest = function() {
+                                            if ($('#button-record-stop').is(":visible")) {
+                                                stopRecordRequest();
+                                            }
                                             $('#formModal').modal('show');
                                         }
 
                                         var closeMeetingRequest = function() {
                                             if (meeting_is_recorded) {
-                                                if ($('#button-record-stop').is(":visible")) {
-                                                    stopRecordRequest();
-                                                }
+                                                
                                                 //Save the topic and description
                                                 var topic = $('#topic_meeting').val();
                                                 var description = $('#description_meeting').val();

@@ -212,6 +212,7 @@
 
         <script>
             var currentVolume = 50;
+            var is_seeked = false;
             function hideButtons() {
                 for (i = 1; i <= 6; i++) {
                     $("#button-solo-" + i).hide();
@@ -337,6 +338,7 @@
                     value: 0,
                     slide: function(event, ui) {
                         if (all_streams_are_ready === array_streams.length) {
+                            is_seeked = true;
                             if (!playing) {
                                 playOrStopStreams();
                             }
@@ -344,6 +346,7 @@
                             $(array_streams).each(function(p) {
                                 jwplayer("user-video-" + (p + 1)).seek(duration_video * (value / 100));
                             });
+                            is_seeked = false;
                         } else {
                             sliderPlay.slider('value', 0)
                         }
@@ -406,7 +409,9 @@
                             },
                             onTime: function(t) {
                                 if (duration_video > 0 && pos == video_max_length) {
-                                    $("#sliderPlay").slider("value", (t.position / duration_video) * 100);
+                                    if (!is_seeked ) {
+                                        $("#sliderPlay").slider("value", (t.position / duration_video) * 100);
+                                    }
                                 }
                             }
                         }
@@ -424,6 +429,7 @@
                         jwplayer("user-video-" + (p + 1)).pause();
                     });
                     playing = false;
+                    //TODO review why is not working
                     $("#glyphicon-play").removeClass("glyphicon-pause");
                     $("#glyphicon-play").addClass("glyphicon-play");
                 } else {
@@ -432,6 +438,7 @@
                         jwplayer("user-video-" + (p + 1)).play();
                         jwplayer("user-video-" + (p + 1)).setVolume(currentVolume);
                     });
+                    //TODO review why is not working
                     $("#glyphicon-play").removeClass("glyphicon-play");
                     $("#glyphicon-play").addClass("glyphicon-pause");
                 }
