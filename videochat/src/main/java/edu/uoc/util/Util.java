@@ -62,11 +62,21 @@ public class Util {
             
             /*Date date = new Date(diff);
             diffS = dateFormat.format(date);*/
-            diffS = hours + ":" + minutes + ":" + seconds;
+            diffS = completeIt(hours) + ":" + completeIt(minutes) + ":" + completeIt(seconds);
         }
         return diffS;
     }
     
+    
+    private static String completeIt(long x)
+    {
+        String S=Long.toString(x);
+        if (S.length()==1)
+        {
+            S="0" + S;
+        }
+        return S;
+     }
     
     public static String formatDateString(String date ){
         
