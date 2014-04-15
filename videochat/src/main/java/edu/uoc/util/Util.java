@@ -50,15 +50,19 @@ public class Util {
     }
 
     public static String substractTimestamps(Timestamp end, Timestamp start){
-        SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
+        //SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
         String diffS="";
         if (start!=null && end!=null) { 
-            Date firstParsedDate = new Date(start.getTime());
-            Date secondParsedDate = new Date(end.getTime());
-
-            long diff = secondParsedDate.getTime() - firstParsedDate.getTime();
-
-            diffS = dateFormat.format(new Date(diff));
+            
+            long diff = end.getTime()-start.getTime();
+            long seconds = diff/1000;
+            long hours = seconds/3600;
+            long minutes = seconds/60 % 60;
+            seconds = seconds % 60;
+            
+            /*Date date = new Date(diff);
+            diffS = dateFormat.format(date);*/
+            diffS = hours + ":" + minutes + ":" + seconds;
         }
         return diffS;
     }
