@@ -93,7 +93,7 @@
                 <form:input type="text" path="topic" class="form-control" id="topic"/>
             </div>
             <div class="form-group">
-                <label for="participants" class="control-label"><spring:message code="message.participants"/></label>
+                <label for="participants" class="control-label"><spring:message code="txt.participants"/></label>
                 <form:input type="text" path="participants" class="form-control" id="participants"/>
             </div>
             <div class="row">

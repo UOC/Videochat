@@ -19,7 +19,7 @@
 	<item id="9" key="txt_m3_warning2_1" val="DETENER:" cap="f"/>
 	<item id="9" key="txt_m3_warning2_2" val="Detén esta grabación y reconecta para decidir qué hacer, guardar o repetir" cap="f"/>
 	<item id="9" key="txt_m3_warning3_1" val="Guardar:" cap="f"/>
-	<item id="9" key="txt_m3_warning3_2" val=" Archiva y cierra esta sesión. Se publicará en el Videochat." cap="f"/>
+	<item id="9" key="txt_m3_warning3_2" val="Archiva y cierra esta sesión. Se publicará en el Videochat." cap="f"/>
 	<item id="8" key="txt_m4_confirm" val="Por favor, añade un tema y una descripción para esta sesión." cap="f"/>
 	<item id="8" key="txt_m5_confirm" val="La sala se está cerrando. Por favor espera." cap="f"/>
 	<item id="8" key="txt_m6_warning1" val="La herramienta de Videochat temporalmente no funciona." cap="f"/>

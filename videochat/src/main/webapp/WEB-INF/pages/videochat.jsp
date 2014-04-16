@@ -58,17 +58,17 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                        <h4 class="modal-title"><spring:message code="label.important"/></h4>
+                        <h4 class="modal-title"><spring:message code="txt.m1.important"/></h4>
                     </div>
                     <div class="modal-body">
-                        <p><strong><spring:message code="message.createmeeting.please_add_topic_description"/></strong></p>
-                        <div><strong><spring:message code="label.topic"/></strong>:<input type="text" name="topic_meeting" id="topic_meeting" value="" /></div>
-                        <div><strong><spring:message code="label.description"/></strong>:<input type="text" name="description_meeting" id="description_meeting" value="" /></div>
+                        <p><strong><spring:message code="txt.m4.confirm"/></strong></p>
+                        <div><strong><spring:message code="txt.topic"/></strong>:<input type="text" name="topic_meeting" id="topic_meeting" value="" /></div>
+                        <div><strong><spring:message code="txt.description"/></strong>:<input type="text" name="description_meeting" id="description_meeting" value="" /></div>
 
                     </div>
                     <div class="modal-footer">
-                        <button type="button" data-dismiss="modal" class="btn btn-warning"><spring:message code="message.cancel"/></button>
-                        <button type="button" class="btn btn-warning" data-dismiss="modal" onclick="closeMeetingRequest()"><spring:message code="message.save_and_close"/></button>
+                        <button type="button" data-dismiss="modal" class="btn btn-warning"><spring:message code="btn.canceltxt"/></button>
+                        <button type="button" class="btn btn-warning" data-dismiss="modal" onclick="closeMeetingRequest()"><spring:message code="btn.saveclose"/></button>
                     </div>
                 </div><!-- /.modal-content -->
             </div><!-- /.modal-dialog -->
@@ -138,15 +138,15 @@
                             <div class="modal-content">
                                 <div class="modal-header">
                                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                                    <h4 class="modal-title"><spring:message code="label.important"/></h4>
+                                    <h4 class="modal-title"><spring:message code="txt.m1.important"/></h4>
                                 </div>
                                 <div class="modal-body">
-                                    <div><strong><spring:message code="message.createmeeting.confirm_new_recorder"/></strong></div>
-                                    <div><spring:message code="message.createmeeting.warning_new_recorder"/></div>
+                                    <div><strong><spring:message code="txt.m1.confirm"/></strong></div>
+                                    <div><spring:message code="txt.m1.warning"/></div>
                                 </div>
                                 <div class="modal-footer">
-                                    <button type="button" data-dismiss="modal" data-dismiss="modal" class="btn btn-default"><spring:message code="message.cancel"/></button>
-                                    <button type="button" data-dismiss="modal" data-dismiss="modal" class="btn btn-warning" onclick="startRecordRequest()"><spring:message code="message.continue"/></button>
+                                    <button type="button" data-dismiss="modal" data-dismiss="modal" class="btn btn-default"><spring:message code="btn.canceltxt"/></button>
+                                    <button type="button" data-dismiss="modal" data-dismiss="modal" class="btn btn-warning" onclick="startRecordRequest()"><spring:message code="btn.continue"/></button>
                                 </div>
                             </div><!-- /.modal-content -->
                         </div><!-- /.modal-dialog -->
@@ -159,19 +159,19 @@
                             <div class="modal-content">
                                 <div class="modal-header">
                                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                                    <h4 class="modal-title"><spring:message code="label.important"/></h4>
+                                    <h4 class="modal-title"><spring:message code="txt.m1.important"/></h4>
                                 </div>
                                 <div class="modal-body">
-                                    <p><strong><spring:message code="message.createmeeting.confirm_stop_what_do_you_to_do"/></strong></p>
-                                    <div><strong><spring:message code="label.important"/></strong>: <spring:message code="message.createmeeting.cancel_stop_what_do_you_to_do"/><br/>
-                                        <spring:message code="message.stop"/>: <spring:message code="message.createmeeting.stop_stop_what_do_you_to_do"/></div>
-                                    <div><strong><spring:message code="message.save"/></strong>: <spring:message code="message.createmeeting.save_and_close_stop_what_do_you_to_do"/></div>
+                                    <p><strong><spring:message code="txt.m3.confirm"/></strong></p>
+                                    <div><strong><spring:message code="txt.m1.important"/></strong>: <spring:message code="txt.m3.warning1.2"/><br/>
+                                        <spring:message code="txt.m3.warning2.1"/>: <spring:message code="txt.m3.confirm"/></div>
+                                    <div><strong><spring:message code="txt.m3.warning3.1"/></strong>: <spring:message code="txt.m3.warning3.2"/></div>
 
                                 </div>
                                 <div class="modal-footer">
-                                    <button type="button" class="btn btn-warning" data-dismiss="modal"><spring:message code="message.cancel"/></button>
-                                    <button type="button" class="btn btn-warning" data-dismiss="modal" onclick="stopRecordRequest()"><spring:message code="message.stop"/></button>
-                                    <button type="button" class="btn btn-warning" data-dismiss="modal" onclick="showFormCloseMeetingRequest()"><spring:message code="message.save_and_close"/></button>
+                                    <button type="button" class="btn btn-warning" data-dismiss="modal"><spring:message code="txt.m3.warning1.1"/></button>
+                                    <button type="button" class="btn btn-warning" data-dismiss="modal" onclick="stopRecordRequest()"><spring:message code="txt.m3.warning2.1"/></button>
+                                    <button type="button" class="btn btn-warning" data-dismiss="modal" onclick="showFormCloseMeetingRequest()"><spring:message code="btn.saveclose"/></button>
                                 </div>
                             </div><!-- /.modal-content -->
                         </div><!-- /.modal-dialog -->
@@ -189,15 +189,15 @@
                             <div class="modal-content">
                                 <div class="modal-header">
                                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                                    <h4 class="modal-title"><spring:message code="label.important"/></h4>
+                                    <h4 class="modal-title"><spring:message code="txt.m1.important"/></h4>
                                 </div>
                                 <div class="modal-body">
-                                    <div><strong><spring:message code="message.createmeeting.confirm_save_close"/></strong></div>
-                                    <div><spring:message code="message.createmeeting.warning_save_close"/></div>
+                                    <div><strong><spring:message code="txt.m2.confirm"/></strong></div>
+                                    <div><spring:message code="txt.m2.warning"/></div>
                                 </div>
                                 <div class="modal-footer">
-                                    <button type="button" class="btn btn-default" data-dismiss="modal" data-dismiss="modal"><spring:message code="message.cancel"/></button>
-                                    <button type="button" class="btn btn-warning" data-dismiss="modal" onclick="showFormCloseMeetingRequest()"><spring:message code="message.continue"/></button>
+                                    <button type="button" class="btn btn-default" data-dismiss="modal" data-dismiss="modal"><spring:message code="txt.m3.warning1.1"/></button>
+                                    <button type="button" class="btn btn-warning" data-dismiss="modal" onclick="showFormCloseMeetingRequest()"><spring:message code="btn.continue"/></button>
                                 </div>
                             </div><!-- /.modal-content -->
                         </div><!-- /.modal-dialog -->
@@ -209,7 +209,7 @@
                 <div class="col-md-8 participants">
                     <div class="my-inner">
                         <div class="row header_participants">
-                            <h4 class="col-md-10 col-xs-6"><spring:message code="message.participants"/></h4>
+                            <h4 class="col-md-10 col-xs-6"><spring:message code="txt.participants"/></h4>
                             <div class="btn-group col-md-2 col-xs-6">
                                 <button type="button" class="btn btn-warning" id="button-reload"><span class="glyphicon glyphicon-repeat"></span></button>
                                 <button type="button" class="btn btn-warning" title="Block session" id="button-lock" title="Lock session"><span class="unlock" id="span-lock"></span></button>
@@ -428,7 +428,7 @@
                                                     var flash = swfobject.getObjectById("videochat_stream_id");
                                                     flash.closeMeetingFromJS();
                                                 } else {
-                                                    bootbox.alert("<spring:message code="message.createmeeting.please_add_topic_description"/>");
+                                                    bootbox.alert("<spring:message code="txt.m4.confirm"/>");
                                                 }
                                             } else {
                                                 bootbox.alert("<spring:message code="message.recorded.close"/>");
@@ -446,7 +446,7 @@
                                                 var flash = swfobject.getObjectById("videochat_stream_id");
                                                 flash.lockMeetingFromJS();
                                             } else {
-                                                bootbox.alert("<spring:message code="message.meeting.closed"/>");
+                                                bootbox.alert("<spring:message code="btn.closed.session"/>");
                                             }
                                         }
                                         var array_streams = Array();
@@ -656,7 +656,7 @@
                                             $('#button-record').hide();
                                             $('#button-archive').hide();
                                             $('#button-sendMessage').hide();
-                                            bootbox.alert("<spring:message code="message.meeting.closed"/>", function() {
+                                            bootbox.alert("<spring:message code="btn.closed.session"/>", function() {
                                                 returnMeeting();
                                             });
                                         }
@@ -761,7 +761,7 @@
                                                     disconnectedUserAjax(info.userkey, false);
 
                                                 }
-                                                var message = "<spring:message code="message.user.left"/>";
+                                                var message = "<spring:message code="txt.m8.warning"/>";
                                                 message = message.replace("%1", info.username);
                                                 bootbox.alert(message, function() {
                                                 });

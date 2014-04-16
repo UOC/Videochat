@@ -13,15 +13,15 @@
 	<item id="9" key="txt_m1_warning" val="Má leantar ar aghaidh scriosfar an taifeadadh atá díreach déanta." cap="f"/>
 	<item id="8" key="txt_m2_confirm" val="An bhfuil tú cinnte go bhfuil tú ag iarraidh an taifeadadh deireanach a dhúnadh agus a chur sa chartlann?" cap="f"/>
 	<item id="9" key="txt_m2_warning" val="Má lean tú ar aghaidh ní bheidh tú in ann aon taifeadadh eile a dhéanamh sa seisiún seo." cap="f"/>
-	<item id="8" key="txt_m3_confirm" val=" Tá an seisiún seo á thaifeadadh, cad ba mhaith leat a dhéanamh?" cap="f"/>
+	<item id="8" key="txt_m3_confirm" val="Tá an seisiún seo á thaifeadadh, cad ba mhaith leat a dhéanamh?" cap="f"/>
 	<item id="9" key="txt_m3_warning1_1" val="CEALLAIGH:" cap="f"/>
 	<item id="9" key="txt_m3_warning1_2" val="tleanfar le taifeadadh an tseisiúin seo." cap="f"/>
 	<item id="9" key="txt_m3_warning2_1" val="Stop:" cap="f"/>
 	<item id="9" key="txt_m3_warning2_2" val="Stop an taifeadadh agus ceangail arís chun an chéad chéim eile a shocrú, sábháil nó déan arís." cap="f"/>
-	<item id="9" key="txt_m3_warning3_1" val=" Sábháil:" cap="f"/>
+	<item id="9" key="txt_m3_warning3_1" val="Sábháil:" cap="f"/>
 	<item id="9" key="txt_m3_warning3_2" val="Cuir an seisiún seo sa chartlann agus dún, foilseofar é ar Videochat." cap="f"/>
 	<item id="8" key="txt_m4_confirm" val="Cuir topaic agus cur síos leis an seisiún seo le do thoil." cap="f"/>
-	<item id="8" key="txt_m5_confirm" val=" Tá an seomra á dhúnadh, fan le do thoil." cap="f"/>
+	<item id="8" key="txt_m5_confirm" val="Tá an seomra á dhúnadh, fan le do thoil." cap="f"/>
 	<item id="8" key="txt_m6_warning1" val="Níl an uirlis Videochat ag obair faoi láthair." cap="f"/>
 	<item id="8" key="txt_m6_warning2" val="Tabhair tuairisc ar an bhfadhb seo le do thoil." cap="f"/>
 	<item id="8" key="txt_m7_warning1" val="Tá an seomra Videochat seo lán faoi láthair, faraor." cap="f"/>
