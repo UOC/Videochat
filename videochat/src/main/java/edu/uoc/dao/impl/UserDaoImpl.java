@@ -10,8 +10,6 @@ import edu.uoc.dao.UserDao;
 import edu.uoc.model.User;
 import edu.uoc.util.CustomHibernateDaoSupport;
 import java.util.List;
-import org.hibernate.Session;
-import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Repository;
 
 /**

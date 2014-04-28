@@ -446,6 +446,7 @@
                         jwplayer("user-video-" + (p + 1)).play();
                         jwplayer("user-video-" + (p + 1)).setVolume(currentVolume);
                     });
+                    playing = true;
                     //TODO review why is not working
                     $("#glyphicon-play").removeClass("glyphicon-play");
                     $("#glyphicon-play").addClass("glyphicon-pause");
