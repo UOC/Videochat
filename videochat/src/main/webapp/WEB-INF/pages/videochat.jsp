@@ -125,7 +125,7 @@
                     </form:form>
                 </div>
                 <div id="close" class="col-md-1">
-                    <span class="glyphicon glyphicon-remove" id="button-exit"></span>
+                    <span class="glyphicon glyphicon-remove" id="button-exit" style="font-size:200%;color:red"></span>
                 </div>
             </header>
             <h3><c:out value="${sMeeting.getId_room().getLabel()}"/></h3>
