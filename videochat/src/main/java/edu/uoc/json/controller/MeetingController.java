@@ -6,6 +6,7 @@
 
 package edu.uoc.json.controller;
 
+import edu.uoc.common.controller.UserController;
 import edu.uoc.dao.MeetingRoomDao;
 import edu.uoc.dao.RoomDao;
 import edu.uoc.dao.UserMeetingDao;

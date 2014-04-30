@@ -36,6 +36,7 @@
                 <value>edu.uoc.model.MeetingRoom</value>
                 <value>edu.uoc.model.UserCourse</value>
                 <value>edu.uoc.model.UserMeeting</value>
+                <value>edu.uoc.model.UserMeetingHistory</value>
                 <value>edu.uoc.model.UserCourseId</value>
                 <value>edu.uoc.model.UserMeetingId</value>
                 <value>edu.uoc.model.Chat</value>

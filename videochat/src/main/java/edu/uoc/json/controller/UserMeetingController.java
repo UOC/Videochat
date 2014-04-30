@@ -6,6 +6,7 @@
 
 package edu.uoc.json.controller;
 
+import edu.uoc.common.controller.UserController;
 import edu.uoc.dao.MeetingRoomDao;
 import edu.uoc.dao.RoomDao;
 import edu.uoc.dao.UserDao;
@@ -59,7 +60,7 @@ public class UserMeetingController {
             User userToAdd = userDao.findByUserName(username.getRequest());
             if (user!=null && meeting!=null) {
                 meeting = meetingDao.findById(meeting.getId());
-                if (meeting.getFinished()!=(byte)1 && meeting.getRecorded()!=(byte)1) {
+                if (meeting.getRecorded()!=(byte)1) {
                     UserMeetingId mId = new UserMeetingId();
                     mId.setMeeting(meeting);
                     mId.setUser(userToAdd);
@@ -72,10 +73,13 @@ public class UserMeetingController {
 
                         UserMeeting userMeeting = new UserMeeting(mId, new Timestamp(date.getTime()), meetingIdPath + "_" + user.getUsername());
                         userMeetingDao.save(userMeeting);
+                        UserController uController = new UserController();
+                        uController.updateHistoryUserMeetingTable(userMeeting);
+                
                         
                     }
                     meeting.setNumber_participants(userMeetingDao.countNumberParticipants(meeting));
-                    if (meeting.getNumber_participants()>0){
+                    if (meeting.getNumber_participants()>0 && meeting.getFinished()==(byte)1){
                         meeting.setFinished((byte)0);
                         meeting.setEnd_meeting(null);
                     }
@@ -109,6 +113,9 @@ public class UserMeetingController {
 
                     if (userMeetingDeleted.getPk()!=null && userMeetingDeleted.getPk().getUser()!=null) {
                         userMeetingDao.delete(userMeetingDeleted);
+                        UserController uController = new UserController();
+                        uController.updateHistoryUserMeetingTable(userMeetingDeleted);
+
                         meeting.setNumber_participants(userMeetingDao.countNumberParticipants(meeting));
                         if (should_close_it && meeting.getNumber_participants()==0){
                             meeting.setFinished((byte)1);

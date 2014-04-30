@@ -7,29 +7,33 @@ import edu.uoc.dao.RoomDao;
 import edu.uoc.dao.UserCourseDao;
 import edu.uoc.dao.UserDao;
 import edu.uoc.dao.UserMeetingDao;
-//import edu.uoc.lti.LTIEnvironment;
+import edu.uoc.dao.UserMeetingHistoryDao;
 import edu.uoc.model.Course;
 import edu.uoc.model.MeetingRoom;
 import edu.uoc.model.MeetingRoomExtended;
 import edu.uoc.model.Room;
 import edu.uoc.model.User;
 import edu.uoc.model.UserMeeting;
+import edu.uoc.model.UserMeetingHistory;
 import edu.uoc.model.UserMeetingId;
 import edu.uoc.util.Constants;
 import edu.uoc.util.Util;
 import java.sql.Timestamp;
+import java.util.Date;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.bind.support.SessionStatus;
-import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.web.context.ContextLoader;
+import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 //@Scope("session")
@@ -183,6 +187,9 @@ public class UserController {
                         UserMeetingId umId = new UserMeetingId(user, meeting);
                         userMeeting = new UserMeeting(umId, new Timestamp(date.getTime()), meetingIdPath + "_" + user.getUsername());
                         userMeetingDao.save(userMeeting);
+                        
+                        updateHistoryUserMeetingTable(userMeeting);
+                        
                         session.setAttribute(Constants.USER_METTING_SESSION, userMeeting);
                     }
                     session.setAttribute(Constants.MEETING_SESSION, meeting);
@@ -220,6 +227,30 @@ public class UserController {
 
         return model;
 
+    }
+    
+    public void updateHistoryUserMeetingTable(UserMeeting userMeeting) {
+        try {
+            if (userMeeting!=null && userMeeting.getPk()!=null) {
+                ApplicationContext context = ContextLoader.getCurrentWebApplicationContext();
+                UserMeetingHistoryDao userMeetingHistoryDao = context.getBean(UserMeetingHistoryDao.class);
+                UserMeetingHistory userMeetingHistory = userMeetingHistoryDao.findUserMeetingByPK(userMeeting.getPk());
+                if (userMeetingHistory!=null && userMeetingHistory.getUser_id()>0) {
+                    userMeetingHistory.setDeleted(new Timestamp(new Date().getTime()));
+                } else {
+                    if (userMeetingHistory==null) {
+                        userMeetingHistory = new UserMeetingHistory();
+                    }
+                    //is new
+                    userMeetingHistory.setUser_id(userMeeting.getPk().getUser().getId());
+                    userMeetingHistory.setMeeting_id(userMeeting.getPk().getMeeting().getId());
+                }
+                userMeetingHistoryDao.save(userMeetingHistory);
+            }
+        } catch(Exception e) {
+            logger.error("Error in videochat updating updateHistoryUserMeetingTable "+e.getMessage(), e);
+        }
+                        
     }
 
     //Codification problems with Accents ans ntilde
