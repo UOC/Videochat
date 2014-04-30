@@ -1,0 +1,5 @@
+You should have here:
+jwplayer.js
+player.swf
+
+Download JW Player from http://www.longtailvideo.com/players/jw-flv-player/ .
