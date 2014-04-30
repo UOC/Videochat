@@ -301,7 +301,7 @@
 
                                             $(window).bind('beforeunload', function() {
                                                 if (!allowed_return) {
-                                                    disconnectedUserAjax("${sUser.getUsername()}", false);
+                                                    disconnectedUserAjax("${sUser.getUsername()}", false, false);
                                                     setTimeout(function() {
                                                         setTimeout(function() {
                                                             connectUserAjax("${sUser.getUsername()}");
@@ -367,7 +367,7 @@
 
                                             $("#button-exit").click(
                                                     function() {
-                                                        returnMeeting();
+                                                        disconnectedUserAjax("${sUser.getUsername()}", true, goToSearchMeeting);
                                                     }
                                             );
                                         });
@@ -690,7 +690,7 @@
                                         }
 
                                         var returnMeeting = function() {
-                                            disconnectedUserAjax("${sUser.getUsername()}", goToSearchMeeting);
+                                            disconnectedUserAjax("${sUser.getUsername()}", false, goToSearchMeeting);
 
                                         }
 
@@ -702,9 +702,9 @@
                                         function removeByIndex(arr, index) {
                                             arr.splice(index, 1);
                                         }
-
-                                        function disconnectedUserAjax(username, callback) {
-                                            var json = {"request": username};
+                                        
+                                        function disconnectedUserAjax(username, should_delete, callback) {
+                                            var json = {"request": username, "extraParam": should_delete};
 
                                             $.ajax({
                                                 url: 'rest/usermeeting.json',
@@ -724,7 +724,6 @@
                                                 }
                                             });
                                         }
-
 
                                         function connectUserAjax(username) {
                                             var json = {"request": username};
@@ -758,7 +757,7 @@
                                                         registeredUser(array_streams_temp[i]);
                                                     }
 
-                                                    disconnectedUserAjax(info.userkey, false);
+                                                    disconnectedUserAjax(info.userkey, false, false);
 
                                                 }
                                                 var message = "<spring:message code="txt.m8.warning"/>";
@@ -774,7 +773,7 @@
                                                 });
                                             }
                                         function errorNotAllowedMicro() {
-                                            bootbox.alert("<spring:message code="message.no.allowed.micro"/>", function() {
+                                            bootbox.alert("<spring:message code="message.no.allowed.camera.micro"/>", function() {
                                                 });
                                             }
                                         function errorNoCameraFound() {

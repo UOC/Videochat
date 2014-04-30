@@ -75,7 +75,10 @@ public class UserMeetingController {
                         
                     }
                     meeting.setNumber_participants(userMeetingDao.countNumberParticipants(meeting));
-
+                    if (meeting.getNumber_participants()>0){
+                        meeting.setFinished((byte)0);
+                        meeting.setEnd_meeting(null);
+                    }
                     meetingDao.save(meeting);
                 }
                 response.setOk(true);
@@ -88,13 +91,14 @@ public class UserMeetingController {
     }    
     
     @RequestMapping(method = RequestMethod.DELETE)
-    public @ResponseBody JSONResponse deleteUser(@RequestBody JSONRequest username, HttpSession session) {
+    public @ResponseBody JSONResponse deleteUser(@RequestBody JSONRequestExtraParam username, HttpSession session) {
         JSONResponse response = new JSONResponse();
         try {
             Room room = (Room) session.getAttribute(Constants.ROOM_SESSION);
             MeetingRoom meeting = (MeetingRoom) session.getAttribute(Constants.MEETING_SESSION);
             User user = (User) session.getAttribute(Constants.USER_SESSION);
             User userDeleted = userDao.findByUserName(username.getRequest());
+            boolean should_close_it = "true".equals(username.getExtraParam());
             if (user!=null && meeting!=null) {
                 meeting = meetingDao.findById(meeting.getId());
                 if (meeting.getFinished()!=(byte)1 && meeting.getRecorded()!=(byte)1) {
@@ -106,7 +110,10 @@ public class UserMeetingController {
                     if (userMeetingDeleted.getPk()!=null && userMeetingDeleted.getPk().getUser()!=null) {
                         userMeetingDao.delete(userMeetingDeleted);
                         meeting.setNumber_participants(userMeetingDao.countNumberParticipants(meeting));
-                        
+                        if (should_close_it && meeting.getNumber_participants()==0){
+                            meeting.setFinished((byte)1);
+                            meeting.setEnd_meeting(new Timestamp(new Date().getTime()));
+                        }
                         meetingDao.save(meeting);
                     }
                 }
