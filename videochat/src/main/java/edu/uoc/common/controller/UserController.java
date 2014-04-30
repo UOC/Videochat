@@ -147,6 +147,8 @@ public class UserController {
                         
                         if (aux.getPk() == null) {
                             meeting.setNumber_participants(mr.getNumber_participants() + 1);
+                        } else {
+                            meeting.setNumber_participants(userMeetingDao.countNumberParticipants(meeting));
                         }
                         //If the number of participants == 6 then the room is blocked
                         if (meeting.getNumber_participants() > Constants.MAX_PARTICIPANTS) {

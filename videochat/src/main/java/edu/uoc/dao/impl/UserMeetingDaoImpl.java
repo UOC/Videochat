@@ -56,4 +56,18 @@ public class UserMeetingDaoImpl extends CustomHibernateDaoSupport implements Use
         
         return list;
     }
+    
+    /**
+     * Return the total number of participants
+     * @param meeting
+     * @return 
+     */
+    public int countNumberParticipants(MeetingRoom meeting) {
+        List list = this.findUsersByMeetingId(meeting);
+        int count = 0;
+        if (list!=null){
+            count = list.size();
+        }
+        return count;
+    }
 }

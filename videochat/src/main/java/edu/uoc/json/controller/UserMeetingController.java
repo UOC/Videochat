@@ -10,6 +10,7 @@ import edu.uoc.dao.MeetingRoomDao;
 import edu.uoc.dao.RoomDao;
 import edu.uoc.dao.UserDao;
 import edu.uoc.dao.UserMeetingDao;
+import edu.uoc.model.Course;
 import edu.uoc.model.JSONRequest;
 import edu.uoc.model.JSONRequestExtraParam;
 import edu.uoc.model.JSONResponse;
@@ -19,6 +20,8 @@ import edu.uoc.model.User;
 import edu.uoc.model.UserMeeting;
 import edu.uoc.model.UserMeetingId;
 import edu.uoc.util.Constants;
+import java.sql.Timestamp;
+import java.util.Date;
 import javax.servlet.http.HttpSession;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,7 +49,43 @@ public class UserMeetingController {
     @Autowired
     private UserDao userDao;
     
+    @RequestMapping(method = RequestMethod.POST)
+     public @ResponseBody JSONResponse addUser(@RequestBody JSONRequest username, HttpSession session) {
+        JSONResponse response = new JSONResponse();
+        try {
+            Room room = (Room) session.getAttribute(Constants.ROOM_SESSION);
+            MeetingRoom meeting = (MeetingRoom) session.getAttribute(Constants.MEETING_SESSION);
+            User user = (User) session.getAttribute(Constants.USER_SESSION);
+            User userToAdd = userDao.findByUserName(username.getRequest());
+            if (user!=null && meeting!=null) {
+                meeting = meetingDao.findById(meeting.getId());
+                if (meeting.getFinished()!=(byte)1 && meeting.getRecorded()!=(byte)1) {
+                    UserMeetingId mId = new UserMeetingId();
+                    mId.setMeeting(meeting);
+                    mId.setUser(userToAdd);
+                    UserMeeting userMeetingCheck = userMeetingDao.findUserMeetingByPK(mId);
 
+                    if (userMeetingCheck.getPk()==null || userMeetingCheck.getPk().getUser()==null) {
+                        Course course = (Course) session.getAttribute(Constants.COURSE_SESSION);
+                        String meetingIdPath = course.getCoursekey() + "_" + room.getKey() + "_" + meeting.getId();
+                        Date date = new Date();
+
+                        UserMeeting userMeeting = new UserMeeting(mId, new Timestamp(date.getTime()), meetingIdPath + "_" + user.getUsername());
+                        userMeetingDao.save(userMeeting);
+                        
+                    }
+                    meeting.setNumber_participants(userMeetingDao.countNumberParticipants(meeting));
+
+                    meetingDao.save(meeting);
+                }
+                response.setOk(true);
+            }
+        } catch (Exception e) {
+            logger.error("Adding user ", e);
+            
+        }
+        return response;
+    }    
     
     @RequestMapping(method = RequestMethod.DELETE)
     public @ResponseBody JSONResponse deleteUser(@RequestBody JSONRequest username, HttpSession session) {
@@ -66,7 +105,8 @@ public class UserMeetingController {
 
                     if (userMeetingDeleted.getPk()!=null && userMeetingDeleted.getPk().getUser()!=null) {
                         userMeetingDao.delete(userMeetingDeleted);
-                        meeting.setNumber_participants(meeting.getNumber_participants()-1);
+                        meeting.setNumber_participants(userMeetingDao.countNumberParticipants(meeting));
+                        
                         meetingDao.save(meeting);
                     }
                 }
@@ -77,65 +117,7 @@ public class UserMeetingController {
             
         }
         return response;
-    }
-
+    }    
     
     
-    @RequestMapping(method = RequestMethod.PUT)
-    public @ResponseBody JSONResponse lockSession(HttpSession session) {
-        JSONResponse response = new JSONResponse();
-        try {
-            Room room = (Room) session.getAttribute(Constants.ROOM_SESSION);
-            User user = (User) session.getAttribute(Constants.USER_SESSION);
-            MeetingRoom meeting = (MeetingRoom) session.getAttribute(Constants.MEETING_SESSION);
-            
-            if (user!=null && room!=null && meeting!=null) {
-                room = roomDao.findByRoomCode(room.getId());
-                boolean new_block = !room.isIs_blocked();
-                meeting = meetingDao.findById(meeting.getId());
-                if (meeting.getFinished()==(byte)1) {
-                    new_block = false;
-                }
-                if (meeting.getFinished()==(byte)1 ||
-                        !Constants.REASON_BLOCK_RECORDING.equals(room.getReason_blocked())) {
-                    room.setIs_blocked(new_block);
-                    if (!new_block) {
-                        room.setReason_blocked(null);
-                    } else {
-                        room.setReason_blocked(Constants.REASON_BLOCK_BY_USER);
-                    }
-                }
-                roomDao.save(room);
-                response.setOk(true);
-            }
-        } catch (Exception e) {
-            logger.error("Deleting lock session ", e);
-            
-        }
-        return response;
-    }
-    
-    
-    
-    @RequestMapping(method = RequestMethod.POST)
-    public @ResponseBody JSONResponse saveSession(@RequestBody JSONRequestExtraParam request, HttpSession session) {
-        JSONResponse response = new JSONResponse();
-        try {
-            User user = (User) session.getAttribute(Constants.USER_SESSION);
-            MeetingRoom meeting = (MeetingRoom) session.getAttribute(Constants.MEETING_SESSION);
-            logger.info("topic "+request.getRequest()+" desc "+request.getExtraParam());
-            if (user!=null && meeting!=null && request!=null && request.getRequest()!=null && request.getRequest().length()>0 ) {
-                meeting = meetingDao.findById(meeting.getId());
-                meeting.setTopic(request.getRequest());
-                meeting.setDescription(request.getExtraParam());
-                logger.info("Meeting Saved topic "+request.getRequest()+" desc "+request.getExtraParam());
-                meetingDao.save(meeting);
-                response.setOk(true);
-            }
-        } catch (Exception e) {
-            logger.error("Save session name ", e);
-            
-        }
-        return response;
-    }
 }

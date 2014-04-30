@@ -513,7 +513,7 @@
                                             var json = {"request": topic, "extraParam": description};
 
                                             $.ajax({
-                                                url: 'rest/usermeeting.json',
+                                                url: 'rest/meetingsession.json',
                                                 data: JSON.stringify(json),
                                                 type: "POST",
                                                 beforeSend: function(xhr) {
@@ -635,7 +635,7 @@
                                             var json = {"request": "${sUserMeeting.getStreamKey()}"};
 
                                             $.ajax({
-                                                url: 'rest/meeting.json',
+                                                url: 'rest/meetingsession.json',
                                                 data: JSON.stringify(json),
                                                 type: "DELETE",
                                                 beforeSend: function(xhr) {
@@ -665,7 +665,7 @@
                                             var json = {"request": "${sUserMeeting.getStreamKey()}"};
 
                                             $.ajax({
-                                                url: 'rest/usermeeting.json',
+                                                url: 'rest/meetingsession.json',
                                                 data: JSON.stringify(json),
                                                 type: "PUT",
                                                 beforeSend: function(xhr) {

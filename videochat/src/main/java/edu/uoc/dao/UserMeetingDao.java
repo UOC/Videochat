@@ -38,4 +38,11 @@ public interface UserMeetingDao {
     public List<UserMeeting> findUsersByMeetingId(MeetingRoom meeting, int user_id, boolean onlyConfirmed);
     
     public List<UserMeeting> findUsersByMeetingId(MeetingRoom meeting);
+    
+    /**
+     * Return the total number of participants
+     * @param meeting
+     * @return 
+     */
+    public int countNumberParticipants(MeetingRoom meeting);
 }
