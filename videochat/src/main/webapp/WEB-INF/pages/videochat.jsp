@@ -768,6 +768,19 @@
                                             }
 
                                         }
+                                        
+                                        function errorNoMicroFound() {
+                                            bootbox.alert("<spring:message code="message.no.micro"/>", function() {
+                                                });
+                                            }
+                                        function errorNotAllowedMicro() {
+                                            bootbox.alert("<spring:message code="message.no.allowed.micro"/>", function() {
+                                                });
+                                            }
+                                        function errorNoCameraFound() {
+                                            bootbox.alert("<spring:message code="message.no.camera"/>", function() {
+                                                });
+                                            }
 
         </script>
     </body>
