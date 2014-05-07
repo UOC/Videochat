@@ -1,0 +1,2 @@
+If web server is on same physical server as RTMP server, the rtmp application could be configured to store the recordings in this folder.
+This could be useful for integrations.
