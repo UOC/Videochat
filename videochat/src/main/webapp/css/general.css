@@ -271,3 +271,14 @@ input.videochat-btn-secundary, a.videochat-btn-secundary {
        margin: 0;
        display: block;
 }
+
+.btn-mini-videochat {
+    padding: 0 1px !important;
+    font-size: 10px;
+    bottom: 1px;
+}
+
+.btn-exit-videochat {
+    font-size:200%;
+    color:red;
+}

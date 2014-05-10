@@ -125,13 +125,13 @@
                     </form:form>
                 </div>
                 <div id="close" class="col-md-1">
-                    <span class="glyphicon glyphicon-remove" id="button-exit" style="font-size:200%;color:red"></span>
+                    <span class="glyphicon glyphicon-remove btn-exit-videochat" title="<spring:message code="btn.title.exit"/>" id="button-exit"></span>
                 </div>
             </header>
             <h3><c:out value="${sMeeting.getId_room().getLabel()}"/></h3>
             <div class="row wrapper_buttons">	
                 <div class="col-md-3 col-xs-7">
-                    <button type="button" id="button-record" class="btn btn-warning" data-toggle="modal" data-target="#record"><span class="glyphicon glyphicon-record"></span> RECORD</button>
+                    <button type="button" id="button-record" class="btn btn-warning" data-toggle="modal" data-target="#record"><span class="glyphicon glyphicon-record" title="<spring:message code="btn.record"/>"></span> <spring:message code="btn.record"/></button>
                     <!-- modal del botó RECORD -->
                     <div class="modal fade" id="record">
                         <div class="modal-dialog">
@@ -152,7 +152,7 @@
                         </div><!-- /.modal-dialog -->
                     </div>
                     <!-- END modal del botó RECORD -->
-                    <button type="button" id="button-record-stop" class="btn btn-warning" data-toggle="modal" data-target="#Recorded"><span class="glyphicon glyphicon-stop"></span> STOP</button>
+                    <button type="button" id="button-record-stop" class="btn btn-warning" data-toggle="modal" data-target="#Recorded"><span class="glyphicon glyphicon-stop" title="<spring:message code="btn.stop"/>"></span> <spring:message code="btn.stop"/></button>
                     <!-- modal del botó RECORD -->
                     <div class="modal fade" id="Recorded">
                         <div class="modal-dialog">
@@ -179,10 +179,10 @@
                     <!-- /.modal -->
                     <!-- END modal del botó RECORD -->
 
-                    <button type="button" id="button-volume" class="btn btn-warning"><span class="glyphicon glyphicon-volume-up" id="span-volume"></span></button>
+                    <button type="button" id="button-volume" class="btn btn-warning"><span class="glyphicon glyphicon-volume-up" id="span-volume" title="<spring:message code="btn.title.mute"/>"></span></button>
                 </div>
                 <div class="col-md-2 col-md-offset-7 col-xs-5">
-                    <button type="button" class="btn btn-warning" data-toggle="modal" id="button-archive" data-target="#archive" disabled="true"><span class="glyphicon glyphicon-save"></span> ARCHIVE & CLOSE</button>
+                    <button type="button" class="btn btn-warning" data-toggle="modal" id="button-archive" data-target="#archive" disabled="true"><span class="glyphicon glyphicon-save" title="<spring:message code="btn.arch.close"/>"></span> <spring:message code="btn.arch.close"/></button>
                     <!-- modal del botó RECORD -->
                     <div class="modal fade" id="archive">
                         <div class="modal-dialog">
@@ -211,14 +211,14 @@
                         <div class="row header_participants">
                             <h4 class="col-md-10 col-xs-6"><spring:message code="txt.participants"/></h4>
                             <div class="btn-group col-md-2 col-xs-6">
-                                <button type="button" class="btn btn-warning" id="button-reload"><span class="glyphicon glyphicon-repeat"></span></button>
-                                <button type="button" class="btn btn-warning" title="Block session" id="button-lock" title="Lock session"><span class="unlock" id="span-lock"></span></button>
+                                <button type="button" class="btn btn-warning" id="button-reload"><span class="glyphicon glyphicon-repeat" title="<spring:message code="btn.title.reload"/>"></span></button>
+                                <button type="button" class="btn btn-warning" title="Block session" id="button-lock" title="Lock session"><span class="unlock" id="span-lock" title="<spring:message code="btn.title.lock"/>"></span></button>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-md-4 participant" id="user-1">
                                 <div class="participant_content">
-                                    <div id="nom-1"><c:out value="${sUser.getFullname()}"/></div>
+                                    <div id="nom-1"><c:out value="${sUser.getFullname()}"/>&nbsp;<button type="button" class="btn btn-warning btn-mini-videochat" id="button-config"><span class="glyphicon glyphicon-cog" title="<spring:message code="btn.title.settings"/>"></span></button></div>
                                     <div id="videochat_stream">
                                         <p><spring:message code="message.grabavideoconferencia.flash"/></p>
                                         <p><a href="http://www.adobe.com/go/getflashplayer"><img src="http://www.adobe.com/images/shared/download_buttons/get_flash_player.gif" alt="Get Adobe Flash player" /></a></p>
@@ -271,7 +271,7 @@
                         <p><spring:message code="txt.chat.message1"/></p>
                         <div class="row">
                             <div class="col-xs-10 col-md-9"><input type="text" class="form-control" id="messageTxt" maxlength="100" /></div>
-                            <div class="col-xs-2 col-md-3"><button class="btn btn-warning" name="button-sendMessage" id="button-sendMessage"><spring:message code="txt.chat.send"/></button></div>
+                            <div class="col-xs-2 col-md-3"><button class="btn btn-warning" name="button-sendMessage" id="button-sendMessage" title="<spring:message code="txt.chat.send"/>"><spring:message code="txt.chat.send"/></button></div>
                         </div>
                     </div>
                 </div>
@@ -352,6 +352,13 @@
                                                         micro_is_muted = !micro_is_muted;
                                                     }
                                             );
+                                            $("#button-config").click(
+                                                    function() {
+                                                        var flash = swfobject.getObjectById("videochat_stream_id");
+                                                        flash.showSettingsFromJS();
+                                                    }
+                                            );
+                                            
                                             $("#button-reload").click(
                                                     function() {
                                                         allowed_return = true;
@@ -776,6 +783,8 @@
                                             bootbox.alert("<spring:message code="message.no.allowed.camera.micro"/>", function() {
                                                 });
                                             }
+                                            
+                                            
                                         function errorNoCameraFound() {
                                             bootbox.alert("<spring:message code="message.no.camera"/>", function() {
                                                 });
