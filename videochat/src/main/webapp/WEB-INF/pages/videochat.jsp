@@ -301,7 +301,7 @@
 
                                             $(window).bind('beforeunload', function() {
                                                 if (!allowed_return) {
-                                                    disconnectedUserAjax("${sUser.getUsername()}", false, false);
+                                                    disconnectedUserAjax("${sUser.getUsername()}", true, false);
                                                     setTimeout(function() {
                                                         setTimeout(function() {
                                                             connectUserAjax("${sUser.getUsername()}");
