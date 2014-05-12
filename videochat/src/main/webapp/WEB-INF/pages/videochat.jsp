@@ -179,7 +179,7 @@
                     <!-- /.modal -->
                     <!-- END modal del botó RECORD -->
 
-                    <button type="button" id="button-volume" class="btn btn-warning" title="<spring:message code="btn.title.mute"/>"><span class="glyphicon glyphicon-volume-up" id="span-volume"/>"></span></button>
+                    <button type="button" id="button-volume" class="btn btn-warning" title="<spring:message code="btn.title.mute"/>"><span class="glyphicon glyphicon-volume-up" id="span-volume"/></span></button>
                 </div>
                 <div class="col-md-2 col-md-offset-7 col-xs-5">
                     <button type="button" class="btn btn-warning" data-toggle="modal" id="button-archive" data-target="#archive" disabled="true"><span class="glyphicon glyphicon-save" title="<spring:message code="btn.arch.close"/>"></span> <spring:message code="btn.arch.close"/></button>
