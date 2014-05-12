@@ -777,7 +777,7 @@
                                         
                                         function errorNoMicroFound() {
                                             bootbox.alert("<spring:message code="message.no.micro"/>", function() {
-                                                });
+                                         bit       });
                                             }
                                         function errorNotAllowedMicro() {
                                             bootbox.alert("<spring:message code="message.no.allowed.camera.micro"/>", function() {
