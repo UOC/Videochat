@@ -26,8 +26,13 @@
 
                 <%String cat = "ca";%>       
                 <%String es = "es";%> 
-                <%String en = "en";%> 
+                <%String en = "en";%>
+                <%String fr = "fr";%> 
+                <%String ir = "ir";%> 
+                <%String nl = "nl";%> 
                 <%String pl = "pl";%> 
+                <%String sv = "sv";%> 
+
             </div>
             <header class="row"> 
                 <div class="col-md-4">
@@ -61,8 +66,7 @@
                                     <form:option value="es"><spring:message code="message.lang.spanish"/></form:option>
                                 </c:otherwise>
                             </c:choose>
-                            
-                            <c:choose>
+                              <c:choose>
                                 <c:when test="<%=pl.equalsIgnoreCase(locale)%>" >
                                     <form:option value="pl" selected="true"><spring:message code="message.lang.polish"/></form:option>
                                 </c:when>
@@ -70,10 +74,39 @@
                                     <form:option value="pl"><spring:message code="message.lang.polish"/></form:option>
                                 </c:otherwise>
                             </c:choose>
+                              <c:choose>
+                                <c:when test="<%=nl.equalsIgnoreCase(locale)%>" >
+                                    <form:option value="nl" selected="true"><spring:message code="message.lang.dutch"/></form:option>
+                                </c:when>
+                                <c:otherwise>
+                                    <form:option value="nl"><spring:message code="message.lang.dutch"/></form:option>
+                                </c:otherwise>
+                            </c:choose>
+                              <c:choose>
+                                <c:when test="<%=sv.equalsIgnoreCase(locale)%>" >
+                                    <form:option value="sv" selected="true"><spring:message code="message.lang.swedish"/></form:option>
+                                </c:when>
+                                <c:otherwise>
+                                    <form:option value="sv"><spring:message code="message.lang.swedish"/></form:option>
+                                </c:otherwise>
+                            </c:choose>
+                              <c:choose>
+                                <c:when test="<%=ir.equalsIgnoreCase(locale)%>" >
+                                    <form:option value="ir" selected="true"><spring:message code="message.lang.irish"/></form:option>
+                                </c:when>
+                                <c:otherwise>
+                                    <form:option value="ir"><spring:message code="message.lang.irish"/></form:option>
+                                </c:otherwise>
+                            </c:choose>
+                              <c:choose>
+                                <c:when test="<%=fr.equalsIgnoreCase(locale)%>" >
+                                    <form:option value="fr" selected="true"><spring:message code="message.lang.french"/></form:option>
+                                </c:when>
+                                <c:otherwise>
+                                    <form:option value="fr"><spring:message code="message.lang.french"/></form:option>
+                                </c:otherwise>
+                            </c:choose>
 
-                            <form:option value="de"><spring:message code="message.lang.dutch"/></form:option>
-                            <form:option value="se"><spring:message code="message.lang.swedish"/></form:option>
-                            <form:option value="ir"><spring:message code="message.lang.irish"/></form:option>
                         </form:select>
                     </form:form>
 
@@ -82,12 +115,12 @@
             </header>
             <div class="row" style="margin-top:10px;">
                 <div class="col-md-2">
-                    <div><strong>${meeting.getStart_record_date_txt()}</strong></div>
-                    <div><strong>${meeting.getStart_record_time_txt()} - ${meeting.getEnd_meeting_time_txt()}</strong></div>
+                    <div><strong>${meeting.getStart_meeting_date_txt()}</strong></div>
+                    <div><strong>${meeting.getStart_meeting_time_txt()} - ${meeting.getEnd_meeting_time_txt()}</strong></div>
                 </div>
                 <div class="col-md-10" style="border-left:1px dashed #ccc;">
-                    <div><label style="width:20%; font-weight:normal"><spring:message code="txt.topic"/></label><strong>${meeting.getTopic()}</strong></div>
-                    <div><label style="width:20%; font-weight:normal"><spring:message code="txt.description"/></label><strong>${meeting.getDescription()}</strong></div>
+                    <div><label style="width:20%; font-weight:normal"><spring:message code="label.topic"/></label><strong>${meeting.getTopic()}</strong></div>
+                    <div><label style="width:20%; font-weight:normal"><spring:message code="label.description"/></label><strong>${meeting.getDescription()}</strong></div>
                 </div>
             </div>
             <div class="row wrapper_recorder">
@@ -220,7 +253,6 @@
 
         <script>
             var currentVolume = 50;
-            var is_seeked = false;
             function hideButtons() {
                 for (i = 1; i <= 6; i++) {
                     $("#button-solo-" + i).hide();
@@ -346,7 +378,6 @@
                     value: 0,
                     slide: function(event, ui) {
                         if (all_streams_are_ready === array_streams.length) {
-                            is_seeked = true;
                             if (!playing) {
                                 playOrStopStreams();
                             }
@@ -354,7 +385,6 @@
                             $(array_streams).each(function(p) {
                                 jwplayer("user-video-" + (p + 1)).seek(duration_video * (value / 100));
                             });
-                            is_seeked = false;
                         } else {
                             sliderPlay.slider('value', 0)
                         }
@@ -417,9 +447,7 @@
                             },
                             onTime: function(t) {
                                 if (duration_video > 0 && pos == video_max_length) {
-                                    if (!is_seeked ) {
-                                        $("#sliderPlay").slider("value", (t.position / duration_video) * 100);
-                                    }
+                                    $("#sliderPlay").slider("value", (t.position / duration_video) * 100);
                                 }
                             }
                         }
@@ -437,7 +465,6 @@
                         jwplayer("user-video-" + (p + 1)).pause();
                     });
                     playing = false;
-                    //TODO review why is not working
                     $("#glyphicon-play").removeClass("glyphicon-pause");
                     $("#glyphicon-play").addClass("glyphicon-play");
                 } else {
@@ -446,8 +473,6 @@
                         jwplayer("user-video-" + (p + 1)).play();
                         jwplayer("user-video-" + (p + 1)).setVolume(currentVolume);
                     });
-                    playing = true;
-                    //TODO review why is not working
                     $("#glyphicon-play").removeClass("glyphicon-play");
                     $("#glyphicon-play").addClass("glyphicon-pause");
                 }

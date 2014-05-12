@@ -26,9 +26,5 @@ public class NavigationController {
 	public ModelAndView errorPage() {
 		return new ModelAndView("error");
 	}
-	@RequestMapping(value={"errorLTI"})
-	public ModelAndView errorLTIPage() {
-		return new ModelAndView("errorLTI");
-	}
 	
 }

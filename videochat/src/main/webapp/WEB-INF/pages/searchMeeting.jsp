@@ -31,7 +31,6 @@
         <%String cat = "ca";%>       
         <%String es = "es";%> 
         <%String en = "en";%> 
-        <%String pl = "pl";%> 
         <div id="idiomes" class="col-md-3 col-md-offset-4">
             <form:form  name="lang_form" action="searchMeeting.htm" commandName="searchMeetingForm" modelAttribute="course" method="POST">
                 <form:select onchange="changeLanguage(this.value)" path="lang" class="form-control">
@@ -63,17 +62,7 @@
                         </c:otherwise>
                     </c:choose>
                     
-                    
-                    <c:choose>
-                        <c:when test="<%=pl.equalsIgnoreCase(locale)%>" >
-                            <form:option value="pl" selected="true"><spring:message code="message.lang.polish"/></form:option>
-                        </c:when>
-                        <c:otherwise>
-                            <form:option value="pl"><spring:message code="message.lang.polish"/></form:option>
-                        </c:otherwise>
-                    </c:choose>
-
-                        
+                        <form:option value="po"><spring:message code="message.lang.polish"/></form:option>
                         <form:option value="de"><spring:message code="message.lang.dutch"/></form:option>
                         <form:option value="se"><spring:message code="message.lang.swedish"/></form:option>
                         <form:option value="ir"><spring:message code="message.lang.irish"/></form:option>
@@ -93,7 +82,7 @@
                 <form:input type="text" path="topic" class="form-control" id="topic"/>
             </div>
             <div class="form-group">
-                <label for="participants" class="control-label"><spring:message code="txt.participants"/></label>
+                <label for="participants" class="control-label"><spring:message code="message.participants"/></label>
                 <form:input type="text" path="participants" class="form-control" id="participants"/>
             </div>
             <div class="row">
@@ -138,8 +127,8 @@
                             <td><c:forEach items="${item.getParticipants()}" var="participant">
                                     ${participant.getPk().getUser().getFullname()},  
                                 </c:forEach></td>
-                            <td>${item.getStart_record_txt()}</td>
-                            <td>${item.getEnd_record_txt()}</td>
+                            <td>${item.getStart_meeting_txt()}</td>
+                            <td>${item.getEnd_meeting_txt()}</td>
                             <td>${item.getTotal_time_txt()}</td>
                             <td><a href="player.htm?id=${item.getId()}">View</a></td>
                         </tr>
