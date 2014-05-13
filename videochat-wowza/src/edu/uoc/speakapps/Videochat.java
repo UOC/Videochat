@@ -92,13 +92,13 @@ public class Videochat extends ModuleBase {
 		int pos = publishName.lastIndexOf("_");
 		if (pos>0) {
 			String folder_to_delete = publishName.substring(0, pos);
-			folder_to_delete = "record/"+folder_to_delete.replaceAll("_", "/");
-			getLogger().info("Videochat speakapps - startRecordClient "+room+" deleting folder "+folder_to_delete);
+			folder_to_delete = _appInstance.getStreamStoragePath()+"/record/"+folder_to_delete.replaceAll("_", "/");
+			getLogger().info("Videochat speakapps - startRecord "+room+" deleting folder "+folder_to_delete);
 			
 			File folder = new File(folder_to_delete);
 			boolean deletedFolder = deleteFolder(folder);
 			
-			getLogger().info("Videochat speakapps - startRecordClient "+room+" deleted folder "+deletedFolder);
+			getLogger().info("Videochat speakapps - startRecord "+room+" deleted folder "+deletedFolder);
 		} 
 		_appInstance.broadcastMsg("startRecordClient", new AMFDataItem(username), new AMFDataItem(room));
 	}
@@ -106,7 +106,7 @@ public class Videochat extends ModuleBase {
 	private static boolean deleteFolder(File folder) {
 		boolean success = false; 
 		try {
-			if (folder.exists()) {
+			if (folder.exists()) {				
 			    File[] files = folder.listFiles();
 			    if(files!=null) { //some JVMs return null for empty dirs
 			        for(File f: files) {
@@ -118,6 +118,8 @@ public class Videochat extends ModuleBase {
 			        }
 			    }
 			    success = folder.delete();
+			    getLogger().error("Videochat speakapps - startRecordClient success "+success+" deleting folder ");
+				
 			}
 		} catch (Exception ioe) {
 			getLogger().error("Videochat speakapps Deleting folder- "+folder.getAbsolutePath(), ioe);
