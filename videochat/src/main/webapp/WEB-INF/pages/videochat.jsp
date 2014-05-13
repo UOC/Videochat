@@ -784,12 +784,15 @@
                                                 });
                                             }
                                             
-                                            
                                         function errorNoCameraFound() {
                                             bootbox.alert("<spring:message code="message.no.camera"/>", function() {
                                                 });
                                             }
 
+                                        function errorConnectingToServerStreaming() {
+                                            bootbox.alert("<spring:message code="message.error.connecting.server"/>", function() {
+                                                });
+                                            }
         </script>
     </body>
 </html>

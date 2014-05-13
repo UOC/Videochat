@@ -70,7 +70,7 @@ public class Videochat extends ModuleBase {
 		String userkey =  props.getPropertyStr("userkey");
 		String username =  props.getPropertyStr("username");
 		String room =  props.getPropertyStr("room");
-		getLogger().info("Videochat speakapps - onDisconnect: " + client.getClientId());
+		getLogger().error("Videochat speakapps - onDisconnect: " + client.getClientId());
 		_appInstance.broadcastMsg("disconnectUserClient", new AMFDataItem(userkey), new AMFDataItem(username), new AMFDataItem(room));
 	}
 	
@@ -118,7 +118,7 @@ public class Videochat extends ModuleBase {
 			        }
 			    }
 			    success = folder.delete();
-			    getLogger().error("Videochat speakapps - startRecordClient success "+success+" deleting folder ");
+			    getLogger().info("Videochat speakapps - startRecordClient success "+success+" deleting folder ");
 				
 			}
 		} catch (Exception ioe) {
