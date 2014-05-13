@@ -663,7 +663,7 @@
                                             $('#button-record').hide();
                                             $('#button-archive').hide();
                                             $('#button-sendMessage').hide();
-                                            bootbox.alert("<spring:message code="btn.closed.session"/>", function() {
+                                            bootbox.alert("<spring:message code="message.meeting.closed"/>", function() {
                                                 returnMeeting();
                                             });
                                         }
