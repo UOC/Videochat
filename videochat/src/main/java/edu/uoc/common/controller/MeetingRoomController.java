@@ -138,7 +138,7 @@ public class MeetingRoomController  {
                         meeting_extended.setStart_meeting_txt(Util.getTimestampFormatted(meeting_extended.getStart_meeting(), Constants.FORMAT_DATETIME));
                         meeting_extended.setEnd_record_txt(Util.getTimestampFormatted(meeting_extended.getEnd_record(), Constants.FORMAT_DATETIME));
                         meeting_extended.setStart_record_txt(Util.getTimestampFormatted(meeting_extended.getStart_record(), Constants.FORMAT_DATETIME));
-                        meeting_extended.setTotal_time_txt(Util.substractTimestamps(meeting_extended.getEnd_meeting(), meeting_extended.getStart_meeting()));
+                        meeting_extended.setTotal_time_txt(Util.substractTimestamps(meeting_extended.getEnd_record(), meeting_extended.getStart_record()));
                         meeting_extended.setParticipants(userMeetingDao.findUsersByMeetingId(meeting));
                         listMRE.add(meeting_extended);
                     }
