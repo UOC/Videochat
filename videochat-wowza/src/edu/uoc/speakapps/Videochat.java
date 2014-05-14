@@ -1,18 +1,13 @@
 package edu.uoc.speakapps;
 
 import java.io.File;
-import java.io.IOException;
+
 
 import com.wowza.wms.application.*;
 import com.wowza.wms.amf.*;
 import com.wowza.wms.client.*;
 import com.wowza.wms.module.*;
 import com.wowza.wms.request.*;
-import com.wowza.wms.stream.*;
-import com.wowza.wms.rtp.model.*;
-import com.wowza.wms.httpstreamer.model.*;
-import com.wowza.wms.httpstreamer.cupertinostreaming.httpstreamer.*;
-import com.wowza.wms.httpstreamer.smoothstreaming.httpstreamer.*;
 
 public class Videochat extends ModuleBase {
 	
@@ -36,6 +31,7 @@ public class Videochat extends ModuleBase {
 		props.setProperty("room", params.getString(PARAM2));
 		props.setProperty("publishName", params.getString(PARAM3));
 		props.setProperty("userkey", params.getString(PARAM4));
+		props.setProperty("connectionAccepted", "false");
 		getLogger().info("Videochat speakapps - username: " + params.getString(PARAM1));
 		getLogger().info("Videochat speakapps - room: " + params.getString(PARAM2));
 		getLogger().info("Videochat speakapps - publishName: " + params.getString(PARAM3));
@@ -70,8 +66,15 @@ public class Videochat extends ModuleBase {
 		String userkey =  props.getPropertyStr("userkey");
 		String username =  props.getPropertyStr("username");
 		String room =  props.getPropertyStr("room");
-		getLogger().error("Videochat speakapps - onDisconnect: " + client.getClientId());
-		_appInstance.broadcastMsg("disconnectUserClient", new AMFDataItem(userkey), new AMFDataItem(username), new AMFDataItem(room));
+		boolean connectionAccepted =  "true".equals(props.getProperty("connectionAccepted"));
+		if (connectionAccepted) {
+			getLogger().info("Videochat speakapps - onDisconnect: " + client.getClientId());
+			_appInstance.broadcastMsg("disconnectUserClient", new AMFDataItem(userkey), new AMFDataItem(username), new AMFDataItem(room));
+		}
+		else {
+			getLogger().info("Videochat speakapps - onDisconnect: user not connected " + client.getClientId()+"  connection value "+props.getProperty("connectionAccepted"));
+			
+		}
 	}
 	
 
@@ -122,7 +125,7 @@ public class Videochat extends ModuleBase {
 				
 			}
 		} catch (Exception ioe) {
-			getLogger().error("Videochat speakapps Deleting folder- "+folder.getAbsolutePath(), ioe);
+			getLogger().info("Videochat speakapps Deleting folder- "+folder.getAbsolutePath(), ioe);
 		}
 	    return success;
 	}
@@ -137,7 +140,7 @@ public class Videochat extends ModuleBase {
 		WMSProperties props = client.getProperties();
 		String username =  props.getPropertyStr("username");
 		String room =  props.getPropertyStr("room");
-		getLogger().info("Videochat speakapps - stopRecordClient "+room+" username "+username);
+		getLogger().info("Videochat speakapps - stopRecordClient "+room+" username "+username+" client: "+client.getClientId());
 		_appInstance.broadcastMsg("stopRecordClient", new AMFDataItem(username), new AMFDataItem(room));
 	}
 	/**
@@ -151,7 +154,7 @@ public class Videochat extends ModuleBase {
 		WMSProperties props = client.getProperties();
 		String username =  props.getPropertyStr("username");
 		String room =  props.getPropertyStr("room");
-		getLogger().info("Videochat speakapps - closeSession "+room);
+		getLogger().info("Videochat speakapps - closeSession "+room+" client: "+client.getClientId());
 		_appInstance.broadcastMsg("closeSessionClient", new AMFDataItem(username), new AMFDataItem(room));
 	}
 
@@ -166,7 +169,7 @@ public class Videochat extends ModuleBase {
 		WMSProperties props = client.getProperties();
 		String username =  props.getPropertyStr("username");
 		String room =  props.getPropertyStr("room");
-		getLogger().info("Videochat speakapps - lockSession "+room);
+		getLogger().info("Videochat speakapps - lockSession "+room+" client: "+client.getClientId());
 		_appInstance.broadcastMsg("lockSessionClient", new AMFDataItem(username), new AMFDataItem(room));
 	}
 	/**
@@ -181,8 +184,9 @@ public class Videochat extends ModuleBase {
 		String userkey =  props.getPropertyStr("userkey");
 		String username =  props.getPropertyStr("username");
 		String room =  props.getPropertyStr("room");
+		props.setProperty("connectionAccepted", "true");
 		String publishName =  props.getPropertyStr("publishName");
-		getLogger().info("Videochat speakapps - registerUser username: "+username+" room: "+room+" publishName: "+publishName);
+		getLogger().info("Videochat speakapps - registerUser username: "+username+" room: "+room+" publishName: "+publishName+" client: "+client.getClientId());
 		_appInstance.broadcastMsg("registeredUser", new AMFDataItem(userkey), new AMFDataItem(username), new AMFDataItem(room), new AMFDataItem(publishName));
 	}
 
@@ -200,7 +204,7 @@ public class Videochat extends ModuleBase {
 		String room =  props.getPropertyStr("room");
 		String message = params.getString(PARAM1);
 		if (message!=null && message.length()>0) {
-			getLogger().info("Videochat speakapps - sendChatMessage username: "+username+" room: "+room+" message: "+message);
+			getLogger().info("Videochat speakapps - sendChatMessage username: "+username+" room: "+room+" message: "+message+" client: "+client.getClientId());
 			_appInstance.broadcastMsg("newChatMessage", new AMFDataItem(userkey), new AMFDataItem(username), new AMFDataItem(room), new AMFDataItem(message));
 		}
 	}
@@ -210,7 +214,7 @@ public class Videochat extends ModuleBase {
 	public void onAppStop(IApplicationInstance appInstance) {
 		String fullname = appInstance.getApplication().getName() + "/"
 				+ appInstance.getName();
-		getLogger().info("Videochat speakapps - onAppStop: " + fullname);
+		getLogger().error("Videochat speakapps - onAppStop: " + fullname);
 	}
 
 }
