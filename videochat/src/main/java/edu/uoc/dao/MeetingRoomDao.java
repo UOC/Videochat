@@ -34,4 +34,6 @@ public interface MeetingRoomDao {
     MeetingRoom findbyPath(String path);
 
     List<MeetingRoom> findbyForm(SearchMeeting searchMeeting, List<Room> ids_room);
+    
+    public List<MeetingRoom> findByCourseId(String courseId);
 }

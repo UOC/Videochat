@@ -69,8 +69,12 @@ public class UserController {
             User user = (User) session.getAttribute(Constants.USER_SESSION);
             Course course = (Course) session.getAttribute(Constants.COURSE_SESSION);
             
+            
             if (user != null && room != null) {
                 MeetingRoom meeting = meetingroomDao.findById(id);
+                 if(!(meeting.getId_room().getId_course().getId()==course.getId())){
+                    model.setViewName("errorMeetingNotFound"); 
+                 }
                 if (meeting.getId() > 0) {
                     model.addObject("user", user);
                     MeetingRoomExtended meeting_extended = new MeetingRoomExtended(meeting);
