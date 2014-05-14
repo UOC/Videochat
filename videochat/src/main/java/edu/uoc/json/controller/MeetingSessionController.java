@@ -14,7 +14,6 @@ import edu.uoc.model.JSONResponse;
 import edu.uoc.model.MeetingRoom;
 import edu.uoc.model.Room;
 import edu.uoc.model.User;
-import edu.uoc.model.UserMeeting;
 import edu.uoc.util.Constants;
 import java.sql.Timestamp;
 import java.util.Date;
@@ -51,6 +50,7 @@ public class MeetingSessionController {
         try {
             User user = (User) session.getAttribute(Constants.USER_SESSION);
             MeetingRoom meeting = (MeetingRoom) session.getAttribute(Constants.MEETING_SESSION);
+            Room room = (Room) session.getAttribute(Constants.ROOM_SESSION);
             logger.info("topic "+request.getRequest()+" desc "+request.getExtraParam());
             if (user!=null && meeting!=null && request!=null && request.getRequest()!=null && request.getRequest().length()>0 ) {
                 meeting = meetingDao.findById(meeting.getId());
@@ -58,6 +58,11 @@ public class MeetingSessionController {
                 meeting.setDescription(request.getExtraParam());
                 logger.info("Meeting Saved topic "+request.getRequest()+" desc "+request.getExtraParam());
                 meetingDao.save(meeting);
+                room = this.roomDao.findByRoomCode(room.getId());
+                room.setIs_blocked(false);
+                room.setReason_blocked(null);
+                this.roomDao.save(room);
+            
                 response.setOk(true);
             }
         } catch (Exception e) {
@@ -110,6 +115,7 @@ public class MeetingSessionController {
             MeetingRoom meeting = (MeetingRoom) session.getAttribute(Constants.MEETING_SESSION);
             User user = (User) session.getAttribute(Constants.USER_SESSION);
             if (user!=null && meeting!=null) {
+                room = this.roomDao.findByRoomCode(room.getId());
                 room.setIs_blocked(false);
                 room.setReason_blocked(null);
                 this.roomDao.save(room);
