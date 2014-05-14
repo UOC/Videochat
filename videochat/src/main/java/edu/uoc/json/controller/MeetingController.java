@@ -70,6 +70,7 @@ public class MeetingController {
             User user = (User) session.getAttribute(Constants.USER_SESSION);
             if (user!=null && meeting!=null) {
                 meeting = meetingDao.findById(meeting.getId());
+                room = this.roomDao.findByRoomCode(room.getId());
                 room.setIs_blocked(true);
                 room.setReason_blocked(Constants.REASON_BLOCK_RECORDING);
                 this.roomDao.save(room);
@@ -96,6 +97,7 @@ public class MeetingController {
             User user = (User) session.getAttribute(Constants.USER_SESSION);
             if (user!=null && meeting!=null) {
                 meeting = meetingDao.findById(meeting.getId());
+                room = this.roomDao.findByRoomCode(room.getId());
                 room.setIs_blocked(false);
                 room.setReason_blocked(null);
                 this.roomDao.save(room);
@@ -111,33 +113,5 @@ public class MeetingController {
         }
         return response;
     }
-    
-    /* Moved to MeetingSessionController
-    @RequestMapping(method = RequestMethod.DELETE)
-    public @ResponseBody JSONResponse closeSession(HttpSession session) {
-        JSONResponse response = new JSONResponse();
-        try {
-            Room room = (Room) session.getAttribute(Constants.ROOM_SESSION);
-            MeetingRoom meeting = (MeetingRoom) session.getAttribute(Constants.MEETING_SESSION);
-            User user = (User) session.getAttribute(Constants.USER_SESSION);
-            if (user!=null && meeting!=null) {
-                room.setIs_blocked(false);
-                room.setReason_blocked(null);
-                this.roomDao.save(room);
-                meeting = meetingDao.findById(meeting.getId());
-                if (meeting.getRecorded() == (byte)1 && meeting.getEnd_record()==null) {
-                    meeting.setEnd_record(new Timestamp(new Date().getTime()));
-                }
-                meeting.setEnd_meeting(new Timestamp(new Date().getTime()));
-                meeting.setFinished((byte)1);
-                this.meetingDao.save(meeting);
-                response.setOk(true);
-            }
-        } catch (Exception e) {
-            logger.error("Error closing record ", e);
-            
-        }
-        return response;
-    }*/
 
 }

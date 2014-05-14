@@ -120,6 +120,10 @@ public class UserMeetingController {
                         if (should_close_it && meeting.getNumber_participants()==0){
                             meeting.setFinished((byte)1);
                             meeting.setEnd_meeting(new Timestamp(new Date().getTime()));
+                            room = this.roomDao.findByRoomCode(room.getId());
+                            room.setIs_blocked(false);
+                            room.setReason_blocked(null);
+                            this.roomDao.save(room);
                         }
                         meetingDao.save(meeting);
                     }
