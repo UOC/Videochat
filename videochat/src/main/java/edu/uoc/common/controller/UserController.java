@@ -143,6 +143,14 @@ public class UserController {
                 }
 
                 UserMeeting userMeeting;
+                //abertranb check if meeting is finsihed or not
+                if (room.isIs_blocked() && !is_reload) {
+                    if (mr == null || mr.getId() == 0) {
+                        room.setIs_blocked(false);
+                        room.setReason_blocked(null);
+                        roomDao.save(room);
+                    }
+                }
                 if (!room.isIs_blocked() || is_reload) {
 
                     //If we find it, set +1 to participants and update
