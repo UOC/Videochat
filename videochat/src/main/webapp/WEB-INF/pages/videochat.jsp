@@ -479,6 +479,7 @@
                          width: 215,
                          height: 138,
                          controls: 'false',
+                         rtmp.bufferlength: 0, //TODO test http://support.jwplayer.com/customer/portal/articles/1413113-configuration-options-reference#rtmp
                          icons: 'false',
                          modes: [
                          { type: "html5" },
