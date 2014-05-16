@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <project name="videochat-wowza" default="jar" basedir="..">
 	
-	<property name="wowza.lib.dir" value="/Library/WowzaMediaServer/lib"/>
+	<property name="wowza.lib.dir" value="/Library/WowzaStreamingEngine-4.0.1/lib"/>
 	<property name="jar.filename" value="videochat-wowza.jar"/>
 	<property name="core.build.dir" value="bin"/>
 

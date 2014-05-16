@@ -74,36 +74,37 @@ public class UserController {
                 MeetingRoom meeting = meetingroomDao.findById(id);
                  if(!(meeting.getId_room().getId_course().getId()==course.getId())){
                     model.setViewName("errorMeetingNotFound"); 
+                 } else {
+                    if (meeting.getId() > 0) {
+                        model.addObject("user", user);
+                        MeetingRoomExtended meeting_extended = new MeetingRoomExtended(meeting);
+                        meeting_extended.setParticipants(userMeetingDao.findUsersByMeetingId(meeting, -1, true));
+                        meeting_extended.setEnd_meeting_txt(Util.getTimestampFormatted(meeting_extended.getEnd_meeting(), Constants.FORMAT_DATETIME));
+                        meeting_extended.setStart_meeting_txt(Util.getTimestampFormatted(meeting_extended.getStart_meeting(), Constants.FORMAT_DATETIME));
+                        meeting_extended.setEnd_record_txt(Util.getTimestampFormatted(meeting_extended.getEnd_record(), Constants.FORMAT_DATETIME));
+                        meeting_extended.setStart_record_txt(Util.getTimestampFormatted(meeting_extended.getStart_record(), Constants.FORMAT_DATETIME));
+
+                        meeting_extended.setEnd_meeting_date_txt(Util.getTimestampFormatted(meeting_extended.getEnd_meeting(), Constants.FORMAT_DATE));
+                        meeting_extended.setStart_meeting_date_txt(Util.getTimestampFormatted(meeting_extended.getStart_meeting(), Constants.FORMAT_DATE));
+                        meeting_extended.setEnd_record_date_txt(Util.getTimestampFormatted(meeting_extended.getEnd_record(), Constants.FORMAT_DATE));
+                        meeting_extended.setStart_record_date_txt(Util.getTimestampFormatted(meeting_extended.getStart_record(), Constants.FORMAT_DATE));
+
+                        meeting_extended.setEnd_meeting_time_txt(Util.getTimestampFormatted(meeting_extended.getEnd_meeting(), Constants.FORMAT_TIME));
+                        meeting_extended.setStart_meeting_time_txt(Util.getTimestampFormatted(meeting_extended.getStart_meeting(), Constants.FORMAT_TIME));
+                        meeting_extended.setEnd_record_time_txt(Util.getTimestampFormatted(meeting_extended.getEnd_record(), Constants.FORMAT_TIME));
+                        meeting_extended.setStart_record_time_txt(Util.getTimestampFormatted(meeting_extended.getStart_record(), Constants.FORMAT_TIME));
+
+                        meeting_extended.setTotal_time_txt(Util.substractTimestamps(meeting_extended.getEnd_record(), meeting_extended.getStart_record()));
+                        meeting_extended.setChat(chatMeetingDao.findByMeetingId(meeting));
+                        model.addObject("course", session.getAttribute(Constants.COURSE_SESSION));
+                        model.addObject("room", room);
+                        model.addObject("meeting", meeting_extended);
+                        model.addObject("wowza_stream_server", wowzaUrl);
+
+                    } else {
+                        model.setViewName("errorMeetingNotFound");
+                    }
                  }
-                if (meeting.getId() > 0) {
-                    model.addObject("user", user);
-                    MeetingRoomExtended meeting_extended = new MeetingRoomExtended(meeting);
-                    meeting_extended.setParticipants(userMeetingDao.findUsersByMeetingId(meeting, -1, true));
-                    meeting_extended.setEnd_meeting_txt(Util.getTimestampFormatted(meeting_extended.getEnd_meeting(), Constants.FORMAT_DATETIME));
-                    meeting_extended.setStart_meeting_txt(Util.getTimestampFormatted(meeting_extended.getStart_meeting(), Constants.FORMAT_DATETIME));
-                    meeting_extended.setEnd_record_txt(Util.getTimestampFormatted(meeting_extended.getEnd_record(), Constants.FORMAT_DATETIME));
-                    meeting_extended.setStart_record_txt(Util.getTimestampFormatted(meeting_extended.getStart_record(), Constants.FORMAT_DATETIME));
-
-                    meeting_extended.setEnd_meeting_date_txt(Util.getTimestampFormatted(meeting_extended.getEnd_meeting(), Constants.FORMAT_DATE));
-                    meeting_extended.setStart_meeting_date_txt(Util.getTimestampFormatted(meeting_extended.getStart_meeting(), Constants.FORMAT_DATE));
-                    meeting_extended.setEnd_record_date_txt(Util.getTimestampFormatted(meeting_extended.getEnd_record(), Constants.FORMAT_DATE));
-                    meeting_extended.setStart_record_date_txt(Util.getTimestampFormatted(meeting_extended.getStart_record(), Constants.FORMAT_DATE));
-
-                    meeting_extended.setEnd_meeting_time_txt(Util.getTimestampFormatted(meeting_extended.getEnd_meeting(), Constants.FORMAT_TIME));
-                    meeting_extended.setStart_meeting_time_txt(Util.getTimestampFormatted(meeting_extended.getStart_meeting(), Constants.FORMAT_TIME));
-                    meeting_extended.setEnd_record_time_txt(Util.getTimestampFormatted(meeting_extended.getEnd_record(), Constants.FORMAT_TIME));
-                    meeting_extended.setStart_record_time_txt(Util.getTimestampFormatted(meeting_extended.getStart_record(), Constants.FORMAT_TIME));
-
-                    meeting_extended.setTotal_time_txt(Util.substractTimestamps(meeting_extended.getEnd_record(), meeting_extended.getStart_record()));
-                    meeting_extended.setChat(chatMeetingDao.findByMeetingId(meeting));
-                    model.addObject("course", session.getAttribute(Constants.COURSE_SESSION));
-                    model.addObject("room", room);
-                    model.addObject("meeting", meeting_extended);
-                    model.addObject("wowza_stream_server", wowzaUrl);
-                    
-                } else {
-                    model.setViewName("errorMeetingNotFound");
-                }
             } else {
                 model.setViewName("errorSession");
             }
