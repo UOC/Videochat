@@ -749,7 +749,7 @@
                                                 }
                                             });
                                         }
-
+                                        var user_disconnected_alert = Array();
                                         var disconnectedUser = function(info) {
                                             if (!meeting_is_closed) {
                                                 var pos = returnPositionUser(info.userkey, array_streams);
@@ -768,22 +768,39 @@
                                                     disconnectedUserAjax(info.userkey, false, false);
 
                                                 }
-                                                var message = "<spring:message code="txt.m8.warning"/>";
-                                                message = message.replace("%1", info.username);
-                                                bootbox.alert(message, function() {
-                                                });
+                                                if (user_disconnected_alert.indexOf(info.username)==-1) {
+                                                    var message = "<spring:message code="txt.m8.warning"/>";
+                                                    user_disconnected_alert.push(info.username);
+                                                    message = message.replace("%1", info.username);
+                                                    bootbox.alert(message, function() {
+                                                        if (user_disconnected_alert.indexOf(info.username)>=0) {
+                                                            user_disconnected_alert.splice(user_disconnected_alert.indexOf(info.username), 1);
+                                                        }
+                                                    });
+                                                }
                                             }
 
                                         }
                                         
+                                        var showing_errorNoMicroFound = false;
+                                        var showing_errorNotAllowedMicro = false;
+                                        
                                         function errorNoMicroFound() {
-                                            bootbox.alert("<spring:message code="message.no.micro"/>", function() {
-                                                });
+                                            if (!showing_errorNoMicroFound) {
+                                                showing_errorNoMicroFound = true;
+                                                bootbox.alert("<spring:message code="message.no.micro"/>", function() {
+                                                    showing_errorNoMicroFound = false;
+                                                    });
+                                                } 
                                             }
                                         function errorNotAllowedMicro() {
-                                            bootbox.alert("<spring:message code="message.no.allowed.camera.micro"/>", function() {
-                                                });
+                                            if (!showing_errorNotAllowedMicro) {
+                                                showing_errorNotAllowedMicro = true;
+                                                bootbox.alert("<spring:message code="message.no.allowed.camera.micro"/>", function() {
+                                                    showing_errorNotAllowedMicro = false;
+                                                    });
                                             }
+                                        }
                                             
                                         function errorNoCameraFound() {
                                             bootbox.alert("<spring:message code="message.no.camera"/>", function() {
