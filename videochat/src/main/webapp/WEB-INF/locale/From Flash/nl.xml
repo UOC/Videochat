@@ -1,0 +1,49 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+
+<lang>
+	<item id="1" key="txt_topic" val="onderwerp:" cap="u"/>
+	<item id="2" key="txt_description" val="BESCHRIJVING:" cap="u"/>
+	<item id="3" key="txt_participants" val="DEELNEMERS" cap="u"/>
+	<item id="4" key="txt_activate_1" val="Dit is uw persoonlijke webcamsignaal." cap="f"/>
+	<item id="5" key="txt_activate_2" val="Klik op ACTIVEREN CAMERA" cap="f"/>
+	<item id="6" key="txt_activate_3" val="als u klaar bent om dit naar deze sessie te sturen." cap="n"/>
+	
+	<item id="7" key="txt_m1_important" val="BELANGRIJK" cap="f"/>
+	<item id="8" key="txt_m1_confirm" val="Weet u zeker dat u een nieuwe opname wilt starten?" cap="f"/>
+	<item id="9" key="txt_m1_warning" val="Als u doorgaat, wordt de vorige opname verwijderd." cap="f"/>
+	<item id="8" key="txt_m2_confirm" val="Weet u zeker dat u de laatste opname wilt archiveren en afsluiten?" cap="f"/>
+	<item id="9" key="txt_m2_warning" val="Als u doorgaat, kunt u geen opnames meer maken binnen deze sessie." cap="f"/>
+	<item id="8" key="txt_m3_confirm" val="Deze sessie wordt opgenomen, wat wilt u doen?" cap="f"/>
+	<item id="9" key="txt_m3_warning1_1" val="AAnnuleren:" cap="f"/>
+	<item id="9" key="txt_m3_warning1_2" val="deze sessie gaat door met de opname." cap="f"/>
+	<item id="9" key="txt_m3_warning2_1" val="Stop:" cap="f"/>
+	<item id="9" key="txt_m3_warning2_2" val="Stop deze opname en maak een nieuwe verbinding om te beslissen wat u doet, opslaan of herhalen." cap="f"/>
+	<item id="9" key="txt_m3_warning3_1" val="Opslaan:" cap="f"/>
+	<item id="9" key="txt_m3_warning3_2" val="Deze sessie archiveren en afsluiten, het wordt gepubliceerd op Videochat." cap="f"/>
+	<item id="8" key="txt_m4_confirm" val="Voeg a.u.b. een onderwerp en een beschrijving toe voor deze sessie." cap="f"/>
+	<item id="8" key="txt_m5_confirm" val="De chatroom wordt afgesloten, een moment geduld a.u.b." cap="f"/>
+	<item id="8" key="txt_m6_warning1" val="De Videochat tool werkt op het moment niet." cap="f"/>
+	<item id="8" key="txt_m6_warning2" val="Meld a.u.b. dit probleem." cap="f"/>
+	<item id="8" key="txt_m7_warning1" val="Excuses, maar deze videochatroom is op het moment vol." cap="f"/>
+	<item id="8" key="txt_m7_warning2" val="Probeer het a.u.b. later." cap="f"/>
+	<item id="8" key="txt_m8_warning" val="Een deelnemer heeft deze sessie verlaten." cap="f"/>
+	
+	<item id="10" key="txt_chat_title" val="CHATTEN" cap="u"/>
+	<item id="10" key="txt_chat1" val="Voeg hier uw tekst in:" cap="f"/>
+	<item id="10" key="txt_chat2" val="Klik om de chat te verwijderen." cap="f"/>
+	
+	<item id="10" key="btn_canceltxt" val="ANNULEREN" cap="f"/>
+	<item id="11" key="btn_continue" val="DOORGAAN" cap="f"/> 
+	<item id="11" key="btn_stop" val="stop" cap="f"/> 
+	<item id="11" key="btn_stop_main" cap="u" style="b" val="stop"/> 
+	<item id="11" key="btn_closed_session" val="Afgesloten Sessie" cap="u"/> 
+	<item id="11" key="btn_saveclose" val="OPSLAAN EN AFSLUITEN" cap="f"/> 	
+	<item id="12" key="btn_record" val="Opnemen" cap="u"/> 
+	<item id="12" key="btn_arch_close" val="ARCHIVEREN EN AFSLUITEN" cap="u"/> 
+	<item id="12" key="btn_view_session" val="BEKIJK SESSIE" cap="f"/> 
+	<item id="11" key="btn_exit" val="Afsluiten" cap="f"/> 
+	
+	<item id="11" key="btn_solo" val="solo" cap="u"/> 
+	<item id="11" key="btn_mute" val="mute" cap="u"/> 
+	
+</lang>

@@ -1,0 +1,49 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+
+<lang>
+	<item id="1" key="txt_topic" cap="u" style="b" val="Topic:" />
+	<item id="2" key="txt_description" cap="u" style="b" val="Description:" />
+	<item id="3" key="txt_participants" cap="u" style="b" val="participants"/>
+	<item id="4" key="txt_activate_1" cap="f" style="r" val="This is your private webcam signal."/>
+	<item id="5" key="txt_activate_2" cap="f" style="b" val="Clik on ACTIVATE CAMERA"/>
+	<item id="6" key="txt_activate_3" cap="n" style="r" val="when you are ready to send it to this session."/>
+	
+	<item id="7" key="txt_m1_important" cap="f" style="b" val="important"/>
+	<item id="8" key="txt_m1_confirm" cap="f" style="b" val="Are you sure you want to start a new recording?"/>
+	<item id="9" key="txt_m1_warning" cap="f" style="r" val="If you continue the previously made recording will be deleted."/>
+	<item id="8" key="txt_m2_confirm" cap="f" style="b" val="Are you sure you want to archive and close the last recording made?"/>
+	<item id="9" key="txt_m2_warning" cap="f" style="r" val="If you continue you will not be able to make more recordings within this session."/>
+	<item id="8" key="txt_m3_confirm" cap="f" style="b" val="This session is being recorded, what do you want to do?"/>
+	<item id="9" key="txt_m3_warning1_1" cap="f" style="b" val="Cancel:"/>
+	<item id="9" key="txt_m3_warning1_2" cap="f" style="r" val="this session continues recording."/>
+	<item id="9" key="txt_m3_warning2_1" cap="f" style="b" val="Stop:"/>
+	<item id="9" key="txt_m3_warning2_2" cap="f" style="r" val="Stop this recording and reconnect to decide what to do, save or repeat."/>
+	<item id="9" key="txt_m3_warning3_1" cap="f" style="b" val="Save:"/>
+	<item id="9" key="txt_m3_warning3_2" cap="f" style="r" val="Archive and close this session, it will be published on Videochat."/>
+	<item id="8" key="txt_m4_confirm" cap="f" style="b" val="Please add topic and description for this session."/>
+	<item id="8" key="txt_m5_confirm" cap="f" style="b" val="Room is being closed, please wait."/>
+	<item id="8" key="txt_m6_warning1" cap="f" style="b" val="The Videochat tool is currently not working."/>
+	<item id="8" key="txt_m6_warning2" cap="f" style="b" val="Please report this problem."/>
+	<item id="8" key="txt_m7_warning1" cap="f" style="b" val="Sorry this videochat room is currently full."/>
+	<item id="8" key="txt_m7_warning2" cap="f" style="b" val="Please try again later."/>
+	<item id="8" key="txt_m8_warning" cap="f" style="b" val="A participant has left this session."/>
+	
+	<item id="10" key="txt_chat_title" cap="u" style="b" val="Chat"/>
+	<item id="10" key="txt_chat1" cap="f" style="b" val="Enter your text here:"/>
+	<item id="10" key="txt_chat2" cap="f" style="b" val="Press to clear chat"/>
+	
+	<item id="10" key="btn_canceltxt" cap="f" style="b" val="cancel"/>
+	<item id="11" key="btn_continue" cap="f" style="b" val="continue"/> 
+	<item id="11" key="btn_stop" cap="f" style="b" val="stop"/> 
+	<item id="11" key="btn_stop_main" cap="u" style="b" val="stop"/> 
+	<item id="11" key="btn_closed_session" cap="u" style="b" val="Closed Session"/> 
+	<item id="11" key="btn_saveclose" cap="f" style="b" val="SAVE AND CLOSE"/> 	
+	<item id="12" key="btn_record" cap="u" style="b" val="record"/> 
+	<item id="12" key="btn_arch_close" cap="u" style="b" val="ARCHIVE & CLOSE"/> 
+	<item id="12" key="btn_view_session" cap="f" style="b" val="VIEW SESSION"/> 
+	<item id="11" key="btn_exit" cap="f" style="b" val="exit"/> 
+	
+	<item id="11" key="btn_solo" cap="u" style="b" val="solo"/> 
+	<item id="11" key="btn_mute" cap="u" style="b" val="mute"/> 
+	
+</lang>

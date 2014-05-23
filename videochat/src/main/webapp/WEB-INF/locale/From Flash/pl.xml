@@ -1,0 +1,49 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+
+<lang>
+	<item id="1" key="txt_topic" val="temat:" cap="u"/>
+	<item id="2" key="txt_description" val="OPIS:" cap="u"/>
+	<item id="3" key="txt_participants" val="UCZESTNICY" cap="u"/>
+	<item id="4" key="txt_activate_1" val="To jest sygnał Twojej kamery internetowej." cap="f"/>
+	<item id="5" key="txt_activate_2" val="Kliknij na URUCHOM KAMERĘ" cap="f"/>
+	<item id="6" key="txt_activate_3" val="jeśli na pewno chcesz wysłać tę sesję/jesteś pewien/pewna, że chcesz wysłać tę sesję." cap="n"/>
+	
+	<item id="7" key="txt_m1_important" val="WAŻNE" cap="f"/>
+	<item id="8" key="txt_m1_confirm" val="Czy na pewno chcesz rozpocząć nowe nagranie?" cap="f"/>
+	<item id="9" key="txt_m1_warning" val="Jeśli będziesz kontynuować, wcześniejsze nagranie zostanie skasowane." cap="f"/>
+	<item id="8" key="txt_m2_confirm" val="Czy na pewno chcesz zapisać i zamknąć ostatnie nagranie?" cap="f"/>
+	<item id="9" key="txt_m2_warning" val="Jeśli będziesz kontynuować, nie będzie można zrobić więcej nagrań w tej sesji." cap="f"/>
+	<item id="8" key="txt_m3_confirm" val="Ta sesja jest nagrana - co chcesz zrobić?" cap="f"/>
+	<item id="9" key="txt_m3_warning1_1" val="Anuluj:" cap="f"/>
+	<item id="9" key="txt_m3_warning1_2" val="dalsze nagrywanie tej sesji." cap="f"/>
+	<item id="9" key="txt_m3_warning2_1" val="ZATRZYMAJ:" cap="f"/>
+	<item id="9" key="txt_m3_warning2_2" val="Zatrzymaj nagrywanie i połącz ponownie, aby zdecydować czy zapisać czy powtórzyć nagrywanie." cap="f"/>
+	<item id="9" key="txt_m3_warning3_1" val="Zapisz:" cap="f"/>
+	<item id="9" key="txt_m3_warning3_2" val="Archiwizuj i zamknij tę sesję, zostanie ona opublikowana na Wideoczacie" cap="f"/>
+	<item id="8" key="txt_m4_confirm" val="Dodaj temat i opis tej sesji." cap="f"/>
+	<item id="8" key="txt_m5_confirm" val="Pokój jest zamykany. Proszę czekać." cap="f"/>
+	<item id="8" key="txt_m6_warning1" val="Wideoczat chwilowo nie działa." cap="f"/>
+	<item id="8" key="txt_m6_warning2" val="Zgłoś problem." cap="f"/>
+	<item id="8" key="txt_m7_warning1" val="Przepraszamy, ten pokój jest aktualnie pełny.." cap="f"/>
+	<item id="8" key="txt_m7_warning2" val="Spróbuj ponownie później." cap="f"/>
+	<item id="8" key="txt_m8_warning" val="Uczestnik opuścił tę sesję." cap="f"/>
+	
+	<item id="10" key="txt_chat_title" val="Czat" cap="u"/>
+	<item id="10" key="txt_chat1" val="Wpisz tekst tutaj:" cap="f"/>
+	<item id="10" key="txt_chat2" val="Naciśnij, żeby wyczyszczyć czat" cap="f"/>
+	
+	<item id="10" key="btn_canceltxt" val="ANULUJ" cap="f"/>
+	<item id="11" key="btn_continue" val="KONTYNUUJ" cap="f"/> 
+	<item id="11" key="btn_stop" val="ZATRZYMAJ" cap="f"/> 
+	<item id="11" key="btn_stop_main" cap="u" style="b" val="ZATRZYMAJ"/> 
+	<item id="11" key="btn_closed_session" val="Zamknij sesję" cap="u"/> 
+	<item id="11" key="btn_saveclose" val="ZAPISZ I ZAMKNIJ" cap="f"/> 	
+	<item id="12" key="btn_record" val="Nagrywaj" cap="u"/> 
+	<item id="12" key="btn_arch_close" val="Zapisz i zamknij" cap="u"/> 
+	<item id="12" key="btn_view_session" val="WIDOK SESJI" cap="f"/> 
+	<item id="11" key="btn_exit" val="Wyjście" cap="f"/> 
+	
+	<item id="11" key="btn_solo" val="solo" cap="u"/> 
+	<item id="11" key="btn_mute" val="mute" cap="u"/> 
+	
+</lang>
