@@ -1,1 +1,0 @@
-&Data1=08:56:39 - &Nom1=Admin SpeakApps&Txt1=RECORDING STARTED! (ON)&Data2=08:56:46 - &Nom2=Admin SpeakApps&Txt2=STOP RECORDING. RECONNECT OR EXIT! (OFF)

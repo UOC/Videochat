@@ -1,1 +1,0 @@
-&Data1=12:13:52 - &Nom1=Teacher Teache&Txt1=RECORDING STARTED! (ON)&Data2=12:14:00 - &Nom2=Teacher Teache&Txt2=STOP RECORDING. RECONNECT OR EXIT! (OFF)
