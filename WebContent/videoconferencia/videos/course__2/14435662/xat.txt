@@ -1,0 +1,1 @@
+&Data1=09:22:51 - &Nom1=Student Student&Txt1=RECORDING STARTED! (ON)&Data2=09:22:53 - &Nom2=Student Student&Txt2=hola&Data3=09:22:57 - &Nom3=Student Student&Txt3=adeuuuu&Data4=09:23:22 - &Nom4=Student Student&Txt4=STOP RECORDING. RECONNECT OR EXIT! (OFF)

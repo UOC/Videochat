@@ -1,0 +1,194 @@
+@charset "utf-8";
+/* CSS Document */
+
+body { 
+	margin:0;
+	padding:0;
+	background:#FFF;
+	font: 0.8em Arial;
+	color: #333;
+}
+h1 {    
+    color: #6699CC;
+    font-family: arial;
+    font-size: 2.6em;
+    font-weight: inherit;
+    margin: 0;
+    padding: 12px 0 0;
+	height: 80px;
+}
+p{
+	margin:0;
+	padding:0;
+	}
+a:link, a:visited {
+	text-decoration:none;
+	color: #6699CC;
+	}
+a:hover{
+	 text-decoration: underline;
+	 color: #6699CC;
+	}
+#container {
+    margin: 30px;
+    padding: 0;
+	min-width:600px;
+	}
+#head {
+	height: 100px;
+	width: 0 auto;
+	display: inline;
+}
+.baner {
+    border-bottom: 3px solid #999999;
+	
+}
+.txtInfo {
+	border-bottom: 1px dotted  #999;
+	margin: 20px 0;
+	padding: 0 0 20px 0;
+	color: #000;
+	}
+.txtInfo2 {
+	margin: 20px 0;
+	padding: 0;
+	color: #000;
+	}
+.boxTxt{
+	border: 1px solid #999999;
+	width: 200px;
+	height:auto;
+	min-height:60px;
+	margin: 0 0 20px;
+	}
+.actiu{
+	color:#333;
+	text-decoration:none;}	
+.botonera {
+    list-style: none outside none;
+    padding: 0;
+	margin: 25px 0;
+	}
+	
+.botonera li {
+	display: inline;
+    font-size: 1em;
+    padding: 0;
+	}
+	
+.botonera li a, .botonera li a:link,  .botonera li a:visited  {
+	background:transparent  url(../img/boton-Dcha.png) no-repeat;
+	background-position:bottom right;
+	height:30px;
+	font-family:Arial, Helvetica, sans-serif;
+	display:inline-block;
+	margin:0;
+	text-decoration:none;
+	color: #E7501C;
+
+}
+.botonera li a:hover  {
+	color: #E7501C;
+	background-position:top right;	
+
+
+}
+
+.botonera li a span, .botonera li a:link span,  .botonera li a:visited span  {
+   background: url(../img/botonIzqd.png) no-repeat scroll left bottom transparent;
+    height: 25px;
+	display:inline-block;
+	margin:0;
+	padding:5px 15px 0px 15px;
+	cursor:hand;
+	cursor:pointer;
+
+}
+.botonera li a:hover span  {
+	background-position:top left;
+	color: #E7501C;
+	text-decoration:underline;
+	
+}
+.tabla{
+	    margin: 0;
+		padding:0;
+		font-size:.9em;
+		
+	}
+.tabla tr:hover td {
+	background-color:#EEF3F8;!important;
+	border-collapse:collapse;
+	}
+
+.fitxers {
+	border-collapse:collapse;
+	border-bottom:1px #999 solid;	
+	white-space-collapse:collapse;
+	padding:0;
+	}
+.fitxers th{	
+	background-color:#F0F0F0;
+	color:#333;
+	padding: 5px 0 5px 15px;
+	text-align:left;
+	}
+
+.fitxers thead tr td{	
+	padding: 10px 0 10px 15px;
+	text-align:left;
+}
+.fitxers thead tr.info td {
+	border-bottom: 1px #000 dotted;	
+	border-right: 0;
+    color: #E7501C;
+    padding: 10px 0 10px 15px;
+}
+
+.fitxers tbody tr td {
+	border-bottom:1px #333 dotted;	
+	border-right:0;	
+
+}
+
+.fitxers tbody tr td{	
+	padding: 10px 0 10px 15px;
+}
+.borderW{
+	border-top: 1px solid #CCCCCC;
+	border-bottom: 1px solid #CCCCCC;
+	}
+a img {border:none;}
+/*.selec{
+	background-color:#EEF3F8;
+	}
+
+.noselec{
+	background-color:#FFF;
+	}*/
+.col1{
+	width:15%;
+	}
+.col2{
+	width:30%;
+	}
+.col3{
+	width:20%;
+	}
+.col4{
+	width:20%;
+	}
+.col5{
+	width:20%;
+	}
+.check{
+    width: 10px;
+	}
+.fitxa{
+	background:url(../img/icono-Archivo.png) no-repeat center left;
+	padding: 0 25px;
+	}
+.carpeta{
+	background:url(../img/icono-Carpeta.png) no-repeat center left;
+	padding: 0 25px;
+	}

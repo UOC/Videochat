@@ -1,0 +1,4 @@
+http://50.17.181.132/speakapps/moodle/mod/videoconference/view.php?id=5
+
+user student
+pwd Student123*

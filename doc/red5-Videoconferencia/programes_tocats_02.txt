@@ -1,0 +1,29 @@
+llista de programes tocats
+==========================
+
+
+Front.java  --> /opt/local/jboss-4.0.5.GA/server/default/deploy/red5.war/WEB-INF/classes/org/uoc/red5/videoconference/servlets
+AccessMeeting.java  --> /opt/local/jboss-4.0.5.GA/server/default/deploy/red5.war/WEB-INF/classes/org/uoc/red5/videoconference/servlets
+ViewMeeting.java  --> /opt/local/jboss-4.0.5.GA/server/default/deploy/red5.war/WEB-INF/classes/org/uoc/red5/videoconference/servlets
+Application.java  --> /opt/local/jboss-4.0.5.GA/server/default/deploy/red5.war/WEB-INF/classes/org/red5/demos/fitc
+StreamServiceUOC.java  --> /opt/local/jboss-4.0.5.GA/server/default/deploy/red5.war/WEB-INF/classes/org/uoc/red5/videoconference
+DemoService.java --> /opt/local/jboss-4.0.5.GA/server/default/deploy/red5.war/WEB-INF/classes/org/red5/server/webapps/oflaDemo
+
+Aquests programes s'han de posar en /opt/local/jboss-4.0.5.GA/server/default/deploy/red5.war/jsp
+
+dispplayvideoconferencemessage.jsp
+player.jsp
+CreateMeeting.jsp
+accessmeeting.jsp
+createmeeting.jsp
+meetinglist.jsp
+selectoption.jsp
+
+
+GrabaVideoConferencia.html --> /opt/local/jboss-4.0.5.GA/server/default/deploy/red5.war/videoconference_recorder
+
+
+treure del config.properties la linia referent al server
+
+
+

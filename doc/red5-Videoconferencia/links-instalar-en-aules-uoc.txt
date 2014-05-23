@@ -1,0 +1,6 @@
+videochat apuntant a cesca
+
+/webapps/UocBLTI_c/BLTIConsumer?provider=provider_blogs1&container=DOMAIN.$DOMAINID$&instanceId=EPC.$EPCMENUID$&s=$S$&control=record_automated&overwriteUrl=1&launchurl=http://84.89.0.105:8080/webapps/red5/AccessMeeting
+/webapps/UocBLTI_c/BLTIConsumer?provider=provider_blogs1&container=DOMAIN.$DOMAINID$&instanceId=EPC.$EPCMENUID$&s=$S$&control=record_automated&overwriteUrl=1&launchurl=http://84.89.0.105:8080/webapps/red5/SearchMeeting
+
+
