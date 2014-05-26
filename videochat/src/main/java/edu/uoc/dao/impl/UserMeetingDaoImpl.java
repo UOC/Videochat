@@ -8,7 +8,7 @@ package edu.uoc.dao.impl;
 
 import edu.uoc.dao.UserMeetingDao;
 import edu.uoc.model.MeetingRoom;
-import edu.uoc.model.User;
+//import edu.uoc.model.User;
 import edu.uoc.model.UserMeeting;
 import edu.uoc.model.UserMeetingId;
 import edu.uoc.util.CustomHibernateDaoSupport;
@@ -51,8 +51,12 @@ public class UserMeetingDaoImpl extends CustomHibernateDaoSupport implements Use
     }
     
     @Override
-    public List<UserMeeting> findUsersByMeetingId(MeetingRoom meeting){
-        List list = getHibernateTemplate().find("from UserMeeting where meeting_id = ?",meeting.getId());
+    public List<UserMeeting> findUsersByMeetingId(MeetingRoom meeting, boolean only_accepted){
+        String extra_sql = "";
+        if (only_accepted) {
+            extra_sql = " AND usermeeting_access_confirmed = 1";
+        }
+        List list = getHibernateTemplate().find("from UserMeeting where meeting_id = ?"+extra_sql,meeting.getId());
         
         return list;
     }
@@ -62,8 +66,9 @@ public class UserMeetingDaoImpl extends CustomHibernateDaoSupport implements Use
      * @param meeting
      * @return 
      */
+    @Override
     public int countNumberParticipants(MeetingRoom meeting) {
-        List list = this.findUsersByMeetingId(meeting);
+        List list = this.findUsersByMeetingId(meeting, true);
         int count = 0;
         if (list!=null){
             count = list.size();
