@@ -37,7 +37,7 @@ public interface UserMeetingDao {
      */
     public List<UserMeeting> findUsersByMeetingId(MeetingRoom meeting, int user_id, boolean onlyConfirmed);
     
-    public List<UserMeeting> findUsersByMeetingId(MeetingRoom meeting);
+    public List<UserMeeting> findUsersByMeetingId(MeetingRoom meeting, boolean only_accepted);
     
     /**
      * Return the total number of participants
