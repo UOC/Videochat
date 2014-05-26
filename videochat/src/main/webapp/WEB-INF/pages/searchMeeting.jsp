@@ -124,8 +124,9 @@
                     <c:forEach var="item" items="${listMR}">
                         <tr>
                             <td><c:out value="${item.getTopic()}"/></td>
-                            <td><c:forEach items="${item.getParticipants()}" var="participant">
-                                    ${participant.getPk().getUser().getFullname()},  
+                            <td><c:forEach items="${item.getParticipants()}" var="participant" varStatus="status">
+                                    ${participant.getPk().getUser().getFullname()}
+                                    <c:if test="${status.count<item.getParticipants().size()}">,</c:if>
                                 </c:forEach></td>
                             <td>${item.getStart_record_txt()}</td>
                             <td>${item.getEnd_record_txt()}</td>
