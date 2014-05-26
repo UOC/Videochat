@@ -147,6 +147,7 @@ public class MeetingRoomDaoImpl extends CustomHibernateDaoSupport implements Mee
         
         Criteria criteria;
         criteria = this.getSession().createCriteria(MeetingRoom.class, "meeting");
+        criteria.add(Restrictions.eq("meeting.finished",(byte)1));
         criteria.add(Restrictions.eq("meeting.recorded",(byte)1));
         if(tsStart!=null){
             criteria.add(Restrictions.ge("meeting.start_meeting",tsStart));
