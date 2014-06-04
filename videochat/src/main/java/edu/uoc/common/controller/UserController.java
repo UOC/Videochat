@@ -58,9 +58,33 @@ public class UserController {
     private RoomDao roomDao;
     @Value( "${wowza.url.server}" )
     private String wowzaUrl;
+    @Value( "${use.jwplayer}" )
+    private String useJWplayer;
+    
 
+    /**
+     * Shows a session meeting
+     * @param id
+     * @param session
+     * @return 
+     */
     @RequestMapping("/player")
-    public ModelAndView handleRequestInternal(@RequestParam(value = "id") int id,
+    public ModelAndView showPlayer(@RequestParam(value = "id") int id,
+            HttpSession session) {
+        return showFixedPlayer(id, 0, session);
+    }
+    /**
+     * Allows to select the player
+     * @param id
+     * @param player_id: <ul>
+     *                      <li> 0 - By configuration</li>
+     *                      <li> 1 - Using JWPlayer</li>
+     *                      <li> 2 - VideoJS</li></ul>
+     * @param session
+     * @return 
+     */
+    @RequestMapping("/fixed_player")
+    public ModelAndView showFixedPlayer(@RequestParam(value = "id") int id, @RequestParam(value = "player") int player_id,
             HttpSession session) {
         ModelAndView model = new ModelAndView("player");
           try {
@@ -100,6 +124,11 @@ public class UserController {
                         model.addObject("room", room);
                         model.addObject("meeting", meeting_extended);
                         model.addObject("wowza_stream_server", wowzaUrl);
+                        if (player_id==0) {
+                            model.addObject("useJWplayer", "1".equals(useJWplayer));
+                        } else {
+                            model.addObject("useJWplayer", player_id==1);
+                        }
 
                     } else {
                         model.setViewName("errorMeetingNotFound");

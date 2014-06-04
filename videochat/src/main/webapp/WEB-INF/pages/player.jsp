@@ -115,12 +115,12 @@
             </header>
             <div class="row" style="margin-top:10px;">
                 <div class="col-md-2">
-                    <div><strong>${meeting.getStart_meeting_date_txt()}</strong></div>
-                    <div><strong>${meeting.getStart_meeting_time_txt()} - ${meeting.getEnd_meeting_time_txt()}</strong></div>
+                    <div><strong>${meeting.getStart_record_date_txt()}</strong></div>
+                    <div><strong>${meeting.getStart_record_time_txt()} - ${meeting.getEnd_record_time_txt()}</strong></div>
                 </div>
                 <div class="col-md-10" style="border-left:1px dashed #ccc;">
-                    <div><label style="width:20%; font-weight:normal"><spring:message code="label.topic"/></label><strong>${meeting.getTopic()}</strong></div>
-                    <div><label style="width:20%; font-weight:normal"><spring:message code="label.description"/></label><strong>${meeting.getDescription()}</strong></div>
+                    <div><label style="width:20%; font-weight:normal"><spring:message code="label.topic"/>:</label><strong>${meeting.getTopic()}</strong></div>
+                    <div><label style="width:20%; font-weight:normal"><spring:message code="label.description"/>:</label><strong>${meeting.getDescription()}</strong></div>
                 </div>
             </div>
             <div class="row wrapper_recorder">
@@ -144,72 +144,38 @@
                         <div class="row header_participants">
                             <h4 class="col-md-10 col-xs-6"><spring:message code="message.participants"/></h4>
                         </div>
+                        <c:forEach var="i" begin="1" end="6">
+                            <c:if test="${((i mod 3)==1)}">
                         <div class="row">
-                            <div class="col-md-4 participant" id="user-1">
+                            </c:if>
+                            <div class="col-md-4 participant" id="user-<c:out value="${i}" />">
                                 <div class="participant_content">
-                                    <div id="nom-1">&nbsp;</div>
-                                    <div id="user-video-1"><img src="css/images/participant.png" alt="participant 4"></div>
+                                    <div id="nom-<c:out value="${i}" />">&nbsp;</div>
+                                    <c:choose>
+                                        <c:when test="${useJWplayer}">
+                                            <div id="user-video-<c:out value="${i}" />"><img src="css/images/participant.png" alt="participant <c:out value="${i}" />"></div>
+                                        </c:when>
+                                        <c:otherwise>
+                                            <video id="user-video-<c:out value="${i}" />" class="video-js vjs-default-skin"
+                                                preload="auto" width="215" height="143"
+                                                poster="css/images/participant.png" data-setup="{}">
+                                                <c:if test="${(meeting.getParticipants().size()>=i)}">
+                                                    <source src="rtmp://${wowza_stream_server}:1935/vod/&mp4:${meeting.getParticipants().get(i-1).getStreamKeyRecorded()}" type="rtmp/mp4" />
+                                                </c:if>
+                                            </video>
+                                        </c:otherwise>
+                                    </c:choose>
                                     <div style="text-align:center" class="button_actions">
-                                        <button class="btn btn-warning" type="button" id="button-solo-1" data-id="1">SOLO</button>
-                                        <button class="btn btn-warning" type="button" id="button-mute-1" data-id="1">MUTE</button>
+                                        <button class="btn btn-warning" type="button" id="button-solo-<c:out value="${i}" />" data-id="1">SOLO</button>
+                                        <button class="btn btn-warning" type="button" id="button-mute-<c:out value="${i}" />" data-id="1">MUTE</button>
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-md-4 participant" id="user-2">
-                                <div class="participant_content">
-                                    <div id="nom-2">&nbsp;</div>
-                                    <div id="user-video-2"><img src="css/images/participant.png" alt="participant 4"></div>
-                                </div>
-                                <div style="text-align:center" class="button_actions">
-                                    <button class="btn btn-warning" type="button" id="button-solo-2" data-id="2">SOLO</button>
-                                    <button class="btn btn-warning" type="button" id="button-mute-2" data-id="2">MUTE</button>
-                                </div>
-                            </div>
-                            <div class="col-md-4 participant" id="user-3">
-                                <div class="participant_content">
-                                    <div id="nom-3">&nbsp;</div>
-                                    <div id="user-video-3"><img src="css/images/participant.png" alt="participant 4"></div>
-                                </div>
-                                <div style="text-align:center" class="button_actions">
-                                    <button class="btn btn-warning" type="button" id="button-solo-3" data-id="3">SOLO</button>
-                                    <button class="btn btn-warning" type="button" id="button-mute-3" data-id="3">MUTE</button>
-                                </div>
-                            </div>
+                            <c:if test="${((i mod 3)==0)}">
                         </div>
-                        <div class="row">
-                            <div class="col-md-4 participant" id="user-4">
-                                <div class="participant_content">
-                                    <div id="nom-4">&nbsp;</div>
-                                    <div id="user-video-4"><img src="css/images/participant.png" alt="participant 4"></div>
-                                </div>
-                                <div style="text-align:center" class="button_actions">
-                                    <button class="btn btn-warning" type="button" id="button-solo-4" data-id="4">SOLO</button>
-                                    <button class="btn btn-warning" type="button" id="button-mute-4" data-id="4">MUTE</button>
-                                </div>
-
-                            </div>
-                            <div class="col-md-4 participant" id="user-5">
-                                <div class="participant_content">
-                                    <div id="nom-5">&nbsp;</div>
-                                    <div id="user-video-5"><img src="css/images/participant.png" alt="participant 4"></div>
-                                </div>
-                                <div style="text-align:center" class="button_actions">
-                                    <button class="btn btn-warning" type="button" id="button-solo-5" data-id="5">SOLO</button>
-                                    <button class="btn btn-warning" type="button" id="button-mute-5" data-id="5">MUTE</button>
-                                </div>
-
-                            </div>
-                            <div class="col-md-4 participant" id="user-6">
-                                <div class="participant_content">
-                                    <div id="nom-6">&nbsp;</div>
-                                    <div id="user-video-6"><img src="css/images/participant.png" alt="participant 4"></div>
-                                </div>
-                                <div class="button_actions">
-                                    <button class="btn btn-warning" type="button" id="button-solo-6" data-id="6">SOLO</button>
-                                    <button class="btn btn-warning" type="button" id="button-mute-6" data-id="6">MUTE</button>
-                                </div>
-                            </div>
-                        </div>
+                            </c:if>
+                        </c:forEach>    
+                        
                     </div>
                 </div>
                 <div class="col-md-4 aside">
@@ -228,14 +194,6 @@
                     </div>
                 </div>
             </div>
-
-
-
-            <!--div id="debug_display">
-                <h4>Debug Data</h4>
-                <span class="time"></span> (<span class="duration"></span>) : <span class="time"></span> (<span class="duration"></span>) : <span class="time"></span> (<span class="duration"></span>) :
-                <span class="time"></span> (<span class="duration"></span>) : <span class="time"></span> (<span class="duration"></span>) : <span class="time"></span> (<span class="duration"></span>)
-            </div-->
         </div>  
 
 
@@ -243,9 +201,16 @@
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
         <!-- Include all compiled plugins (below), or include individual files as needed -->
         <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
-
+        <c:choose>
+            <c:when test="${useJWplayer}">
         <!-- VIDEO PLAYER JS -->
         <script type="text/javascript" src="./js/jwplayer/jwplayer.js"></script>
+            </c:when>
+            <c:otherwise>
+        <link href="//vjs.zencdn.net/4.6/video-js.css" rel="stylesheet">
+        <script src="//vjs.zencdn.net/4.6/video.js"></script>
+            </c:otherwise>
+          </c:choose>
         <!-- jQuery -->
         <script src="http://code.jquery.com/jquery-latest.min.js" type="text/javascript"></script> 
         <script src="//code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
@@ -280,6 +245,16 @@
                 }
 
             }
+            function muteJS(pos, mute_unmute) {
+                <c:choose>
+                    <c:when test="${useJWplayer}">
+                        jwplayer("user-video-" + (pos)).setMute(mute_unmute);
+                    </c:when>
+                    <c:otherwise>
+                        arrayVideos[pos-1].muted(mute_unmute);
+                    </c:otherwise>
+                </c:choose>
+            }
             function muteAll(i) {
                 $(array_streams).each(function(p) {
                     if ((p + 1) != i) {
@@ -289,24 +264,44 @@
                         $("#button-solo-" + (p + 1)).addClass('active');
                         $("#button-mute-" + (p + 1)).removeClass('active');
                     }
-                    jwplayer("user-video-" + (p + 1)).setMute((p + 1) != i);
+                    muteJS(p + 1, (p + 1) != i);
                 });
             }
             function unmuteAll() {
                 $(array_streams).each(function(p) {
                     $("#button-mute-" + p + 1).removeClass('active');
-                    jwplayer("user-video-" + (p + 1)).setMute(false);
+                    muteJS(p + 1, false);
                 });
             }
             function muteThis(i) {
                 $("#button-mute-" + i).addClass('active');
-                jwplayer("user-video-" + i).setMute(true);
+                muteJS(1, true);
             }
             function unmuteThis(i) {
                 $("#button-mute-" + i).removeClass('active');
-                jwplayer("user-video-" + i).setMute(false);
+                muteJS(1, false);
             }
-
+            
+            function seekJS(pos, position) {
+                <c:choose>
+                    <c:when test="${useJWplayer}">
+                        jwplayer("user-video-" + (pos)).seek(position);
+                    </c:when>
+                    <c:otherwise>
+                        arrayVideos[pos-1].currentTime(position);
+                    </c:otherwise>
+                </c:choose>
+            }
+            function volumeJS(pos, volume) {
+                <c:choose>
+                    <c:when test="${useJWplayer}">
+                        jwplayer("user-video-" + (pos)).setVolume(volume);
+                    </c:when>
+                    <c:otherwise>
+                        arrayVideos[pos-1].volume(volume/100); //Betwen 0.0 and 1.0
+                    </c:otherwise>
+                </c:choose>
+            }
             $(document).ready(function() {
                 hideButtons();
             <c:forEach items="${meeting.getParticipants()}" var="item">
@@ -319,7 +314,7 @@
 
                 $("#play-rewind").on("click", function() {
                     $(array_streams).each(function(p) {
-                        jwplayer("user-video-" + (p + 1)).seek(0);
+                        seekJS(p + 1, 0);
                     });
                 });
                 var slider = $('#slider'),
@@ -345,8 +340,7 @@
                         }
                         currentVolume = value;
                         $(array_streams).each(function(p) {
-                            console.log(currentVolume);
-                            jwplayer("user-video-" + (p + 1)).setVolume(currentVolume);
+                            volumeJS(p + 1, currentVolume);
                         });
 
                         tooltip.css('left', value).text(ui.value);
@@ -383,7 +377,7 @@
                             }
                             var value = sliderPlay.slider('value');
                             $(array_streams).each(function(p) {
-                                jwplayer("user-video-" + (p + 1)).seek(duration_video * (value / 100));
+                                seekJS(p + 1, duration_video * (value / 100));
                             });
                         } else {
                             sliderPlay.slider('value', 0)
@@ -397,6 +391,9 @@
             var array_streams = Array();
             var video_max_length = 0;
             var all_streams_are_ready = 0;
+            var all_streams_are_ready_play = 0;
+            var currentVolumeOld = 0;
+            var arrayVideos = Array(); //only for videojs
             function registeredUser(info) {
                 var pos = returnPositionUser(info.userkey, array_streams);
                 streamObj = new StreamObject(info.userkey, info.username, info.publishName);
@@ -413,69 +410,135 @@
                     $("#button-solo-" + pos).show();
                     $("#button-mute-" + pos).show();
                     $("#nom-" + pos).html(info.username);
-                    jwplayer("user-video-" + (pos)).setup({
-                        file: "rtmp://${wowza_stream_server}:1935/vod/mp4:" + info.publishName,
-                        image: "",
-                        width: 215,
-                        height: 138,
-                        controls: 'false',
-                        preload: 'auto',
-                        icons: 'false',
-                        modes: [
-                            {type: "html5"},
-                            {type: "flash", src: "./js/jwplayer/jwplayer.flash.swf"}
-                        ],
-                        //flashplayer: "./js/jwplayer/jwplayer.flash.swf",
-                        events: {
-                            onReady: function(e) {
-                                all_streams_are_ready++;
-                            },
-                            onBuffer: function(t) {
-                                // Buffer not exposed in RMTP playback
-                                var duration_video_temp = this.getDuration();
-                                if (duration_video < duration_video_temp) {
-                                    duration_video = duration_video_temp;
-                                    video_max_length = pos;
-                                }
-                            },
-                            onPlay: function() {
-                                var duration_video_temp = this.getDuration();
-                                if (duration_video < duration_video_temp) {
-                                    duration_video = duration_video_temp;
-                                    video_max_length = pos;
-                                }
-                            },
-                            onTime: function(t) {
-                                if (duration_video > 0 && pos == video_max_length) {
-                                    $("#sliderPlay").slider("value", (t.position / duration_video) * 100);
+                    <c:choose>
+                    <c:when test="${useJWplayer}">
+                        jwplayer("user-video-" + (pos)).setup({
+                            file: "rtmp://${wowza_stream_server}:1935/vod/mp4:" + info.publishName,
+                            image: "",
+                            width: 215,
+                            height: 138,
+                            controls: 'false',
+                            preload: 'auto',
+                            icons: 'false',
+                            modes: [
+                                {type: "html5"},
+                                {type: "flash", src: "./js/jwplayer/jwplayer.flash.swf"}
+                            ],
+                            //flashplayer: "./js/jwplayer/jwplayer.flash.swf",
+                            events: {
+                                onReady: function(e) {
+                                    all_streams_are_ready++;
+                                },
+                                onBuffer: function(t) {
+                                    // Buffer not exposed in RMTP playback
+                                    var duration_video_temp = this.getDuration();
+                                    if (duration_video < duration_video_temp) {
+                                        duration_video = duration_video_temp;
+                                        video_max_length = pos;
+                                    }
+                                },
+                                onPlay: function() {
+                                    var duration_video_temp = this.getDuration();
+                                    if (duration_video < duration_video_temp) {
+                                        duration_video = duration_video_temp;
+                                        video_max_length = pos;
+                                    }
+                                },
+                                onTime: function(t) {
+                                    if (duration_video > 0 && pos == video_max_length) {
+                                        $("#sliderPlay").slider("value", (t.position / duration_video) * 100);
+                                    }
                                 }
                             }
-                        }
-                    });
+                        });
+
+                    </c:when>
+                    <c:otherwise>
+                        var videoObj = videojs("user-video-" + pos, {}, function() {
+                                              });
+                        videoObj.ready(function(){
+                            all_streams_are_ready++;
+                            if (all_streams_are_ready === array_streams.length) {
+                                currentVolumeOld = currentVolume;
+                                currentVolume = 0;
+                                playOrStopStreams();
+                            }
+                                
+                          }); 
+                          videoObj.on("loadedalldata", function() {
+                              all_streams_are_ready_play++;
+                              if (all_streams_are_ready_play === array_streams.length) {
+                                currentVolume = currentVolumeOld;
+                                playOrStopStreams();
+                                this.currentTime(0);
+                                //$("#sliderPlay").slider("value", 0 * 100);
+                              }
+                          });
+                          videoObj.on("durationchange", function() {
+                                var duration_video_temp = this.duration();
+                                console.log("current "+pos+" and duration "+duration_video_temp);
+                                if (duration_video < duration_video_temp) {
+                                    duration_video = duration_video_temp;
+                                    video_max_length = pos;
+                                    console.log("video_max_length "+pos+" and duration "+duration_video_temp);
+                                }
+                                
+                             });
+                            videoObj.on("timeupdate", function() {
+                                if (duration_video > 0 && pos == video_max_length) {
+                                    $("#sliderPlay").slider("value", (this.currentTime() / duration_video) * 100);
+                                }
+                            });
+                                
+
+                          arrayVideos.push(videoObj);
+                    </c:otherwise>
+                </c:choose>
+
                 }
             }
 
             $("#play-pause").on("click", function() {
                 playOrStopStreams();
             });
-
+            
+            function playJS(pos) {
+                <c:choose>
+                    <c:when test="${useJWplayer}">
+                        jwplayer("user-video-" + (pos)).play();
+                    </c:when>
+                    <c:otherwise>
+                        arrayVideos[pos-1].play();
+                    </c:otherwise>
+                </c:choose>
+            }
+            function pauseJS(pos) {
+                <c:choose>
+                    <c:when test="${useJWplayer}">
+                        jwplayer("user-video-" + (pos)).pause();
+                    </c:when>
+                    <c:otherwise>
+                        arrayVideos[pos-1].pause();
+                    </c:otherwise>
+                </c:choose>
+            }
             function playOrStopStreams() {
                 if (playing) {
                     $(array_streams).each(function(p) {
-                        jwplayer("user-video-" + (p + 1)).pause();
+                        pauseJS(p + 1);
                     });
-                    playing = false;
                     $("#glyphicon-play").removeClass("glyphicon-pause");
                     $("#glyphicon-play").addClass("glyphicon-play");
                 } else {
                     $(array_streams).each(function(p) {
                         // if (p == 0){setTimeout()}
-                        jwplayer("user-video-" + (p + 1)).play();
-                        jwplayer("user-video-" + (p + 1)).setVolume(currentVolume);
+                        playJS(p + 1);
+                        volumeJS(p + 1, currentVolume);
                     });
                     $("#glyphicon-play").removeClass("glyphicon-play");
                     $("#glyphicon-play").addClass("glyphicon-pause");
                 }
+                playing = !playing;
             }
 
         </script>
