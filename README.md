@@ -23,14 +23,19 @@ Installation
 7.   Now build the project, a videochat.war will be generated.
 8.   With the .sql file provided, import to the SQL architecture you choose.
 9.   Configure the consumer key (edit src/main/resources/authorizedConsumersKey.properties)
-     To create a consumer key named *test* with shared secret **SECRET123**
+     
+    To create a consumer key named *test* with shared secret **SECRET123**
+    
     
     consumer_key.*test*.enabled=1
+    
     consumer_key.*test*.secret=**SECRET123**
-    consumer_key.*test*.callBackUrl=
+    
+    consumer_key.*test*.callBackUrl= 
+    
     consumer_key.*test*.fieldSessionId=token
     
-9.   When all these steps are finished, deploy the videochat.war that is store on the deploy folder of the server you have chosen.
+10.   When all these steps are finished, deploy the videochat.war that is store on the deploy folder of the server you have chosen.
 
 ## Videochat Wowza App
 To create a Wowza application you will need and Wowza Eclipse (https://www.wowza.com/streaming/developers/wowza-ide-software-update). Basically there are 2 classes
