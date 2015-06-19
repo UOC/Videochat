@@ -18,6 +18,7 @@ Installation
 6.    Add the jars to your maven repository (from folder videochat/compiled_lib)
 
     mvn install:install-file -Dfile=lti-1.0.3.jar -DgroupId=edu.uoc -DartifactId=lti -Dversion=1.0.3 -Dpackaging=jar
+    
     mvn install:install-file -Dfile=JavaUtils-1.1.2.jar -DgroupId=org.campusproject -DartifactId=JavaUtils -Dversion=1.1.2 -Dpackaging=jar
     
 7.   Now build the project, a videochat.war will be generated.
