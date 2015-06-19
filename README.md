@@ -16,16 +16,20 @@ Installation
 4.	Edit the videochat.properties, here you can find two basic properties, the IP direction to the Wowza (http://wowza.com) server and the parameters of the database. 
 5.	Select the IP of the server you want to edit and also the database properties.
 6.    Add the jars to your maven repository (from folder videochat/compiled_lib)
+
     mvn install:install-file -Dfile=lti-1.0.3.jar -DgroupId=edu.uoc -DartifactId=lti -Dversion=1.0.3 -Dpackaging=jar
     mvn install:install-file -Dfile=JavaUtils-1.1.2.jar -DgroupId=org.campusproject -DartifactId=JavaUtils -Dversion=1.1.2 -Dpackaging=jar
+    
 7.   Now build the project, a videochat.war will be generated.
 8.   With the .sql file provided, import to the SQL architecture you choose.
-9.   Configure the consumer key (edit src/main/resources/authorizedConsumersKey.properties )     To create a consumer key named *test* with shared secret **SECRET123**
+9.   Configure the consumer key (edit src/main/resources/authorizedConsumersKey.properties)
+     To create a consumer key named *test* with shared secret **SECRET123**
     
     consumer_key.*test*.enabled=1
     consumer_key.*test*.secret=**SECRET123**
     consumer_key.*test*.callBackUrl=
     consumer_key.*test*.fieldSessionId=token
+    
 9.   When all these steps are finished, deploy the videochat.war that is store on the deploy folder of the server you have chosen.
 
 ## Videochat Wowza App
@@ -34,6 +38,7 @@ To create a Wowza application you will need and Wowza Eclipse (https://www.wowza
      
 * VideochatAPI.java It is a HTTP Provider (http://www.wowza.com/forums/content.php?182-How-to-get-detailed-server-info-with-an-HTTPProvider
  you have to enable it on conf/VHost.xml (see a template from /videochat-wowza/configuration_sample/template/conf/VHost.xml)and add a videochat API like
+ 
      <!-- Admin HostPort -->
                         <HostPort>
                                     .......
