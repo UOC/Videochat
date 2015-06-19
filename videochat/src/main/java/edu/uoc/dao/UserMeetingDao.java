@@ -33,9 +33,11 @@ public interface UserMeetingDao {
      * @param meeting
      * @param user_id
      * @param onlyConfirmed
+     * @param get_users_from_history_if_not_found when you want to play session then tries to get from table vc_usermeeting and if not found then get from vc_usermeeting_history
+     * @param number_user_to_show if get_users_from_history_if_not_found has to try to get the number of users 
      * @return 
      */
-    public List<UserMeeting> findUsersByMeetingId(MeetingRoom meeting, int user_id, boolean onlyConfirmed);
+    public List<UserMeeting> findUsersByMeetingId(MeetingRoom meeting, int user_id, boolean onlyConfirmed, boolean get_users_from_history_if_not_found, int number_user_to_show);
     
     public List<UserMeeting> findUsersByMeetingId(MeetingRoom meeting, boolean only_accepted);
     
@@ -45,4 +47,6 @@ public interface UserMeetingDao {
      * @return 
      */
     public int countNumberParticipants(MeetingRoom meeting);
+    
+    public List<UserMeeting> findUserByMeetingId(MeetingRoom meeting, int user_id, boolean onlyConfimed);
 }

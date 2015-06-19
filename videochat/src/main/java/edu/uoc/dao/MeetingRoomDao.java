@@ -8,6 +8,7 @@ package edu.uoc.dao;
 import edu.uoc.model.SearchMeeting;
 import edu.uoc.model.MeetingRoom;
 import edu.uoc.model.Room;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,4 +37,6 @@ public interface MeetingRoomDao {
     List<MeetingRoom> findbyForm(SearchMeeting searchMeeting, List<Room> ids_room);
     
     public List<MeetingRoom> findByCourseId(String courseId);
+    
+    public boolean deleteMeetingById(MeetingRoom meeting);
 }

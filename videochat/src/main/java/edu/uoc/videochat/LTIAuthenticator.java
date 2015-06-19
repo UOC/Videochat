@@ -9,17 +9,18 @@ import edu.uoc.dao.CourseDao;
 import edu.uoc.dao.RoomDao;
 import edu.uoc.dao.UserCourseDao;
 import edu.uoc.dao.UserDao;
-import edu.uoc.util.Constants;
-
 import edu.uoc.lti.LTIEnvironment;
 import edu.uoc.model.Course;
 import edu.uoc.model.Room;
 import edu.uoc.model.User;
 import edu.uoc.model.UserCourse;
 import edu.uoc.model.UserCourseId;
+import edu.uoc.util.Constants;
 import edu.uoc.util.Util;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.math.BigInteger;
+import java.security.SecureRandom;
 import java.sql.Timestamp;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -27,10 +28,11 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-
-import org.springframework.context.ApplicationContext;
-import org.springframework.web.context.support.WebApplicationContextUtils;
 import org.apache.log4j.Logger;
+import org.springframework.context.ApplicationContext;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
+import org.springframework.web.context.support.WebApplicationContextUtils;
 
 /**
  *
@@ -41,6 +43,7 @@ public class LTIAuthenticator extends HttpServlet {
 //get log4j handler
 
     private static final Logger logger = Logger.getLogger(LTIAuthenticator.class);
+    private static final Boolean semafor = new Boolean(false);
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
@@ -78,6 +81,15 @@ public class LTIAuthenticator extends HttpServlet {
         session.setAttribute(Constants.MEETING_SESSION, null);
         session.setAttribute(Constants.USER_METTING_SESSION, null);
         session.setAttribute(Constants.USER_LANGUAGE, null);
+        session.setAttribute(Constants.EXTRA_ROLE_CUSTOM_LTI_PARAMETER, null);
+        session.setAttribute(Constants.PARAM_MAX_PARTICIPANTS_CUSTOM_LTI_PARAMETER, null);
+        session.setAttribute(Constants.PARAM_AUTO_RECORDING_CUSTOM_LTI_PARAMETER, false);
+        session.setAttribute(Constants.PARAM_URL_NOTIFY_STARTED_RECORDING_CUSTOM_LTI_PARAMETER, null);
+        session.setAttribute(Constants.PARAM_URL_NOTIFY_SESSION_AVAILABLE_CUSTOM_LTI_PARAMETER, null);
+        session.setAttribute(Constants.PARAM_URL_NOTIFY_ENDED_RECORDING_CUSTOM_LTI_PARAMETER, null);
+        session.setAttribute(Constants.PARAM_WINDOW_NAME_FOCUS_CUSTOM_LTI_PARAMETER, null);
+        session.setAttribute(Constants.DISABLE_BACK_BUTTON_CUSTOM_LTI_PARAMETER, false);
+        session.setAttribute(Constants.GET_USERS_FROM_HISTORY_IF_NOT_FOUND, false);
 
         try {
             ApplicationContext context = WebApplicationContextUtils.getWebApplicationContext(getServletContext());
@@ -90,7 +102,8 @@ public class LTIAuthenticator extends HttpServlet {
             request.setCharacterEncoding("UTF-8");
             //1. Check if LTI call is valid
             LTIEnvironment LTIEnvironment;
-            LTIEnvironment = new LTIEnvironment();
+            Resource resource = new ClassPathResource("/authorizedConsumersKey.properties");
+            LTIEnvironment = new LTIEnvironment(resource.getFile().getAbsolutePath());
             if (LTIEnvironment.is_lti_request(request)) {
 
                 LTIEnvironment.parseRequest(request);
@@ -118,7 +131,7 @@ public class LTIAuthenticator extends HttpServlet {
                     String course_key = Util.sanitizeString(LTIEnvironment.getCourseKey());
                     String course_label = LTIEnvironment.getCourseName();
                     String resource_key = Util.sanitizeString(LTIEnvironment.getResourceKey());
-                    String resource_label = LTIEnvironment.getResourceTitle();
+                    String resource_label = LTIEnvironment.getResourceTitle()!=null?LTIEnvironment.getResourceTitle():resource_key;
 
                     //LTIEnvironment.getParameter(lis_person_name_given);
                     //5. Get the locale
@@ -126,10 +139,25 @@ public class LTIAuthenticator extends HttpServlet {
 
                     java.util.Date date = new java.util.Date();
 
-                    //Steps to integrate with your applicationa
+                    
+                     //Steps to integrate with your applicationa
                     boolean redirectToPlayer = LTIEnvironment.getCustomParameter(Constants.PLAYER_CUSTOM_LTI_PARAMETER, request) != null;
+                    int session_id = 0;
+                    if (LTIEnvironment.getCustomParameter(Constants.SESSION_ID_CUSTOM_LTI_PARAMETER, request)!=null) {
+                        try {
+                            session_id = Integer.parseInt(LTIEnvironment.getCustomParameter(Constants.SESSION_ID_CUSTOM_LTI_PARAMETER, request));
+                        }
+                        catch (NumberFormatException nfe){
+                            //nothing
+                        }
+                    }
                     boolean is_debug = LTIEnvironment.getCustomParameter(Constants.DEBUG_CUSTOM_LTI_PARAMETER, request) != null;
 
+                    if (LTIEnvironment.getCustomParameter(Constants.PARAM_MAX_PARTICIPANTS_CUSTOM_LTI_PARAMETER, request)!=null){
+                        session.setAttribute(Constants.PARAM_MAX_PARTICIPANTS_CUSTOM_LTI_PARAMETER, 
+                                LTIEnvironment.getCustomParameter(Constants.PARAM_MAX_PARTICIPANTS_CUSTOM_LTI_PARAMETER, request));
+                    }
+           
                     // System.out.println("ID:" + userDao.findByUserCode(1));
                     User user = userDao.findByUserName(username);
                     user.setUsername(username);
@@ -138,6 +166,11 @@ public class LTIAuthenticator extends HttpServlet {
                     user.setFullname(full_name);
                     user.setEmail(email);
                     user.setImage(user_image);
+                    if (user.getToken_access()==null) {
+                        //generate it
+                        SecureRandom random = new SecureRandom();
+                        user.setToken_access((new BigInteger(130, random).toString(32)).substring(0, 8));
+                    }
                     userDao.save(user);
 
                     Course course = courseDao.findByCourseKey(course_key);
@@ -159,24 +192,29 @@ public class LTIAuthenticator extends HttpServlet {
                     userCourse.setPk(userCourseId);
 
                     userCourseDao.save(userCourse);
+                    
+                    session.setAttribute(Constants.USER_COURSE_SESSION, userCourse);
 
                     Course courseRoom = courseDao.findByCourseKey(course_key);
 
-                    Room room = roomDao.findByRoomKey(resource_key);
-                    if (room == null) {
-                        room = new Room();
+                    if (!redirectToPlayer) {
+                        synchronized (semafor) {
+                            Room room = roomDao.findByRoomKey(resource_key);
+                            if (room == null) {
+                                room = new Room();
+                            }
+                            room.setId_course(courseRoom);
+                            room.setLabel(resource_label);
+                            if (room.getId() <= 0) {
+                                //if there is no room, create a new room and meeting room
+                                room.setIs_blocked(false);
+                                room.setKey(resource_key);
+                                room.setReason_blocked(null);
+                                roomDao.save(room);
+                            }
+                            session.setAttribute(Constants.ROOM_SESSION, room);
+                        }
                     }
-                    room.setId_course(courseRoom);
-                    room.setLabel(resource_label);
-                    if (room.getId() <= 0) {
-                        //if there is no room, create a new room and meeting room
-                        room.setIs_blocked(false);
-                        room.setKey(resource_key);
-                        room.setReason_blocked(null);
-                        roomDao.save(room);
-                    }
-
-                    session.setAttribute(Constants.ROOM_SESSION, room);
                     //Steps to integrate with your applicationa
                     //6. Check if username exists in system
                     //6.1 If doesn't exist you have to create user using Tool Api
@@ -191,10 +229,26 @@ public class LTIAuthenticator extends HttpServlet {
                     //8. Register user in course 
                     session.setAttribute(Constants.USER_SESSION, user);
                     session.setAttribute(Constants.COURSE_SESSION, course);
+                    String extra_role = LTIEnvironment.getCustomParameter(Constants.EXTRA_ROLE_CUSTOM_LTI_PARAMETER, request);
+                    session.setAttribute(Constants.EXTRA_ROLE_CUSTOM_LTI_PARAMETER, extra_role);
+                    boolean auto_recording = "1".equals(LTIEnvironment.getCustomParameter(Constants.PARAM_AUTO_RECORDING_CUSTOM_LTI_PARAMETER, request));
+                    session.setAttribute(Constants.PARAM_AUTO_RECORDING_CUSTOM_LTI_PARAMETER, auto_recording);
+                    session.setAttribute(Constants.PARAM_URL_NOTIFY_STARTED_RECORDING_CUSTOM_LTI_PARAMETER, LTIEnvironment.getCustomParameter(Constants.PARAM_URL_NOTIFY_STARTED_RECORDING_CUSTOM_LTI_PARAMETER, request)!=null?LTIEnvironment.getCustomParameter(Constants.PARAM_URL_NOTIFY_STARTED_RECORDING_CUSTOM_LTI_PARAMETER, request):"");
+                    session.setAttribute(Constants.PARAM_URL_NOTIFY_SESSION_AVAILABLE_CUSTOM_LTI_PARAMETER, LTIEnvironment.getCustomParameter(Constants.PARAM_URL_NOTIFY_SESSION_AVAILABLE_CUSTOM_LTI_PARAMETER, request)!=null?LTIEnvironment.getCustomParameter(Constants.PARAM_URL_NOTIFY_SESSION_AVAILABLE_CUSTOM_LTI_PARAMETER, request):"");
+                    session.setAttribute(Constants.PARAM_URL_NOTIFY_ENDED_RECORDING_CUSTOM_LTI_PARAMETER, LTIEnvironment.getCustomParameter(Constants.PARAM_URL_NOTIFY_ENDED_RECORDING_CUSTOM_LTI_PARAMETER, request)!=null?LTIEnvironment.getCustomParameter(Constants.PARAM_URL_NOTIFY_ENDED_RECORDING_CUSTOM_LTI_PARAMETER, request):"");
+                    session.setAttribute(Constants.PARAM_WINDOW_NAME_FOCUS_CUSTOM_LTI_PARAMETER, LTIEnvironment.getCustomParameter(Constants.PARAM_WINDOW_NAME_FOCUS_CUSTOM_LTI_PARAMETER, request)!=null?LTIEnvironment.getCustomParameter(Constants.PARAM_WINDOW_NAME_FOCUS_CUSTOM_LTI_PARAMETER, request):"");                    
+                    session.setAttribute(Constants.DISABLE_BACK_BUTTON_CUSTOM_LTI_PARAMETER, LTIEnvironment.getCustomParameter(Constants.DISABLE_BACK_BUTTON_CUSTOM_LTI_PARAMETER, request)!=null?"1".equals(LTIEnvironment.getCustomParameter(Constants.DISABLE_BACK_BUTTON_CUSTOM_LTI_PARAMETER, request)):false);
+                    session.setAttribute(Constants.DISABLE_BACK_BUTTON_CUSTOM_LTI_PARAMETER, LTIEnvironment.getCustomParameter(Constants.DISABLE_BACK_BUTTON_CUSTOM_LTI_PARAMETER, request)!=null?"1".equals(LTIEnvironment.getCustomParameter(Constants.DISABLE_BACK_BUTTON_CUSTOM_LTI_PARAMETER, request)):false);
+
+                    
                     locale = locale.substring(0,2);
                     session.setAttribute(Constants.USER_LANGUAGE, locale);
                     params = "?"+Constants.PARAM_SPRING_LANG+"="+locale;
-                    nextPage = redirectToPlayer ? "searchMeeting" : "videochat";
+                    if (session_id>0) {
+                        params += "&id="+session_id;
+                        session.setAttribute(Constants.GET_USERS_FROM_HISTORY_IF_NOT_FOUND, true);
+                    }
+                    nextPage = redirectToPlayer ? (session_id>0?"player":"searchMeeting") : "videochat";
 
                 } else {
 

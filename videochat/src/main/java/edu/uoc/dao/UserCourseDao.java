@@ -7,6 +7,7 @@
 package edu.uoc.dao;
 
 import edu.uoc.model.UserCourse;
+import java.util.List;
 
 /**
  *
@@ -21,6 +22,10 @@ public interface UserCourseDao {
     void delete(UserCourse usercourse);
 
     UserCourse findByCourseCode(int courseId,int userId);
+
+    List<UserCourse> findCoursesByUserId(int userId);
+    
+    List<UserCourse> findUsersByCourse(int courseId);
 
     
 }

@@ -6,6 +6,7 @@
 
 package edu.uoc.model;
 
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -268,5 +269,22 @@ public class MeetingRoomExtended extends MeetingRoom {
      */
     public void setEnd_record_time_txt(String end_record_time_txt) {
         this.end_record_time_txt = end_record_time_txt;
+    }
+    
+    /**
+     * Returns if session contains a user
+     * @param u
+     * @return 
+     */
+    public boolean contains(User u) {
+        boolean contains = false;
+        for (Iterator<UserMeeting> iterator = participants.iterator(); iterator.hasNext();) {
+            UserMeeting next = iterator.next();
+            contains = next.getPk().getUser().getId()==u.getId();
+            if (contains) {
+                break;
+            }
+        }
+        return contains;
     }
 }

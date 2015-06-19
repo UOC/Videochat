@@ -10,8 +10,6 @@ import edu.uoc.dao.UserDao;
 import edu.uoc.model.User;
 import edu.uoc.util.CustomHibernateDaoSupport;
 import java.util.List;
-import org.hibernate.Session;
-import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -68,6 +66,15 @@ public class UserDaoImpl extends CustomHibernateDaoSupport implements UserDao{
         }
 		return new User();
 	}
+
+    @Override
+    public User findByUserToken(String email, String token) throws Exception {
+        List list = getHibernateTemplate().find("from User where user_email=? AND token_access=?",email, token);
+        if(list.size()>0){
+            return (User)list.get(0);
+        }	
+        throw new Exception("User not found."); 
+    }
 
 
 }

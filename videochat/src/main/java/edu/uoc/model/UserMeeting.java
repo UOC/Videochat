@@ -42,7 +42,7 @@ public class UserMeeting implements java.io.Serializable{
     
     @Column(name="usermeeting_created")
 
-    private Timestamp created;
+    private Timestamp created; 
 
     @Column(name="usermeeting_stream_key")
 
@@ -51,14 +51,25 @@ public class UserMeeting implements java.io.Serializable{
     @Column(name="usermeeting_access_confirmed")
 
     private byte access_confirmed;
+    
+    @Column(name="usermeeting_extra_role")
+    private String extra_role;
 
+    @Column(name="usermeeting_user_agent")
+    private String user_agent;
+
+    @Column(name="usermeeting_platform")
+    private String platform;
+
+    
     public UserMeeting() {
     }
 
-    public UserMeeting(UserMeetingId pk, Timestamp created, String stream_key) {
+    public UserMeeting(UserMeetingId pk, Timestamp created, String stream_key, String extra_role) {
         this.pk = pk;
         this.created = created;
         this.stream_key = stream_key;
+        this.extra_role = extra_role;
     }
 
     public UserMeetingId getPk() {
@@ -78,11 +89,15 @@ public class UserMeeting implements java.io.Serializable{
     }
     
     public String getStreamKey() {
-        return stream_key;
+        return Constants.WOWZA_RECORD_FOLDER+"/"+stream_key.replaceAll("_","/");
     }
 
     public String getStreamKeyRecorded() {
-        return Constants.WOWZA_RECORD_FOLDER+"/"+stream_key.replaceAll("_","/")+Constants.WOWZA_EXTENSION_FILE;
+        String stream_file = getStreamKey()+Constants.WOWZA_EXTENSION_FILE;
+        if (stream_file.endsWith("/.mp4")) {
+            stream_file = stream_file.replace("/.mp4",".mp4");
+        }
+        return stream_file;
     }
 
     public void setStreamKey(String stream_key) {
@@ -96,6 +111,50 @@ public class UserMeeting implements java.io.Serializable{
     public void setAccessConfirmed(byte access_confirmed) {
         this.access_confirmed = access_confirmed;
     }
+
+    /**
+     * @return the extra_role
+     */
+    public String getExtra_role() {
+        return extra_role;
+    }
+
+    /**
+     * @param extra_role the extra_role to set
+     */
+    public void setExtra_role(String extra_role) {
+        this.extra_role = extra_role;
+    }
     
+    /**
+     * Set the user agent
+     * @param user_agent 
+     */
+    public void setUserAgent(String user_agent) {
+        this.user_agent = user_agent;
+    }
+    /**
+     * Gets the user antet
+     * @return 
+     */
+    public String getUserAgent() {
+        return this.user_agent;
+    }
+    
+    
+    /**
+     * Set the platform
+     * @param platform
+     */
+    public void setPlatform(String platform) {
+        this.platform = platform;
+    }
+    /**
+     * Gets the platform
+     * @return 
+     */
+    public String getPlatform() {
+        return this.platform;
+    }
     
 }

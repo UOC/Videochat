@@ -6,17 +6,12 @@
 
 package edu.uoc.model;
 
-import edu.uoc.util.Constants;
 import java.sql.Timestamp;
-import javax.persistence.AssociationOverride;
-import javax.persistence.AssociationOverrides;
 import javax.persistence.Column;
-import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import static javax.persistence.GenerationType.IDENTITY;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.Table;
 import org.springframework.stereotype.Component;
 
@@ -50,6 +45,15 @@ public class UserMeetingHistory implements java.io.Serializable{
     @Column(name="usermeeting_deleted")
 
     private Timestamp deleted;
+    
+    @Column(name="usermeeting_extra_role")
+    private String extra_role;
+
+    @Column(name="usermeeting_user_agent")
+    private String user_agent;
+
+    @Column(name="usermeeting_platform")
+    private String platform;
 
     public UserMeetingHistory() {
     }
@@ -77,7 +81,7 @@ public class UserMeetingHistory implements java.io.Serializable{
     public void setMeeting_id(int meeting_id) {
         this.meeting_id = meeting_id;
     }
-
+    
     public Timestamp getCreated() {
         return created;
     }
@@ -92,5 +96,44 @@ public class UserMeetingHistory implements java.io.Serializable{
 
     public void setDeleted(Timestamp deleted) {
         this.deleted = deleted;
+    }
+    
+    public void setExtraRole(String usermeeting_extra_role){
+        this.extra_role = usermeeting_extra_role;
+    }
+    
+    public String getExtraRole(){
+        return this.extra_role;
+    }
+    
+    /**
+     * Set the user agent
+     * @param user_agent 
+     */
+    public void setUserAgent(String user_agent) {
+        this.user_agent = user_agent;
+    }
+    /**
+     * Gets the user antet
+     * @return 
+     */
+    public String getUserAgent() {
+        return this.user_agent;
+    }
+    
+    
+    /**
+     * Set the platform
+     * @param platform
+     */
+    public void setPlatform(String platform) {
+        this.platform = platform;
+    }
+    /**
+     * Gets the platform
+     * @return 
+     */
+    public String getPlatform() {
+        return this.platform;
     }
 }

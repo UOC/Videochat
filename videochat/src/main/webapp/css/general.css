@@ -7,7 +7,7 @@ a:hover{
     }
 
 .container{
-    margin-top:50px;
+    margin-top:10px;
 }
 
 header{
@@ -68,7 +68,18 @@ header #close{
 	margin:0 auto; 
 	text-align:left; 
 	display:block;
-	width:215px;
+	width:220px;
+}
+
+.participant .participant_content_big{
+	margin:0 auto; 
+	text-align:left; 
+	display:block;
+	width:330px;
+}
+
+.participant_image_content_big{
+	width:330px;
 }
 
 .participant:first-child{
@@ -282,4 +293,38 @@ input.videochat-btn-secundary, a.videochat-btn-secundary {
     font-size:200%;
     color:red;
     cursor: pointer;
+}
+
+/* Victor */
+@media (min-width: 992px){
+  .participants{width:81%}
+  .participant{
+      /*width:33%*/;
+  }
+  .aside{
+      width:19%;
+  }
+}
+
+@media (min-width: 1200px){
+  .participants{width: inherit}
+  .participant{
+      width:inherit;
+  }
+  .aside{
+      width:32%;
+  }
+}
+
+.user-role{
+    color:#9B9898;
+    font-size:11px;
+}
+
+.clr{
+    clear:both;
+}
+
+.dashed {
+    border-left:1px dashed #ccc;
 }

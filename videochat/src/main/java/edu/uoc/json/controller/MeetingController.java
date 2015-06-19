@@ -6,11 +6,10 @@
 
 package edu.uoc.json.controller;
 
-import edu.uoc.common.controller.UserController;
 import edu.uoc.dao.MeetingRoomDao;
 import edu.uoc.dao.RoomDao;
 import edu.uoc.dao.UserMeetingDao;
-import edu.uoc.model.JSONResponse;
+import edu.uoc.model.json.JSONResponse;
 import edu.uoc.model.MeetingRoom;
 import edu.uoc.model.Room;
 import edu.uoc.model.User;

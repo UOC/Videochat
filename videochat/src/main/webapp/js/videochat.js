@@ -5,10 +5,11 @@
  */
 
 
- function StreamObject(userkey, username, publishName) {
+ function StreamObject(userkey, username, publishName,extra_role) {
     this.userkey = userkey;
     this.username = username;
     this.publishName = publishName;
+    this.extra_role = extra_role;
 }
 function returnPositionUser(userkey, array){
     var pos = -1;
@@ -30,4 +31,12 @@ function returnPositionUser(userkey, array){
      var concat = url.indexOf("?")>=0?"&":"?";
      allowed_return  = true;
      document.location.href=url+concat+"lang="+lang;
+ }
+ 
+ var restore_participants_div = function (max, concat_size_video) {
+     for (i = 2; i <= max; i++) {
+        $("#nom-" + i).html('&nbsp;');
+        $("#user-" + i + " .user-role ").html('');
+        $("#main-user-video-" + i).html('<div id="user-video-' + i + '"><img src="css/images/participant.png" class="participant_image_content'+concat_size_video+'" alt="participant ' + i + '"></div>');
+    }
  }

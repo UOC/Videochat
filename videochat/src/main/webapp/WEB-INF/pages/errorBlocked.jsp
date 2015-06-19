@@ -40,6 +40,13 @@
                  </c:otherwise>
                 </c:choose>
            </h3>
+            <br><br>
+            <footer class="row"> 
+                <div style="float: left; margin-top: 0pt; margin-left: 50px;text-align: justify; width: 600px;"><span style="font-size:9px;">This project has been funded with support from the Lifelong Learning Programme of the European Commission.  <br />
+    This site reflects only the views of the authors, and the European Commission cannot be held responsible for any use which may be made of the information contained therein.</span>
+    </div>
+                     &nbsp;	<img src="css/images/EU_flag.jpg" alt="" />
+            </footer>
         </div>
 
     </body>

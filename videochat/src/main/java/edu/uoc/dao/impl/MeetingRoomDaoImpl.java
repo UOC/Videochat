@@ -147,7 +147,7 @@ public class MeetingRoomDaoImpl extends CustomHibernateDaoSupport implements Mee
         
         Criteria criteria;
         criteria = this.getSession().createCriteria(MeetingRoom.class, "meeting");
-        criteria.add(Restrictions.eq("meeting.finished",(byte)1));
+        //criteria.add(Restrictions.eq("meeting.finished",(byte)1));
         criteria.add(Restrictions.eq("meeting.recorded",(byte)1));
         if(tsStart!=null){
             criteria.add(Restrictions.ge("meeting.start_meeting",tsStart));
@@ -161,7 +161,12 @@ public class MeetingRoomDaoImpl extends CustomHibernateDaoSupport implements Mee
 	if(room!=null && room.getId()>0){
             criteria.add(Restrictions.eq("meeting.id_room",room));
 	} else {
-            criteria.add(Restrictions.in("meeting.id_room", ids_room));
+            if (ids_room!=null && ids_room.size()>0) {
+                criteria.add(Restrictions.in("meeting.id_room", ids_room));
+            } else {
+                //don't return nothing
+                criteria.add(Restrictions.eq("meeting.id_room.id", 0));
+            }
         }
         if (searchMeeting.getParticipants()!=null && searchMeeting.getParticipants().length()>0) {
             DetachedCriteria subCriteria = DetachedCriteria.forClass(UserMeeting.class, "userMeeting");
@@ -176,10 +181,17 @@ public class MeetingRoomDaoImpl extends CustomHibernateDaoSupport implements Mee
                 subCriteria.add(Subqueries.exists(subCriteriaUser));
             criteria.add(Subqueries.exists(subCriteria));
         }
-        logger.info("Criteria "+criteria.toString());
+        //logger.info("Criteria "+criteria.toString()); 
        
            return criteria.list();
        }
+
+    @Override
+    public boolean deleteMeetingById(MeetingRoom meeting) {
+        getHibernateTemplate().update(meeting);
+        
+        return true;
+    }
    
     
     

@@ -47,6 +47,20 @@ public class UserCourseDaoImpl extends CustomHibernateDaoSupport implements User
        }
    
     }
+
+    @Override
+    public List<UserCourse> findCoursesByUserId(int userId) {
+       List list = getHibernateTemplate().find("from UserCourse where user_id=?",userId);
+       
+       return list;
+    }
+
+    @Override
+    public List<UserCourse> findUsersByCourse(int courseId) {
+        List list = getHibernateTemplate().find("from UserCourse where course_id=?",courseId);
+       
+       return list;
+    }
     
     
 }

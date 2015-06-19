@@ -69,6 +69,15 @@ public class MeetingRoom implements java.io.Serializable {
     @Column(name = "meeting_room_end_record")
     private Timestamp end_record;
     
+     @Column(name = "meeting_room_userid_deleted")
+    private Integer user_id_deleted;
+     
+      @Column(name = "meeting_room_deleted")
+    private byte deleted;
+      
+       @Column(name = "meeting_room_time_deleted")
+    private Timestamp time_deleted;
+    
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "pk.meeting")
     private List<UserMeeting> userMeeting;
@@ -76,9 +85,10 @@ public class MeetingRoom implements java.io.Serializable {
     public MeetingRoom() {
     }
 
-    public MeetingRoom(int id, Room id_room, int id_course, String topic, String description, String path, int number_participants, byte finished, Timestamp start_meeting, Timestamp end_meeting, byte recorded, Timestamp start_record, Timestamp end_record, List<UserMeeting> userMeeting) {
+    public MeetingRoom(int id, Room id_room, String topic, String description, String path, int number_participants, byte finished, Timestamp start_meeting, Timestamp end_meeting, byte recorded, Timestamp start_record, Timestamp end_record, Integer user_id_deleted, byte deleted, Timestamp time_deleted, List<UserMeeting> userMeeting) {
         this.id = id;
         this.id_room = id_room;
+        this.topic = topic;
         this.description = description;
         this.path = path;
         this.number_participants = number_participants;
@@ -88,8 +98,13 @@ public class MeetingRoom implements java.io.Serializable {
         this.recorded = recorded;
         this.start_record = start_record;
         this.end_record = end_record;
+        this.user_id_deleted = user_id_deleted;
+        this.deleted = deleted;
+        this.time_deleted = time_deleted;
         this.userMeeting = userMeeting;
     }
+
+   
 
     public Room getId_room() {
         return id_room;
@@ -200,4 +215,31 @@ public class MeetingRoom implements java.io.Serializable {
     public void setTopic(String topic) {
         this.topic = topic;
     }
+
+    public Integer getUser_id_deleted() {
+        return user_id_deleted;
+    }
+
+    public void setUser_id_deleted(Integer user_id_deleted) {
+        this.user_id_deleted = user_id_deleted;
+    }
+
+    public byte getDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(byte deleted) {
+        this.deleted = deleted;
+    }
+
+    public Timestamp getTime_deleted() {
+        return time_deleted;
+    }
+
+    public void setTime_deleted(Timestamp time_deleted) {
+        this.time_deleted = time_deleted;
+    }
+    
+    
+    
 }

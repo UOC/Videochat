@@ -64,14 +64,20 @@ public class User implements java.io.Serializable{
     private byte blocked;
     
     @Column(name="user_timestamp")
-
     private Timestamp created;
+    
+    @Column(name="token_access",length=255)
+    private String token_access;
+    
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "pk.user")
     private List<UserCourse> course;
     
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "pk.user")
     private List<UserMeeting> meeting;
+    
+    
+    
     
     
     public User() {
@@ -92,7 +98,14 @@ public class User implements java.io.Serializable{
         this.meeting = meeting;
     }
 
-    
+    public List<UserMeeting> getMeeting() {
+        return meeting;
+    }
+
+    public void setMeeting(List<UserMeeting> meeting) {
+        this.meeting = meeting;
+    }
+
 
     
 
@@ -174,6 +187,14 @@ public class User implements java.io.Serializable{
 
     public void setCreated(Timestamp created) {
         this.created = created;
+    }
+    
+    public String getToken_access() {
+        return token_access;
+    }
+    
+    public void setToken_access(String token) {
+        this.token_access = token;
     }
 
     public List<UserCourse> getCourse() {

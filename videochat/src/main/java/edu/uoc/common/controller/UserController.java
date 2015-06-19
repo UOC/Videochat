@@ -18,12 +18,16 @@ import edu.uoc.model.UserMeetingHistory;
 import edu.uoc.model.UserMeetingId;
 import edu.uoc.util.Constants;
 import edu.uoc.util.Util;
+import java.net.URLEncoder;
 import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import net.sf.uadetector.ReadableUserAgent;
+import net.sf.uadetector.UserAgentStringParser;
+import net.sf.uadetector.service.UADetectorServiceFactory;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -60,7 +64,8 @@ public class UserController {
     private String wowzaUrl;
     @Value( "${use.jwplayer}" )
     private String useJWplayer;
-    
+    @Value( "${wowza.vod_application_player.server}" )
+    private String vod_application_player;
 
     /**
      * Shows a session meeting
@@ -71,7 +76,15 @@ public class UserController {
     @RequestMapping("/player")
     public ModelAndView showPlayer(@RequestParam(value = "id") int id,
             HttpSession session) {
-        return showFixedPlayer(id, 0, session);
+        return showFixedPlayer(id, 0, true, session);
+    }
+    
+    @RequestMapping("/view_session")
+    public ModelAndView viewSession(
+            HttpSession session) {
+        MeetingRoom meeting = (MeetingRoom) session.getAttribute(Constants.MEETING_SESSION);
+
+        return showFixedPlayer(meeting.getId(), 0, false, session);
     }
     /**
      * Allows to select the player
@@ -84,25 +97,34 @@ public class UserController {
      * @return 
      */
     @RequestMapping("/fixed_player")
-    public ModelAndView showFixedPlayer(@RequestParam(value = "id") int id, @RequestParam(value = "player") int player_id,
-            HttpSession session) {
-        ModelAndView model = new ModelAndView("player");
+    public ModelAndView showFixedPlayer(@RequestParam(value = "id") int id, @RequestParam(value = "player") int player_id, 
+            boolean show_button_back, HttpSession session) {
+        ModelAndView model = null;
           try {
-
-            Room room = (Room) session.getAttribute(Constants.ROOM_SESSION);
+            model =  new ModelAndView("player");
             User user = (User) session.getAttribute(Constants.USER_SESSION);
             Course course = (Course) session.getAttribute(Constants.COURSE_SESSION);
             
-            
-            if (user != null && room != null) {
+            if (user != null) {
                 MeetingRoom meeting = meetingroomDao.findById(id);
-                 if(!(meeting.getId_room().getId_course().getId()==course.getId())){
+                 if(meeting==null || meeting.getId_room()==null || !(meeting.getId_room().getId_course().getId()==course.getId())){
                     model.setViewName("errorMeetingNotFound"); 
                  } else {
                     if (meeting.getId() > 0) {
                         model.addObject("user", user);
                         MeetingRoomExtended meeting_extended = new MeetingRoomExtended(meeting);
-                        meeting_extended.setParticipants(userMeetingDao.findUsersByMeetingId(meeting, -1, true));
+                        boolean get_users_from_history_if_not_found = (Boolean)session.getAttribute(Constants.GET_USERS_FROM_HISTORY_IF_NOT_FOUND);
+                        int max_participants = Constants.MAX_PARTICIPANTS;
+                        try{
+                            if (session.getAttribute(Constants.PARAM_MAX_PARTICIPANTS_CUSTOM_LTI_PARAMETER)!=null){
+                                max_participants = Integer.parseInt((String) session.getAttribute(Constants.PARAM_MAX_PARTICIPANTS_CUSTOM_LTI_PARAMETER));
+                            }
+                        }
+                        catch (NumberFormatException nfe) {
+                            //nothing
+                        }
+
+                        meeting_extended.setParticipants(userMeetingDao.findUsersByMeetingId(meeting, -1, true, get_users_from_history_if_not_found, max_participants));
                         meeting_extended.setEnd_meeting_txt(Util.getTimestampFormatted(meeting_extended.getEnd_meeting(), Constants.FORMAT_DATETIME));
                         meeting_extended.setStart_meeting_txt(Util.getTimestampFormatted(meeting_extended.getStart_meeting(), Constants.FORMAT_DATETIME));
                         meeting_extended.setEnd_record_txt(Util.getTimestampFormatted(meeting_extended.getEnd_record(), Constants.FORMAT_DATETIME));
@@ -121,14 +143,20 @@ public class UserController {
                         meeting_extended.setTotal_time_txt(Util.substractTimestamps(meeting_extended.getEnd_record(), meeting_extended.getStart_record()));
                         meeting_extended.setChat(chatMeetingDao.findByMeetingId(meeting));
                         model.addObject("course", session.getAttribute(Constants.COURSE_SESSION));
-                        model.addObject("room", room);
                         model.addObject("meeting", meeting_extended);
                         model.addObject("wowza_stream_server", wowzaUrl);
+                        model.addObject("vod_application_player", (vod_application_player==null?"vod":vod_application_player));
                         if (player_id==0) {
                             model.addObject("useJWplayer", "1".equals(useJWplayer));
                         } else {
                             model.addObject("useJWplayer", player_id==1);
                         }
+                        if (!show_button_back) {
+                            model.addObject("disable_back_button", true);
+                        } else {
+                            model.addObject("disable_back_button", session.getAttribute(Constants.DISABLE_BACK_BUTTON_CUSTOM_LTI_PARAMETER));
+                        }
+                        model.addObject("max_participants", max_participants);
 
                     } else {
                         model.setViewName("errorMeetingNotFound");
@@ -138,7 +166,7 @@ public class UserController {
                 model.setViewName("errorSession");
             }
         } catch(Exception e) {
-            model.setViewName("error");
+            model =  new ModelAndView("error");
             logger.error("Error in player "+e.getMessage(), e);
         }
 
@@ -146,16 +174,29 @@ public class UserController {
     }
 
     @RequestMapping("/videochat")
-    public ModelAndView showVideochat(HttpSession session) {
+    public ModelAndView showVideochat(HttpSession session, HttpServletRequest request) {
 
-        ModelAndView model = new ModelAndView("videochat");
+        ModelAndView model = null;
         try {
             Room room = (Room) session.getAttribute(Constants.ROOM_SESSION);
             User user = (User) session.getAttribute(Constants.USER_SESSION);
             Course course = (Course) session.getAttribute(Constants.COURSE_SESSION);
+            model = new ModelAndView("videochat");
+            String extra_role = (String) session.getAttribute(Constants.EXTRA_ROLE_CUSTOM_LTI_PARAMETER);
+            int max_participants = Constants.MAX_PARTICIPANTS;
+            try{
+                if (session.getAttribute(Constants.PARAM_MAX_PARTICIPANTS_CUSTOM_LTI_PARAMETER)!=null){
+                    max_participants = Integer.parseInt((String) session.getAttribute(Constants.PARAM_MAX_PARTICIPANTS_CUSTOM_LTI_PARAMETER));
+                }
+            }
+            catch (NumberFormatException nfe) {
+                //nothing
+            }
+
             boolean can_access_to_meeting = true;
-            if (user != null && room != null) {
-                String pathMeeting = course.getCoursekey() + "_" + room.getKey() + "_" + room.getId();
+            if (user != null && room != null && course!=null) {
+                
+                String pathMeeting = course.getCoursekey() + "_" + room.getKey() + "_" + room.getId(); //
                 boolean is_new_meeting = true;
                 MeetingRoom meeting = null;
                 meeting = (MeetingRoom) session.getAttribute(Constants.MEETING_SESSION);
@@ -163,6 +204,16 @@ public class UserController {
                 boolean is_reload = false;
                 //Find the room and the meeting room associate to this room
                 MeetingRoom mr = meetingroomDao.findByRoomIdNotFinished(room.getId());
+                if (mr!=null &&
+                        mr.getRecorded()==(byte)1 && mr.getFinished()==(byte)0 
+                        && mr.getStart_record()!=null && mr.getStart_record().before(new Timestamp(new Date().getTime()-(60*60*1000)))){
+                    //Finalize it and 
+                    mr.setEnd_meeting(new Timestamp(new Date().getTime()));
+                    mr.setEnd_record(mr.getEnd_meeting());
+                    mr.setFinished((byte)1);
+                    meetingroomDao.save(mr);
+                    mr = meetingroomDao.findByRoomIdNotFinished(room.getId());
+                }
                 UserMeeting aux = null;
                 if (mr!=null) {
                     if (meeting!=null) {
@@ -172,8 +223,17 @@ public class UserController {
                         aux = userMeetingDao.findUserMeetingByPK(new UserMeetingId(user, mr));
                     }
                 }
-                if (!is_reload && aux !=null && aux.getPk() != null) {
-                    is_reload = true;
+                if (!is_reload){
+                    if (aux !=null && aux.getPk() != null) {
+                        is_reload = true;
+                    }
+                    else {
+                        if (room.isIs_blocked() && mr!=null && mr.getFinished()==(byte)1){
+                            room.setIs_blocked(false);
+                            room.setReason_blocked(null);
+                            roomDao.save(room);
+                        }
+                    }
                 }
 
                 UserMeeting userMeeting;
@@ -197,7 +257,7 @@ public class UserController {
                             meeting.setNumber_participants(userMeetingDao.countNumberParticipants(meeting));
                         }
                         //If the number of participants == 6 then the room is blocked
-                        if (meeting.getNumber_participants() > Constants.MAX_PARTICIPANTS) {
+                        if (meeting.getNumber_participants() > max_participants) {
                             room.setIs_blocked(true);
                             room.setReason_blocked(Constants.REASON_BLOCK_MAX_PARTICIPANTS);
                             can_access_to_meeting = false;
@@ -224,11 +284,19 @@ public class UserController {
                             meeting.setEnd_meeting(null);
                         }
                         meetingroomDao.save(meeting);
-                        String meetingIdPath = course.getCoursekey() + "_" + room.getKey() + "_" + meeting.getId();
+                        String meetingIdPath = Util.getMeetingIdPath(course.getCoursekey(), room.getKey(), meeting.getId());
 
                         UserMeetingId umId = new UserMeetingId(user, meeting);
-                        userMeeting = new UserMeeting(umId, new Timestamp(date.getTime()), meetingIdPath + "_" + user.getUsername());
+                        userMeeting = new UserMeeting(umId, new Timestamp(date.getTime()), meetingIdPath + "_" + user.getUsername(), extra_role);
+                        UserAgentStringParser parser = UADetectorServiceFactory.getResourceModuleParser();
+                        ReadableUserAgent agent = parser.parse(request.getHeader("User-Agent"));
+                        String user_agent = agent.getName()+" "+agent.getVersionNumber();
+                        String platform = agent.getOperatingSystem().getName();                                                
+                        userMeeting.setUserAgent(user_agent);
+                        userMeeting.setPlatform(platform);
+                        
                         userMeetingDao.save(userMeeting);
+                        
                         
                         updateHistoryUserMeetingTable(userMeeting);
                         
@@ -239,31 +307,55 @@ public class UserController {
                     can_access_to_meeting = false;
                 }
 
+                model.addObject("max_participants", max_participants);
                 model.addObject("user", user);
                 model.addObject("course", course);
                 model.addObject("meeting", meeting);
                 model.addObject("userMeeting", session.getAttribute(Constants.USER_METTING_SESSION));
                 model.addObject("wowza_stream_server", wowzaUrl);
+                model.addObject("auto_recording", session.getAttribute(Constants.PARAM_AUTO_RECORDING_CUSTOM_LTI_PARAMETER));
+                String url_notify_started_recording = session.getAttribute(Constants.PARAM_URL_NOTIFY_STARTED_RECORDING_CUSTOM_LTI_PARAMETER)!=null?(String)session.getAttribute(Constants.PARAM_URL_NOTIFY_STARTED_RECORDING_CUSTOM_LTI_PARAMETER):null;
+                //check if the url is not null and not has the return_id parameter
+                if (url_notify_started_recording!=null && url_notify_started_recording.length()>0 && !url_notify_started_recording.contains("return_id")) { 
+                    String separator = "?";
+                    if (url_notify_started_recording.contains("?")) {
+                        separator = "&";
+                    }
+                    url_notify_started_recording += separator + Constants.PARAM_URL_NOTIFY_RETURN_ID+"="+meeting.getId();
+                    //with close the flash can't get but with close yes!
+                    url_notify_started_recording += "&" + Constants.PARAM_URL_NOTIFY_CLOSE_MEETING_SERVICE+"="+URLEncoder.encode(Util.getFullUrl(request, logger)+"rest/stop_external_meeting/"+pathMeeting, "UTF-8");
+                    //url_notify_started_recording += "&" + Constants.PARAM_URL_NOTIFY_CLOSE_MEETING_SERVICE+"="+URLEncoder.encode(Util.getFullUrl(request, logger)+"rest/close_external_meeting/"+pathMeeting, "UTF-8");
+                    session.setAttribute(Constants.PARAM_URL_NOTIFY_STARTED_RECORDING_CUSTOM_LTI_PARAMETER, url_notify_started_recording);
+                }
+                model.addObject("url_notify_started_recording", url_notify_started_recording);
+                model.addObject("url_notify_ended_recording", session.getAttribute(Constants.PARAM_URL_NOTIFY_ENDED_RECORDING_CUSTOM_LTI_PARAMETER));
+                model.addObject("disable_back_button", session.getAttribute(Constants.DISABLE_BACK_BUTTON_CUSTOM_LTI_PARAMETER));
+                              
+                model.addObject("window_focus_name", session.getAttribute(Constants.PARAM_WINDOW_NAME_FOCUS_CUSTOM_LTI_PARAMETER));
+
                 if (meeting!=null) {
                     model.addObject("is_recorded", meeting.getRecorded() == (byte) 1);
                     //get the list of current participants
-                    List<UserMeeting> participants = userMeetingDao.findUsersByMeetingId(meeting, user.getId(), true);
+                    List<UserMeeting> participants = userMeetingDao.findUsersByMeetingId(meeting, user.getId(), true, false, 0);
                     model.addObject("participants", participants);
                 }
-            }
-            if (!can_access_to_meeting ) {
-                String error = "errorSession";
-                if (user != null && room != null && room.isIs_blocked()) {
-                    //nloquejada
-                    model.addObject("reason_max_participants", Constants.REASON_BLOCK_MAX_PARTICIPANTS);
-                    model.addObject("reason_recording", Constants.REASON_BLOCK_RECORDING);
-                    model.addObject("reason", room.getReason_blocked());
-                    error = "errorBlocked";
+                if (!can_access_to_meeting ) {
+                    String error = "error";
+                    if (room.isIs_blocked()) {
+                        //nloquejada
+                        model.addObject("reason_max_participants", Constants.REASON_BLOCK_MAX_PARTICIPANTS);
+                        model.addObject("reason_recording", Constants.REASON_BLOCK_RECORDING);
+                        model.addObject("reason", room.getReason_blocked());
+                        error = "errorBlocked";
+                    }
+                    model.setViewName(error);
                 }
-                model.setViewName(error);
+            } else {
+               String error = "errorSession";
+               model.setViewName(error);      
             }
         } catch(Exception e) {
-            model.setViewName("error");
+            model = new ModelAndView("error");
             logger.error("Error in videochat "+e.getMessage(), e);
         }
 
@@ -271,7 +363,7 @@ public class UserController {
 
     }
     
-    public void updateHistoryUserMeetingTable(UserMeeting userMeeting) {
+    public static void updateHistoryUserMeetingTable(UserMeeting userMeeting) {
         try {
             if (userMeeting!=null && userMeeting.getPk()!=null) {
                 ApplicationContext context = ContextLoader.getCurrentWebApplicationContext();
@@ -286,6 +378,10 @@ public class UserController {
                     //is new
                     userMeetingHistory.setUser_id(userMeeting.getPk().getUser().getId());
                     userMeetingHistory.setMeeting_id(userMeeting.getPk().getMeeting().getId());
+                    userMeetingHistory.setExtraRole(userMeeting.getExtra_role());
+                    userMeetingHistory.setUserAgent(userMeeting.getUserAgent());
+                    userMeetingHistory.setPlatform(userMeeting.getPlatform());
+                    
                 }
                 userMeetingHistoryDao.save(userMeetingHistory);
             }
@@ -448,6 +544,15 @@ public class UserController {
         status.setComplete();
         return "logout";
 
+    }
+    
+    @RequestMapping(value={"testEnvironment"})
+    public ModelAndView testEnvironment() {
+        Course course = new Course();
+        ModelAndView model = new ModelAndView("testEnvironment");
+        model.addObject("wowza_stream_server", wowzaUrl);
+        model.addObject("course", course);
+        return model;
     }
 
 }

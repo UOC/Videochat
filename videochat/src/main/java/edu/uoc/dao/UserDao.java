@@ -6,7 +6,6 @@
 package edu.uoc.dao;
 
 import edu.uoc.model.User;
-import java.util.List;
 
 import java.util.List;
 
@@ -24,6 +23,8 @@ public interface UserDao {
     void delete(User user);
 
     User findByUserCode(int userId);
+    
+    User findByUserToken(String email, String token) throws Exception;
     
     User findByUserName(String username);
 

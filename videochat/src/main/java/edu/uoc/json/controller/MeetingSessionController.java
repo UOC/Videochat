@@ -9,14 +9,15 @@ package edu.uoc.json.controller;
 import edu.uoc.dao.MeetingRoomDao;
 import edu.uoc.dao.RoomDao;
 import edu.uoc.dao.UserMeetingDao;
-import edu.uoc.model.JSONRequestExtraParam;
-import edu.uoc.model.JSONResponse;
+import edu.uoc.model.json.JSONRequestExtraParam;
+import edu.uoc.model.json.JSONResponse;
 import edu.uoc.model.MeetingRoom;
 import edu.uoc.model.Room;
 import edu.uoc.model.User;
 import edu.uoc.util.Constants;
 import java.sql.Timestamp;
 import java.util.Date;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,21 +31,63 @@ import org.springframework.web.bind.annotation.ResponseBody;
  * @author antonibertranbellido
  */
 @Controller
-@RequestMapping("/meetingsession")
 public class MeetingSessionController {
     //get log4j handler
     private static final Logger logger = Logger.getLogger(MeetingSessionController.class);
 
     
     @Autowired
-    private UserMeetingDao userMeetingDao;
-    @Autowired
     private RoomDao roomDao;
     @Autowired
     private MeetingRoomDao meetingDao;
     
+    @RequestMapping(value = "/topic", method = RequestMethod.POST)
+    public @ResponseBody JSONResponse setTopicMeeting(HttpServletRequest request,
+            HttpSession session) {
+        JSONResponse response = new JSONResponse();
+        try {
+            User user = (User) session.getAttribute(Constants.USER_SESSION);
+            MeetingRoom meeting = (MeetingRoom) session.getAttribute(Constants.MEETING_SESSION);
+            String value = request.getParameter("value");
+            logger.info("topic "+value);
+            if (user!=null && meeting!=null && value!=null && value.length()>0 ) {
+                meeting = meetingDao.findById(meeting.getId());
+                meeting.setTopic(value);
+                meetingDao.save(meeting);
+                response.setOk(true);
+                session.setAttribute(Constants.MEETING_SESSION, meeting);
+            }
+        } catch (Exception e) {
+            logger.error("Save session name ", e);
+            
+        }
+        return response;    
+    }
+
+    @RequestMapping(value = "/description", method = RequestMethod.POST)
+    public @ResponseBody JSONResponse setDescriptionMeeting(HttpServletRequest request,
+            HttpSession session) {
+        JSONResponse response = new JSONResponse();
+        try {
+            User user = (User) session.getAttribute(Constants.USER_SESSION);
+            MeetingRoom meeting = (MeetingRoom) session.getAttribute(Constants.MEETING_SESSION);
+            String value = request.getParameter("value");
+            logger.info("description "+value);
+            if (user!=null && meeting!=null) {
+                meeting = meetingDao.findById(meeting.getId());
+                meeting.setDescription(value);
+                meetingDao.save(meeting);
+                response.setOk(true);
+                session.setAttribute(Constants.MEETING_SESSION, meeting);
+            }
+        } catch (Exception e) {
+            logger.error("Save session description ", e);            
+        }
+        return response;    
+    }    
+
     
-    @RequestMapping(method = RequestMethod.POST)
+    @RequestMapping(value = "/meetingsession", method = RequestMethod.POST)
     public @ResponseBody JSONResponse saveSession(@RequestBody JSONRequestExtraParam request, HttpSession session) {
         JSONResponse response = new JSONResponse();
         try {
@@ -73,7 +116,7 @@ public class MeetingSessionController {
     }
     
     
-    @RequestMapping(method = RequestMethod.PUT)
+    @RequestMapping(value = "/meetingsession", method = RequestMethod.PUT)
     public @ResponseBody JSONResponse lockSession(HttpSession session) {
         JSONResponse response = new JSONResponse();
         try {
@@ -107,7 +150,7 @@ public class MeetingSessionController {
         return response;
     }
     
-    @RequestMapping(method = RequestMethod.DELETE)
+    @RequestMapping(value = "/meetingsession", method = RequestMethod.DELETE)
     public @ResponseBody JSONResponse closeSession(HttpSession session) {
         JSONResponse response = new JSONResponse();
         try {
